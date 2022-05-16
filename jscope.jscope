@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<JScopeProject>
+    <FileVersion major="1" minor="1" />
+    <Project>
+        <Configuration>
+            <JLink>
+                <Options Connection="1" IsRTTSession="0" IsRTTWithTimeStamp="1" SamplingPeriod="100" SerialNo="0" JTAG_IRPre="-1" JTAG_DRPre="-1" IP="" TargetDevice="STM32F103C8" TargetInterface="SWD" InterfaceSpeed="4000" />
+            </JLink>
+            <ScriptFile Name="D:\STM32\My Project\Air Plane softiic\jscope.jscope\unspecified" />
+            <ElfFile Name="D:\STM32\My Project\Air Plane softiic\OBJ\Air Plane.axf" />
+            <DataFile Name="" />
+            <RawFile Name="" />
+            <Scope>
+                <Options TimeResolutionUs="200000" />
+            </Scope>
+        </Configuration>
+        <Windows>
+            <Graph Show="1" />
+            <Watch Show="0" />
+        </Windows>
+        <SelectedSymbols>
+            <Symbol>
+                <Options Name="g[0]" Address="0x20000002" Type="short" TypeID="11" Size="2" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-32768" YMaxSampled="32767" YAvgSampled="-414" Offset="4" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="20000" MaxValue="40000" File="main.c" Scope="0" DrawStyle="0" />
+            </Symbol>
+            <Symbol>
+                <Options Name="g[3]" Address="0x20000008" Type="short" TypeID="11" Size="2" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-14756" YMaxSampled="32767" YAvgSampled="-782" Offset="6" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="20000" MaxValue="40000" File="main.c" Scope="0" DrawStyle="0" />
+            </Symbol>
+            <Symbol>
+                <Options Name="g[2]" Address="0x20000006" Type="short" TypeID="11" Size="2" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="-32768" YMaxSampled="32767" YAvgSampled="289" Offset="8" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="20000" MaxValue="40000" File="main.c" Scope="0" DrawStyle="0" />
+            </Symbol>
+        </SelectedSymbols>
+    </Project>
+</JScopeProject>
