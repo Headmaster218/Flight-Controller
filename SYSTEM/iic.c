@@ -1,210 +1,222 @@
 #include <iic.h>
-#define RCC_I2C1	     RCC_APB2Periph_GPIOB
-#define I2C1_PORT      GPIOB
-#define I2C1_Pin_SCL   GPIO_Pin_10
-#define I2C1_Pin_SDA   GPIO_Pin_11
+#define RCC_I2C2	     RCC_APB2Periph_GPIOB
+#define I2C2_PORT      GPIOB
+#define I2C2_Pin_SCL   GPIO_Pin_10
+#define I2C2_Pin_SDA   GPIO_Pin_11
 
 
 void Soft_IIC1_Init(void)
 {					     
+GPIO_InitTypeDef GPIO_InitStructure;
+I2C_InitTypeDef I2C_InitStructure;
 	
-  GPIO_InitTypeDef  GPIO_InitStructure;
+RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2,ENABLE);
 	
-	RCC_APB2PeriphClockCmd(RCC_I2C1,ENABLE);//先使能外设IO PORTB时钟 
+GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-  GPIO_InitStructure.GPIO_Pin = I2C1_Pin_SCL|I2C1_Pin_SDA;	 // 端口配置
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD; 		 //推挽输出
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		 //IO口速度为50MHz
-  GPIO_Init(I2C1_PORT, &GPIO_InitStructure);					 //根据设定参数初始化GPIO 
-	
-	SDA1_H;
-	SCL1_H;
+I2C_DeInit(I2C2);
+I2C_InitStructure.I2C_Mode = I2C_Mode_I2C ; 
+I2C_InitStructure.I2C_Ack = I2C_Ack_Enable; 
+I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+I2C_InitStructure.I2C_ClockSpeed = 100000; 
+I2C_InitStructure.I2C_OwnAddress1 = 0x01;
+I2C_Init(I2C2, &I2C_InitStructure);
+I2C_Cmd (I2C2,ENABLE);
 }
 
 
-void I2C1_Soft_Delay(void)
-{
-	//int i = 10;
-	
-	delay_us(1);
-}
-
-int I2C1_Soft_Start(void)
-{
-	if(!SDA1_read)return 0;	//SDA线为低电平则总线忙,退出
-	SDA1_H;
-	SCL1_H;
-	I2C1_Soft_Delay();
-	SDA1_L;
-	I2C1_Soft_Delay();
-	if(SDA1_read) return 0;	//SDA线为高电平则总线出错,退出
-	SDA1_L;
-	I2C1_Soft_Delay();
-	return 1;	
-}
-
-void I2C1_Soft_Stop(void)
-{
-	SCL1_L;
-	I2C1_Soft_Delay();
-	SDA1_L;
-	I2C1_Soft_Delay();
-	SCL1_H;
-	I2C1_Soft_Delay();
-	SDA1_H;
-	I2C1_Soft_Delay();
-} 
-
-void I2C1_Soft_Ack(void)
-{	
-	SCL1_L;
-	I2C1_Soft_Delay();
-	SDA1_L;
-	I2C1_Soft_Delay();
-	SCL1_H;
-	I2C1_Soft_Delay();
-	SCL1_L;
-	I2C1_Soft_Delay();
-}   
-
-void I2C1_Soft_NoAck(void)
-{	
-	SCL1_L;
-	I2C1_Soft_Delay();
-	SDA1_H;
-	I2C1_Soft_Delay();
-	SCL1_H;
-	I2C1_Soft_Delay();
-	SCL1_L;
-	I2C1_Soft_Delay();
-} 
-
-int I2C1_Soft_WaitAck(void) 	 //返回为:=1有ACK,=0无ACK
-{
-	SCL1_L;
-	I2C1_Soft_Delay();
-	SDA1_H;			
-	I2C1_Soft_Delay();
-	SCL1_H;
-	I2C1_Soft_Delay();
-	if(SDA1_read)
-	{
-      SCL1_L;
-			I2C1_Soft_Delay();
-      return 0;
-	}
-	SCL1_L;
-	I2C1_Soft_Delay();
-	return 1;
-}
-
-void I2C1_Soft_SendByte(u8 SendByte)
-{
-    u8 i=8;
-    while(i--)
-    {
-        SCL1_L;
-        I2C1_Soft_Delay();
-      if(SendByte&0x80)
-        SDA1_H;  
-      else 
-        SDA1_L;   
-        SendByte<<=1;
-        I2C1_Soft_Delay();
-				SCL1_H;
-				I2C1_Soft_Delay();
-    }
-    SCL1_L;
-}  
-
-u8 I2C1_Soft_ReadByte(void)  //数据从高位到低位//
-{ 
-    u8 i=8;
-    u8 ReceiveByte=0;
-
-    SDA1_H;				
-    while(i--)
-    {
-      ReceiveByte<<=1;      
-      SCL1_L;
-      I2C1_Soft_Delay();
-			SCL1_H;
-      I2C1_Soft_Delay();	
-      if(SDA1_read)
-      {
-        ReceiveByte|=0x01;
-      }
-    }
-    SCL1_L;
-    return ReceiveByte;
-} 
 //0 send, 1 receive
 //单字节写入
 int I2C1_Soft_Single_Write(u8 SlaveAddress,u8 REG_Address,u8 REG_data)		
 {
-  	if(!I2C1_Soft_Start())return 0;
-    I2C1_Soft_SendByte(SlaveAddress<<1);   //发送设备地址+写信号//I2C_SendByte(((REG_Address & 0x0700) >>7) | SlaveAddress & 0xFFFE);//设置高起始地址+器件地址 
-    if(!I2C1_Soft_WaitAck()){I2C1_Soft_Stop(); return 0;}
-    I2C1_Soft_SendByte(REG_Address);   //设置低起始地址
-    I2C1_Soft_WaitAck();
-    I2C1_Soft_SendByte(REG_data);
-    I2C1_Soft_WaitAck();   
-    I2C1_Soft_Stop(); 
-    return 1;
+	u32 delay = 0;
+I2C_GenerateSTART(I2C2,ENABLE);
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
 }
+delay = 0;
+I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Transmitter);//okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_SendData(I2C2,REG_Address);
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+delay = 0;
+I2C_SendData(I2C2,REG_data);
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_GenerateSTOP(I2C2,ENABLE);
+return SUCCESS;
+}
+
+int I2C2_Soft_Mult_Write(u8 SlaveAddress,u8 REG_Address,u8 * ptChar,u8 size)
+{
+		u32 delay = 0;
+	u8 i = 0;
+I2C_GenerateSTART(I2C2,ENABLE);
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Transmitter);
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_SendData(I2C2,REG_Address);
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+
+for(i = 0;i < size;i++)
+{
+ I2C_SendData(I2C2,ptChar[i]);
+ while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+ {
+  if(delay > 0x10000)
+   return ERROR;
+  delay++;
+ }
+ delay = 0;
+}
+I2C_GenerateSTOP(I2C2,ENABLE);
+return SUCCESS;
+}
+
 
 //单字节读取
 int I2C1_Soft_Single_Read(u8 SlaveAddress,u8 REG_Address)
 {   
-		unsigned char REG_data;     	
-		if(!I2C1_Soft_Start())return 0;
-    I2C1_Soft_SendByte((SlaveAddress<<1)|0); //I2C_SendByte(((REG_Address & 0x0700) >>7) | REG_Address & 0xFFFE);//设置高起始地址+器件地址 
-    if(!I2C1_Soft_WaitAck())
-		{
-			I2C1_Soft_Stop();
-			return 0;
-		}
-    I2C1_Soft_SendByte((u8) REG_Address);   //设置低起始地址      
-    I2C1_Soft_WaitAck();
-    I2C1_Soft_Start();
-    I2C1_Soft_SendByte((SlaveAddress<<1)|1);
-    I2C1_Soft_WaitAck();
-
-		REG_data= I2C1_Soft_ReadByte();
-    I2C1_Soft_NoAck();
-    I2C1_Soft_Stop();
-	  return REG_data;
+uint32_t delay = 0;
+I2C_GenerateSTART(I2C2,ENABLE);//起始信号
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Transmitter);//发送设备地址+写信号
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_SendData(I2C2,REG_Address);//发送存储单元地址，从0开始
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING))//////////////////////////ed,ing
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+//I2C_GenerateSTOP(I2C2,ENABLE);
+I2C_GenerateSTART(I2C2,ENABLE);//起始信号
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Receiver);//发送设备地址+读信号
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}	
+I2C_AcknowledgeConfig(I2C2,DISABLE);
+delay = I2C_ReceiveData(I2C2);
+I2C_GenerateSTOP(I2C2,ENABLE);
+I2C_AcknowledgeConfig(I2C2, ENABLE);
+return delay;
 }	
 
 //多字节读取
-int I2C1_Soft_Mult_Read(u8 SlaveAddress,u8 REG_Address,u8 * ptChar,u8 size)
+	int I2C1_Soft_Mult_Read(u8 SlaveAddress,u8 REG_Address,u8 * ptChar,u8 size)
 {
-    uint8_t i;
-    
-    if(size < 1)
-			return 0;
-    if(!I2C1_Soft_Start())
-			return 0;
-    I2C1_Soft_SendByte((SlaveAddress<<1)|0);
-    if(!I2C1_Soft_WaitAck())
-		{
-			I2C1_Soft_Stop();
-			return 0;
-		}
-    I2C1_Soft_SendByte(REG_Address);    
-    I2C1_Soft_WaitAck();
-    
-    I2C1_Soft_Start();
-    I2C1_Soft_SendByte((SlaveAddress<<1)|1);
-    I2C1_Soft_WaitAck();
-    
-    for(i=1;i<size; i++)
-    {
-        *ptChar++ = I2C1_Soft_ReadByte();
-        I2C1_Soft_Ack();
-    }
-    *ptChar++ = I2C1_Soft_ReadByte();
-    I2C1_Soft_NoAck();
-    I2C1_Soft_Stop();
-    return 1;    
+		uint32_t delay = 0;
+I2C_GenerateSTART(I2C2,ENABLE);//起始信号
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Transmitter);//发送设备地址+写信号
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+I2C_SendData(I2C2,REG_Address);//发送存储单元地址，从0开始
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING))//////////////////////////ed,ing
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}
+delay = 0;
+//I2C_GenerateSTOP(I2C2,ENABLE);
+I2C_GenerateSTART(I2C2,ENABLE);//起始信号
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
+{
+ if(delay > 0x10000)	
+  return ERROR;
+ delay++;
+}
+  
+delay = 0;
+I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Receiver);//发送设备地址+读信号
+while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
+{
+ if(delay > 0x10000)
+  return ERROR;
+ delay++;
+}	
+
+ for(;size > 0; size--) *ptChar++ = I2C_ReceiveData(I2C2);
+I2C_AcknowledgeConfig(I2C2,DISABLE);
+I2C_GenerateSTOP(I2C2,ENABLE);
+I2C_AcknowledgeConfig(I2C2, ENABLE);
+return delay;
 }	

@@ -2,7 +2,9 @@
 
 u8 MPU_Init(void)
 { 
+	
 	u16 data ,lpf;
+	//I2C_GenerateSTOP(I2C2,ENABLE);
 	I2C1_Soft_Single_Write(MPU_ADDR,MPU_PWR_MGMT1_REG,0X80);	//复位MPU6050
 	delay_ms(200);
 	I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG,0X00);	//唤醒MPU6050 

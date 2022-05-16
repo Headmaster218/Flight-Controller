@@ -7,7 +7,7 @@
 #include <spi.h>
 #include <24G.h>
 
-short g[3], a[3];
+short g[3], a[3], temp;
 extern u8 USART_RX_BUF[200], flag_OLED_refresh;
 extern struct GGA_DATA gga_data;
 
@@ -16,9 +16,6 @@ int CPU_frec_tick = 0, CPU_freq = 0;
 int main(void)
 {
 	__set_PRIMASK(1);//关总中断
-	
-	
-	
 		if(1){
 	GPIO_InitTypeDef  GPIO_InitStructure;
 	
@@ -38,11 +35,11 @@ int main(void)
 	delay_ms(300);
 	RF24L01_Init();
 	MPU_Init();
-	GPS_DMA_Init();
+	//GPS_DMA_Init();
 	//GPS_Init();
-	OLED_Init();
-	OLED_ShowString(0,0,"   cTime:  :  :",12);
-	OLED_ShowString(0,1,"H:   M  GPSx",12);
+	//OLED_Init();
+	//OLED_ShowString(0,0,"   cTime:  :  :",12);
+	//OLED_ShowString(0,1,"H:   M  GPSx",12);
 	USART1->SR;USART1->DR;
 	DMA1_Channel5->CCR &= 0xFE;//disable dma
 	DMA1_Channel5->CNDTR =200;
@@ -51,12 +48,12 @@ int main(void)
 		__set_PRIMASK(0);//开总中断
 	while(1)
 	{
-		
+		temp = MPU_Get_Temperature();
 		CPU_frec_tick++;
 		NRF24L01_Read_Reg(0x05);
 		
 		//OLED_refresh,3hz
-		if(flag_OLED_refresh)
+		if(flag_OLED_refresh && 0)
 		{
 			flag_OLED_refresh = 0;
 			OLED_ShowNum(0,0 ,MPU_Get_Temperature(),4,12);
