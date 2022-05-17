@@ -46,7 +46,7 @@ int fputc(int ch, FILE *f)
   //GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   //GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	//复用推挽输出
   //GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIOA.9
-   
+
   //USART1_RX	  GPIOA.10初始化
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;//PA10
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;//浮空输入

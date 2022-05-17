@@ -5,24 +5,6 @@
 struct GGA_DATA gga_data;
 extern int CPU_frec_tick, CPU_freq;
 
-void GPS_Init(void)
-{
-	GPS_DMA_Init();
-	//cold start
-	//USART_SendData(USART1, 0xb5);
-	//USART_SendData(USART1, 0x62);
-	//USART_SendData(USART1, 0x06);
-	//USART_SendData(USART1, 0x04);
-	//USART_SendData(USART1, 0x04);
-	//USART_SendData(USART1, 0x00);
-	//USART_SendData(USART1, 0xff);
-	//USART_SendData(USART1, 0xff);
-	//USART_SendData(USART1, 0x02);
-	//USART_SendData(USART1, 0x00);
-	//USART_SendData(USART1, 0x0e);
-	//USART_SendData(USART1, 0x61);
-}
-
 u8  USART_RX_BUF[200];
 void GPS_DMA_Init(void)
 {

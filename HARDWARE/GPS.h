@@ -6,7 +6,6 @@
 //#include <usart.h>
 
 void GPS_DMA_Init(void);
-void GPS_Init(void);
 
 //RMC_DATA½á¹¹Ìå
 

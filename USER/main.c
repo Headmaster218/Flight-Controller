@@ -15,16 +15,16 @@ int CPU_frec_tick = 0, CPU_freq = 0;
 
 int main(void)
 {
-	__set_PRIMASK(1);//¹Ø×ÜÖÐ¶Ï
+	__set_PRIMASK(1);//Close all interrupt
 		if(1){
 	GPIO_InitTypeDef  GPIO_InitStructure;
 	
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);//ÏÈÊ¹ÄÜÍâÉèIO PORTBÊ±ÖÓ 
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);//ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IO PORTBÊ±ï¿½ï¿½ 
 		
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;	 // ¶Ë¿ÚÅäÖÃ
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //ÍÆÍìÊä³ö
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;		 //IO¿ÚËÙ¶ÈÎª50MHz
-  GPIO_Init(GPIOC, &GPIO_InitStructure);					 //¸ù¾ÝÉè¶¨²ÎÊý³õÊ¼»¯GPIO 
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;	 // ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;		 //IOï¿½ï¿½ï¿½Ù¶ï¿½Îª50MHz
+  GPIO_Init(GPIOC, &GPIO_InitStructure);					 //ï¿½ï¿½ï¿½ï¿½ï¿½è¶¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½GPIO 
 		}
 	//SystemInit
 	delay_init();
@@ -44,7 +44,7 @@ int main(void)
 	DMA1_Channel5->CNDTR =200;
 	DMA1_Channel5->CCR |=1;//enable dma
 
-		__set_PRIMASK(0);//¿ª×ÜÖÐ¶Ï
+		__set_PRIMASK(0);//Enable all interrupt
 	while(1)
 	{
 		temp = MPU_Get_Temperature();

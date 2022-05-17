@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\OBJ\Air Plane.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\OBJ\Air Plane.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue May 17 15:44:34 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue May 17 17:35:44 2022
 <BR><P>
 <H3>Maximum Stack Usage =        476 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -752,14 +752,14 @@ Global Symbols
 <P><STRONG><a name="[88]"></a>GPS_DMA_Init</STRONG> (Thumb, 158 bytes, Stack size 56 bytes, gps.o(i.GPS_DMA_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = GPS_DMA_Init &rArr; NVIC_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
+<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_DMACmd
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
+<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_AHBPeriphClockCmd
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_Init
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_DeInit
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_Cmd
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_ClearFlag
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_AHBPeriphClockCmd
-<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_DMACmd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1148,7 +1148,7 @@ Global Symbols
 <P><STRONG><a name="[a]"></a>SVC_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f10x_it.o(i.SVC_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
 </UL>
-<P><STRONG><a name="[9a]"></a>Soft_IIC1_Init</STRONG> (Thumb, 188 bytes, Stack size 32 bytes, iic.o(i.Soft_IIC1_Init))
+<P><STRONG><a name="[9a]"></a>Soft_IIC1_Init</STRONG> (Thumb, 180 bytes, Stack size 32 bytes, iic.o(i.Soft_IIC1_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = Soft_IIC1_Init &rArr; I2C_Init &rArr; RCC_GetClocksFreq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
