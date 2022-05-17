@@ -186,6 +186,7 @@ delay = 0;
 delay_us(100);
 delay = I2C_ReceiveData(I2C2);
 I2C_GenerateSTOP(I2C2,ENABLE);
+Soft_IIC1_Init();
 	return delay;
 }
 
@@ -235,7 +236,11 @@ while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
  delay++;
 }	
 
- for(;size > 0; size--) *ptChar++ = I2C_ReceiveData(I2C2);
+ for(;size > 0; size--) 
+{
+	delay_us(100);
+	*ptChar++ = I2C_ReceiveData(I2C2);
+}
 I2C_AcknowledgeConfig(I2C2,DISABLE);
 I2C_GenerateSTOP(I2C2,ENABLE);
 return delay;
