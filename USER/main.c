@@ -39,10 +39,10 @@ int main(void)
 	OLED_Init();
 	OLED_ShowString(0,0,"   cTime:  :  :",12);
 	OLED_ShowString(0,1,"H:   M  GPSx",12);
-	USART1->SR;USART1->DR;
-	DMA1_Channel5->CCR &= 0xFE;//disable dma
-	DMA1_Channel5->CNDTR =200;
-	DMA1_Channel5->CCR |=1;//enable dma
+	USART3->SR;USART3->DR;
+	DMA1_Channel3->CCR &= 0xFE;//disable dma
+	DMA1_Channel3->CNDTR =200;
+	DMA1_Channel3->CCR |=1;//enable dma
 
 		__set_PRIMASK(0);//Enable all interrupt
 	while(1)

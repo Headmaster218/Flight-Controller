@@ -12,7 +12,7 @@ void GPS_DMA_Init(void)
 	  DMA_InitTypeDef    DMA_Initstructure;
 
     //时钟
-    NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel5_IRQn; //嵌套通道为DMA1_Channel4_IRQn
+    NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel3_IRQn; //嵌套通道为DMA1_Channel4_IRQn
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3; //抢占优先级为 2
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2; //响应优先级为 7
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //通道中断使能
@@ -20,9 +20,9 @@ void GPS_DMA_Init(void)
 
     /*开启DMA时钟*/
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
-    DMA_DeInit(DMA1_Channel5); 
+    DMA_DeInit(DMA1_Channel3); 
     /*DMA配置*/
-    DMA_Initstructure.DMA_PeripheralBaseAddr =  (u32)(&USART1->DR);
+    DMA_Initstructure.DMA_PeripheralBaseAddr =  (u32)(&USART3->DR);
     DMA_Initstructure.DMA_MemoryBaseAddr     = (u32)USART_RX_BUF;
     DMA_Initstructure.DMA_DIR = DMA_DIR_PeripheralSRC;
     DMA_Initstructure.DMA_BufferSize = 200;
@@ -33,15 +33,15 @@ void GPS_DMA_Init(void)
     DMA_Initstructure.DMA_Mode = DMA_Mode_Normal;
     DMA_Initstructure.DMA_Priority = DMA_Priority_High;
     DMA_Initstructure.DMA_M2M = DMA_M2M_Disable;
-    DMA_Init(DMA1_Channel5,&DMA_Initstructure);
+    DMA_Init(DMA1_Channel3,&DMA_Initstructure);
     //开启DMA发送发成中断
-		USART_Cmd(USART1,DISABLE);
+		USART_Cmd(USART3,DISABLE);
 		DMA_ClearFlag(DMA1_FLAG_TC5);
 		DMA_ClearFlag(DMA1_FLAG_HT5);
 		
-		DMA_Cmd(DMA1_Channel5,ENABLE);
-    USART_DMACmd(USART1,USART_DMAReq_Rx,ENABLE);
-		USART_Cmd(USART1,ENABLE);
+		DMA_Cmd(DMA1_Channel3,ENABLE);
+    USART_DMACmd(USART3,USART_DMAReq_Rx,ENABLE);
+		USART_Cmd(USART3,ENABLE);
 }
 
 
@@ -49,14 +49,14 @@ void GPS_DMA_Init(void)
 u8 USART_RX_STA=0, temppointer = 0, flag_OLED_refresh = 0;
 
 //IN 30 US
-void USART1_IRQHandler(void)   //空闲中断
+void USART3_IRQHandler(void)   //空闲中断
 {
-	if(DMA1_Channel5->CNDTR< 25) 
+	if(DMA1_Channel3->CNDTR< 25) 
 	{
-		USART1->SR;USART1->DR;
-	DMA1_Channel5->CCR &= 0xFE;//disable dma
-	DMA1_Channel5->CNDTR =200;
-	DMA1_Channel5->CCR |=1;//enable dma
+		USART3->SR;USART3->DR;
+	DMA1_Channel3->CCR &= 0xFE;//disable dma
+	DMA1_Channel3->CNDTR =200;
+	DMA1_Channel3->CCR |=1;//enable dma
 		return;
 	}
 	
@@ -96,13 +96,13 @@ void USART1_IRQHandler(void)   //空闲中断
 		gga_data.height = atoi(USART_RX_BUF +temppointer);
 	
 	//restart DMA
-	DMA1_Channel5->CCR &= 0xFE;//disable dma
-	DMA1_Channel5->CNDTR =200;
-	DMA1_Channel5->CCR |=1;//enable dma
+	DMA1_Channel3->CCR &= 0xFE;//disable dma
+	DMA1_Channel3->CNDTR =200;
+	DMA1_Channel3->CCR |=1;//enable dma
  
 	flag_OLED_refresh = 1;
 	CPU_freq = 3*CPU_frec_tick;
 	CPU_frec_tick = 0;
-	USART1->SR;USART1->DR;
+	USART3->SR;USART3->DR;
 }
 
