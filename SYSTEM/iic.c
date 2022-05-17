@@ -53,7 +53,7 @@ int I2C1_Soft_Single_Write(u8 SlaveAddress,u8 REG_Address,u8 REG_data)
 I2C_GenerateSTART(I2C2,ENABLE);
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -61,7 +61,7 @@ delay = 0;
 I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Transmitter);//okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -69,7 +69,7 @@ delay = 0;
 I2C_SendData(I2C2,REG_Address);
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -78,7 +78,7 @@ delay = 0;
 I2C_SendData(I2C2,REG_data);
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -94,7 +94,7 @@ int I2C2_Soft_Mult_Write(u8 SlaveAddress,u8 REG_Address,u8 * ptChar,u8 size)
 I2C_GenerateSTART(I2C2,ENABLE);
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -102,7 +102,7 @@ delay = 0;
 I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Transmitter);
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -110,7 +110,7 @@ delay = 0;
 I2C_SendData(I2C2,REG_Address);
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -121,7 +121,7 @@ for(i = 0;i < size;i++)
  I2C_SendData(I2C2,ptChar[i]);
  while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
  {
-  if(delay > 0x10000)
+  if(delay > TIME_OUT)
    return ERROR;
   delay++;
  }
@@ -139,7 +139,7 @@ uint32_t delay = 0;
 I2C_GenerateSTART(I2C2,ENABLE);//起始信号
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -147,7 +147,7 @@ delay = 0;
 I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Transmitter);//发送设备地址+写信号
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -155,7 +155,7 @@ delay = 0;
 I2C_SendData(I2C2,REG_Address);//发送存储单元地址，从0开始
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING))//////////////////////////ed,ing
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -163,7 +163,7 @@ delay = 0;
 I2C_GenerateSTART(I2C2,ENABLE);//起始信号
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))//May be can delete
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -171,14 +171,14 @@ delay = 0;
 I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Receiver);//发送设备地址+读信号
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }	
 delay = 0;
 //while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_RECEIVED))
 //{
-// if(delay > 0x10000)
+// if(delay > TIME_OUT)
 //  return ERROR;
 // delay++;
 //}
@@ -197,7 +197,7 @@ Soft_IIC1_Init();
 I2C_GenerateSTART(I2C2,ENABLE);//起始信号
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -205,7 +205,7 @@ delay = 0;
 I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Transmitter);//发送设备地址+写信号
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -213,7 +213,7 @@ delay = 0;
 I2C_SendData(I2C2,REG_Address);//发送存储单元地址，从0开始
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING))//////////////////////////ed,ing
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }
@@ -222,7 +222,7 @@ I2C_AcknowledgeConfig(I2C2, ENABLE);
 I2C_GenerateSTART(I2C2,ENABLE);//起始信号
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT))
 {
- if(delay > 0x10000)	
+ if(delay > TIME_OUT)	
   return ERROR;
  delay++;
 }
@@ -231,7 +231,7 @@ delay = 0;
 I2C_Send7bitAddress(I2C2,SlaveAddress<<1,I2C_Direction_Receiver);//发送设备地址+读信号
 while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
 {
- if(delay > 0x10000)
+ if(delay > TIME_OUT)
   return ERROR;
  delay++;
 }	
@@ -243,5 +243,6 @@ while(!I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
 }
 I2C_AcknowledgeConfig(I2C2,DISABLE);
 I2C_GenerateSTOP(I2C2,ENABLE);
+Soft_IIC1_Init();
 return delay;
 }	

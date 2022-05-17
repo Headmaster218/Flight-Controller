@@ -35,11 +35,10 @@ int main(void)
 	delay_ms(300);
 	RF24L01_Init();
 	MPU_Init();
-	//GPS_DMA_Init();
-	//GPS_Init();
-	//OLED_Init();
-	//OLED_ShowString(0,0,"   cTime:  :  :",12);
-	//OLED_ShowString(0,1,"H:   M  GPSx",12);
+	GPS_DMA_Init();
+	OLED_Init();
+	OLED_ShowString(0,0,"   cTime:  :  :",12);
+	OLED_ShowString(0,1,"H:   M  GPSx",12);
 	USART1->SR;USART1->DR;
 	DMA1_Channel5->CCR &= 0xFE;//disable dma
 	DMA1_Channel5->CNDTR =200;
@@ -53,7 +52,7 @@ int main(void)
 		NRF24L01_Read_Reg(0x05);
 		
 		//OLED_refresh,3hz
-		if(flag_OLED_refresh && 0)
+		if(flag_OLED_refresh)
 		{
 			flag_OLED_refresh = 0;
 			OLED_ShowNum(0,0 ,MPU_Get_Temperature(),4,12);
