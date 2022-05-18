@@ -81,7 +81,7 @@ u8 MPU_Init(void);
 short MPU_Get_Temperature(void);
 u8 MPU_Get_Gyroscope(short *gx,short *gy,short *gz);
 u8 MPU_Get_Accelerometer(short *ax,short *ay,short *az);
-
+u8 MPU_Get_Raw_Data(short *MPU_data);
 
 
 #endif

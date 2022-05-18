@@ -11,6 +11,7 @@
 #define SDA1_read      I2C1_PORT->IDR  & I2C1_Pin_SDA
 #define TIME_OUT			 0x100
 
+void IIC2_DMA_Init(void);
 void Soft_IIC1_Init(void);
 void I2C1_Soft_Delay(void);
 int I2C1_Soft_Start(void);

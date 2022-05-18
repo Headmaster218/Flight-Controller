@@ -7,7 +7,11 @@
 #include <spi.h>
 #include <24G.h>
 
-short g[3], a[3], temp;
+
+
+
+short MPU_data[7],temp,a[3];
+
 extern u8 USART_RX_BUF[200], flag_OLED_refresh;
 extern struct GGA_DATA gga_data;
 
@@ -47,15 +51,15 @@ int main(void)
 		__set_PRIMASK(0);//Enable all interrupt
 	while(1)
 	{
-		temp = MPU_Get_Temperature();
 		CPU_frec_tick++;
-		NRF24L01_Read_Reg(0x05);
+		//NRF24L01_Read_Reg(0x05);
 		
 		//OLED_refresh,3hz
 		if(flag_OLED_refresh)
 		{
+			MPU_Get_Raw_Data(MPU_data);
 			flag_OLED_refresh = 0;
-			OLED_ShowNum(0,0 ,MPU_Get_Temperature(),4,12);
+			OLED_ShowNum(0,0 ,MPU_data[3],4,12);
 			
 			OLED_ShowNum(76,0,gga_data.time[0],2,12);
 			OLED_ShowNum(98,0,gga_data.time[1],2,12);
@@ -72,9 +76,6 @@ int main(void)
 			
 			OLED_ShowNum(90,3,CPU_freq, 6,12);
 	}
-		MPU_Get_Gyroscope(g, &g[1], &g[2]);
-		MPU_Get_Accelerometer(a, a+1, a+2);
-	
 	
 	
 	

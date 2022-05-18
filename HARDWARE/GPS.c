@@ -24,7 +24,7 @@ void GPS_DMA_Init(void)
     /*DMA配置*/
     DMA_Initstructure.DMA_PeripheralBaseAddr =  (u32)(&USART3->DR);
     DMA_Initstructure.DMA_MemoryBaseAddr     = (u32)USART_RX_BUF;
-    DMA_Initstructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+    DMA_Initstructure.DMA_DIR = DMA_DIR_PeripheralSRC;//dev to mem
     DMA_Initstructure.DMA_BufferSize = 200;
     DMA_Initstructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
     DMA_Initstructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
@@ -34,6 +34,7 @@ void GPS_DMA_Init(void)
     DMA_Initstructure.DMA_Priority = DMA_Priority_High;
     DMA_Initstructure.DMA_M2M = DMA_M2M_Disable;
     DMA_Init(DMA1_Channel3,&DMA_Initstructure);
+		
     //开启DMA发送发成中断
 		USART_Cmd(USART3,DISABLE);
 		DMA_ClearFlag(DMA1_FLAG_TC5);

@@ -43,35 +43,15 @@ short MPU_Get_Temperature(void)
     temp=36.53+((double)raw)/340;  
     return temp*100;;
 }
-//得到陀螺仪值(原始值)
-//gx,gy,gz:陀螺仪x,y,z轴的原始读数(带符号)
-//返回值:0,成功
-//    其他,错误代码
-u8 MPU_Get_Gyroscope(short *gx,short *gy,short *gz)
+//acce x,y,z Temp ,Gyro x,y,z
+u8 MPU_Get_Raw_Data(short *MPU_data)
 {
-    u8 buf[6],res;  
-	res=!I2C1_Soft_Mult_Read(MPU_ADDR,MPU_GYRO_XOUTH_REG,buf,6);
-	if(res==0)
-	{
-		*gx=((u16)buf[0]<<8)|buf[1];  
-		*gy=((u16)buf[2]<<8)|buf[3];  
-		*gz=((u16)buf[4]<<8)|buf[5];
-	} 	
-    return res;;
+	u8 MPU_reg_buf[14],i = 0;
+	I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14);
+	for(;i < 7;i++)
+		MPU_data[i] = ((u16)MPU_reg_buf[i*2]<<8)|MPU_reg_buf[i*2+1]; 
+	MPU_data[3] = (36.53+((double)MPU_data[3])/340)*100;
+	return 1;
 }
-//得到加速度值(原始值)
-//gx,gy,gz:陀螺仪x,y,z轴的原始读数(带符号)
-//返回值:0,成功
-//    其他,错误代码
-u8 MPU_Get_Accelerometer(short *ax,short *ay,short *az)
-{
-    u8 buf[6],res;  
-	res=!I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,buf,6);
-	if(res==0)
-	{
-		*ax=((u16)buf[0]<<8)|buf[1];  
-		*ay=((u16)buf[2]<<8)|buf[3];  
-		*az=((u16)buf[4]<<8)|buf[5];
-	} 	
-    return res;;
-}
+
+
