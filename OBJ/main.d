@@ -32,6 +32,8 @@
 ..\obj\main.o: ..\SYSTEM\sys.h
 ..\obj\main.o: ..\SYSTEM\iic.h
 ..\obj\main.o: ..\SYSTEM\delay.h
+..\obj\main.o: ..\SYSTEM\my_math.h
+..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\main.o: ..\HARDWARE\091OLED.h
 ..\obj\main.o: ..\SYSTEM\usart.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

@@ -27,7 +27,7 @@ int main(void)
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);//��ʹ������IO PORTBʱ�� 
 		
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;	 // �˿�����
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13|GPIO_Pin_14;	 // �˿�����
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //�������
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;		 //IO���ٶ�Ϊ50MHz
   GPIO_Init(GPIOC, &GPIO_InitStructure);					 //�����趨������ʼ��GPIO 
@@ -69,8 +69,8 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)//检查指定的TIM中断发生与否:TIM 中断源 
 		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);//清除TIMx的中断待处理位:TIM 中断源 
 	
-				MPU_Get_Raw_Data(MPU_data);
-
+	MPU_Get_Raw_Data();
+	MPU_Calculate();
 			if(flag_OLED_refresh)
 		{
 			flag_OLED_refresh = 0;

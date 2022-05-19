@@ -6,27 +6,39 @@
             <JLink>
                 <Options Connection="1" IsRTTSession="0" IsRTTWithTimeStamp="1" SamplingPeriod="100" SerialNo="0" JTAG_IRPre="-1" JTAG_DRPre="-1" IP="" TargetDevice="STM32F103C8" TargetInterface="SWD" InterfaceSpeed="4000" />
             </JLink>
-            <ScriptFile Name="D:\STM32\My Project\Air Plane softiic\jscope.jscope\unspecified" />
-            <ElfFile Name="D:\STM32\My Project\Air Plane softiic\OBJ\Air Plane.axf" />
+            <ScriptFile Name="D:\STM32\My Project\Flight Controller\jscope.jscope\unspecified" />
+            <ElfFile Name="D:\STM32\My Project\Flight Controller\OBJ\Air Plane.axf" />
             <DataFile Name="" />
             <RawFile Name="" />
             <Scope>
-                <Options TimeResolutionUs="200000" />
+                <Options TimeResolutionUs="100000" />
             </Scope>
+            <Trigger>
+                <Options Level="0.000000" Symbol="acce_f[2]" On="0" Auto="0" Rise="1" Fall="0" />
+            </Trigger>
         </Configuration>
         <Windows>
             <Graph Show="1" />
-            <Watch Show="0" />
+            <Watch Show="1" />
         </Windows>
         <SelectedSymbols>
             <Symbol>
-                <Options Name="g[0]" Address="0x20000002" Type="short" TypeID="11" Size="2" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-32768" YMaxSampled="32767" YAvgSampled="-414" Offset="4" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="20000" MaxValue="40000" File="main.c" Scope="0" DrawStyle="0" />
+                <Options Name="yaw" Address="0x200004BC" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-2" YMaxSampled="0" YAvgSampled="0" Offset="4" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="100" MaxValue="200" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="g[3]" Address="0x20000008" Type="short" TypeID="11" Size="2" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-14756" YMaxSampled="32767" YAvgSampled="-782" Offset="6" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="20000" MaxValue="40000" File="main.c" Scope="0" DrawStyle="0" />
+                <Options Name="roll" Address="0x200004C0" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="0" YMaxSampled="1" YAvgSampled="0" Offset="8" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="2000000000" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="g[2]" Address="0x20000006" Type="short" TypeID="11" Size="2" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="-32768" YMaxSampled="32767" YAvgSampled="289" Offset="8" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="20000" MaxValue="40000" File="main.c" Scope="0" DrawStyle="0" />
+                <Options Name="pitch" Address="0x200004C4" Type="float" TypeID="1" Size="4" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="-176" YMaxSampled="174" YAvgSampled="-23" Offset="12" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="2000000000" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+            </Symbol>
+            <Symbol>
+                <Options Name="acce_f[1]" Address="0x2000049C" Type="float" TypeID="1" Size="4" GraphColorRed="160" GraphColorGreen="32" GraphColorBlue="240" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="16" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10" MaxValue="40" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+            </Symbol>
+            <Symbol>
+                <Options Name="acce_f[3]" Address="0x200004A4" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="0" YMaxSampled="3" YAvgSampled="0" Offset="20" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="200" MaxValue="2000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+            </Symbol>
+            <Symbol>
+                <Options Name="acce_f[2]" Address="0x200004A0" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="191" GraphColorBlue="255" YMinSampled="-2" YMaxSampled="1" YAvgSampled="0" Offset="24" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="50" MaxValue="40" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
         </SelectedSymbols>
     </Project>

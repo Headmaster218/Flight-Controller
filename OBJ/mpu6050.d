@@ -32,3 +32,5 @@
 ..\obj\mpu6050.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\mpu6050.o: ..\SYSTEM\iic.h
 ..\obj\mpu6050.o: ..\SYSTEM\delay.h
+..\obj\mpu6050.o: ..\SYSTEM\my_math.h
+..\obj\mpu6050.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

@@ -453,6 +453,16 @@
               <FileType>5</FileType>
               <FilePath>..\SYSTEM\timer.h</FilePath>
             </File>
+            <File>
+              <FileName>my_math.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\my_math.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_math.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SYSTEM\my_math.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

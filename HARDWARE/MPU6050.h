@@ -3,8 +3,12 @@
 
 
 #include "sys.h"
-#include <iic.h>
-#include <delay.h>
+#include "iic.h"
+#include "delay.h"
+#include "my_math.h"
+
+#define ANGLE_TO_RAD 0.01745329f
+
 
 #define MPU_SELF_TESTX_REG		0X0D	//自检寄存器X
 #define MPU_SELF_TESTY_REG		0X0E	//自检寄存器Y
@@ -81,14 +85,16 @@ struct _Mpu_Data{
 	short acce[3];
 	short temp;
 	short gyro[3];
+	float acce_f[3];
+	float gyro_f[3];
+	float dps_f[3];
+	float yaw, roll, pitch;
 };
 
 
 u8 MPU_Init(void);
-short MPU_Get_Temperature(void);
-u8 MPU_Get_Gyroscope(short *gx,short *gy,short *gz);
-u8 MPU_Get_Accelerometer(short *ax,short *ay,short *az);
-u8 MPU_Get_Raw_Data(short *MPU_data);
+void MPU_Calculate(void);
+u8 MPU_Get_Raw_Data(void);
 
 
 #endif

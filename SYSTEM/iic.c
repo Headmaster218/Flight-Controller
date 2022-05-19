@@ -185,58 +185,11 @@ int I2C1_Soft_Single_Write(u8 SlaveAddress,u8 REG_Address,u8 REG_data)
 }
 
 
+
 //单字节读取
 int I2C1_Soft_Single_Read(u8 SlaveAddress,u8 REG_Address)
-{   
-	uint32_t delay = 0;
-	I2C_GenerateSTART(I2C1,ENABLE);//起始信号
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_MODE_SELECT))
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}
-	delay = 0;
-	I2C_Send7bitAddress(I2C1,SlaveAddress<<1,I2C_Direction_Transmitter);//发送设备地址+写信号
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}
-	delay = 0;
-	I2C_SendData(I2C1,REG_Address);//发送存储单元地址，从0开始
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_TRANSMITTING))//////////////////////////ed,ing
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}
-	delay = 0;
-	
-	
-	
-	I2C_GenerateSTART(I2C1,ENABLE);//起始信号
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_MODE_SELECT))//EV5
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}
-	delay = 0;
-	I2C_Send7bitAddress(I2C1,SlaveAddress<<1,I2C_Direction_Receiver);//发送设备地址+读信号
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))//EV6
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}	
-	I2C1->SR1;//EV6_1
-	I2C1->SR2;
-	delay = I2C_ReceiveData(I2C1);
-	I2C_GenerateSTOP(I2C1,ENABLE);
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_RECEIVED));//EV7
-	return delay;
+{
+	return I2C1_Soft_Mult_Read(SlaveAddress, REG_Address, &REG_Address, 1);
 }
 
 //多字节读取
@@ -267,6 +220,7 @@ int I2C1_Soft_Single_Read(u8 SlaveAddress,u8 REG_Address)
 	delay++;
 	}
 	delay = 0;
+	if(size != 1)
 	I2C_AcknowledgeConfig(I2C1, ENABLE);
 	
 	
@@ -282,6 +236,23 @@ int I2C1_Soft_Single_Read(u8 SlaveAddress,u8 REG_Address)
 	delay = 0;
 	I2C_Send7bitAddress(I2C1,SlaveAddress<<1,I2C_Direction_Receiver);//发送设备地址+读信号
 	
+		if(size == 1)
+	{
+		while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))//EV6
+	{
+	if(delay > TIME_OUT)
+		return ERROR;
+	delay++;
+	}	
+	I2C1->SR1;//EV6_1
+	I2C1->SR2;
+	delay = I2C_ReceiveData(I2C1);
+	I2C_GenerateSTOP(I2C1,ENABLE);
+	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_RECEIVED));//EV7
+	return delay;
+	}
+	
+	
 	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
 	{
 	if(delay > TIME_OUT)
@@ -289,6 +260,7 @@ int I2C1_Soft_Single_Read(u8 SlaveAddress,u8 REG_Address)
 	delay++;
 	}	
 	
+
 	for(;size > 0; size--) 
 	{
 		delay_us(30);
