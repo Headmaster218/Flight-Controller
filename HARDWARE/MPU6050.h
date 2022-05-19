@@ -77,6 +77,13 @@
 //如果接V3.3,则IIC地址为0X69(不包含最低位).
 #define MPU_ADDR				0X68
 
+struct _Mpu_Data{
+	short acce[3];
+	short temp;
+	short gyro[3];
+};
+
+
 u8 MPU_Init(void);
 short MPU_Get_Temperature(void);
 u8 MPU_Get_Gyroscope(short *gx,short *gy,short *gz);

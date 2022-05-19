@@ -1,8 +1,9 @@
 #include <MPU6050.h>
 
+struct _Mpu_Data Mpu_Data;
+
 u8 MPU_Init(void)
 { 
-	
 	u16 data ,lpf;
 	//I2C_GenerateSTOP(I2C2,ENABLE);
 	I2C1_Soft_Single_Write(MPU_ADDR,MPU_PWR_MGMT1_REG,0X80);	//复位MPU6050
@@ -47,6 +48,8 @@ short MPU_Get_Temperature(void)
 u8 MPU_Get_Raw_Data(short *MPU_data)
 {
 	u8 MPU_reg_buf[14],i = 0;
+	MPU_data = Mpu_Data.acce;
+
 	I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14);
 	for(;i < 7;i++)
 		MPU_data[i] = ((u16)MPU_reg_buf[i*2]<<8)|MPU_reg_buf[i*2+1]; 

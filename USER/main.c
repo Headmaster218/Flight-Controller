@@ -1,11 +1,12 @@
 #include "stm32f10x.h"
-#include <MPU6050.h>
-#include <091OLED.h>
-#include <delay.h>
-#include <usart.h>
-#include <GPS.h>
-#include <spi.h>
-#include <24G.h>
+#include "MPU6050.h"
+#include "091OLED.h"
+#include "delay.h"
+#include "usart.h"
+#include "GPS.h"
+#include "spi.h"
+#include "24G.h"
+#include "timer.h"
 
 
 
@@ -14,6 +15,7 @@ short MPU_data[7],temp,a[3];
 
 extern u8 USART_RX_BUF[200], flag_OLED_refresh;
 extern struct GGA_DATA gga_data;
+extern struct _Mpu_Data Mpu_Data;
 
 int CPU_frec_tick = 0, CPU_freq = 0;
 
@@ -31,6 +33,8 @@ int main(void)
   GPIO_Init(GPIOC, &GPIO_InitStructure);					 //�����趨������ʼ��GPIO 
 		}
 	//SystemInit
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	TIM3_Int_Init(720,1000);
 	delay_init();
 	Soft_IIC1_Init();
 	SPI1_Init();
@@ -53,13 +57,24 @@ int main(void)
 	{
 		CPU_frec_tick++;
 		//NRF24L01_Read_Reg(0x05);
-		
 		//OLED_refresh,3hz
-		if(flag_OLED_refresh)
+
+	}
+ }
+
+//100Hz
+//定时器3中断服务程序
+void TIM1_UP_IRQHandler(void)   //TIM3中断
+{
+	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)//检查指定的TIM中断发生与否:TIM 中断源 
+		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);//清除TIMx的中断待处理位:TIM 中断源 
+	
+				MPU_Get_Raw_Data(MPU_data);
+
+			if(flag_OLED_refresh)
 		{
-			MPU_Get_Raw_Data(MPU_data);
 			flag_OLED_refresh = 0;
-			OLED_ShowNum(0,0 ,MPU_data[3],4,12);
+			OLED_ShowNum(0,0 ,Mpu_Data.temp ,4,12);
 			
 			OLED_ShowNum(76,0,gga_data.time[0],2,12);
 			OLED_ShowNum(98,0,gga_data.time[1],2,12);
@@ -77,9 +92,5 @@ int main(void)
 			OLED_ShowNum(90,3,CPU_freq, 6,12);
 	}
 	
-	
-	
-	
-	
-	}
- }
+}
+

@@ -38,3 +38,4 @@
 ..\obj\main.o: ..\HARDWARE\GPS.h
 ..\obj\main.o: ..\SYSTEM\spi.h
 ..\obj\main.o: ..\HARDWARE\24G.h
+..\obj\main.o: ..\SYSTEM\timer.h
