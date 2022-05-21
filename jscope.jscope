@@ -11,7 +11,7 @@
             <DataFile Name="" />
             <RawFile Name="" />
             <Scope>
-                <Options TimeResolutionUs="100000" />
+                <Options TimeResolutionUs="50000" />
             </Scope>
             <Trigger>
                 <Options Level="0.000000" Symbol="acce_f[2]" On="0" Auto="0" Rise="1" Fall="0" />
@@ -23,22 +23,22 @@
         </Windows>
         <SelectedSymbols>
             <Symbol>
-                <Options Name="yaw" Address="0x200004BC" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-2" YMaxSampled="0" YAvgSampled="0" Offset="4" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="100" MaxValue="200" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="yaw" Address="0x200004DC" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-179" YMaxSampled="179" YAvgSampled="-28" Offset="4" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="100" MaxValue="200" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="roll" Address="0x200004C0" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="0" YMaxSampled="1" YAvgSampled="0" Offset="8" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="2000000000" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="roll" Address="0x200004E0" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-180" YMaxSampled="180" YAvgSampled="26" Offset="8" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="100" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="pitch" Address="0x200004C4" Type="float" TypeID="1" Size="4" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="-176" YMaxSampled="174" YAvgSampled="-23" Offset="12" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="1" YResolution="2000000000" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="pitch" Address="0x200004E4" Type="float" TypeID="1" Size="4" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="-89" YMaxSampled="85" YAvgSampled="-12" Offset="12" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="100" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="acce_f[1]" Address="0x2000049C" Type="float" TypeID="1" Size="4" GraphColorRed="160" GraphColorGreen="32" GraphColorBlue="240" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="16" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10" MaxValue="40" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="acce_f[1]" Address="0x200004BC" Type="float" TypeID="1" Size="4" GraphColorRed="160" GraphColorGreen="32" GraphColorBlue="240" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="16" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10" MaxValue="40" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="acce_f[3]" Address="0x200004A4" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="0" YMaxSampled="3" YAvgSampled="0" Offset="20" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="200" MaxValue="2000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="acce_f[3]" Address="0x200004C4" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="-1000" YMaxSampled="1000" YAvgSampled="12" Offset="20" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10" MaxValue="2000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="acce_f[2]" Address="0x200004A0" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="191" GraphColorBlue="255" YMinSampled="-2" YMaxSampled="1" YAvgSampled="0" Offset="24" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="50" MaxValue="40" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="acce_f[2]" Address="0x200004C0" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="191" GraphColorBlue="255" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="24" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10" MaxValue="40" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
         </SelectedSymbols>
     </Project>

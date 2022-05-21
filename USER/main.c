@@ -53,6 +53,7 @@ int main(void)
 	DMA1_Channel3->CCR |=1;//enable dma
 
 		__set_PRIMASK(0);//Enable all interrupt
+	//MPU_Set_Offset_Data();
 	while(1)
 	{
 		CPU_frec_tick++;
@@ -62,6 +63,7 @@ int main(void)
 	}
  }
 
+ float abc = 100;
 //100Hz
 //定时器3中断服务程序
 void TIM1_UP_IRQHandler(void)   //TIM3中断
@@ -70,7 +72,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);//清除TIMx的中断待处理位:TIM 中断源 
 	
 	MPU_Get_Raw_Data();
-	MPU_Calculate();
+	MPU_Fast_Calculate();
 			if(flag_OLED_refresh)
 		{
 			flag_OLED_refresh = 0;
@@ -91,6 +93,5 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 			
 			OLED_ShowNum(90,3,CPU_freq, 6,12);
 	}
-	
 }
 

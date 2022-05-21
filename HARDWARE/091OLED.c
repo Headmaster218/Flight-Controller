@@ -180,10 +180,7 @@ void OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned 
 //初始化SSD1306					    
 void OLED_Init(void)
 { 	
- 
-
-	//delay_ms(1000);
-	OLED_WR_Byte(0xAE,OLED_CMD);//关闭显示
+	OLED_WR_Byte(0xAE|0,OLED_CMD);//Set Display OFF
 	
 	OLED_WR_Byte(0x40,OLED_CMD);//---set low column address
 	OLED_WR_Byte(0xB0,OLED_CMD);//---set high column address
@@ -191,11 +188,11 @@ void OLED_Init(void)
 	OLED_WR_Byte(0xC8,OLED_CMD);//-not offset
 
 	OLED_WR_Byte(0x81,OLED_CMD);//设置对比度
-	OLED_WR_Byte(0xff,OLED_CMD);
+	OLED_WR_Byte(0x40,OLED_CMD);
 
 	OLED_WR_Byte(0xa1,OLED_CMD);//段重定向设置
 
-	OLED_WR_Byte(0xa6,OLED_CMD);//
+	OLED_WR_Byte(0xa6|0,OLED_CMD);//Set Normal/Inverse Display
 	
 	OLED_WR_Byte(0xa8,OLED_CMD);//设置驱动路数
 	OLED_WR_Byte(0x1f,OLED_CMD);
@@ -218,6 +215,6 @@ void OLED_Init(void)
 	OLED_WR_Byte(0x8d,OLED_CMD);
 	OLED_WR_Byte(0x14,OLED_CMD);
 	
-	OLED_WR_Byte(0xaf,OLED_CMD);
+	OLED_WR_Byte(0xaE|1,OLED_CMD);//Set Display ON
 	OLED_Clear();
 } 

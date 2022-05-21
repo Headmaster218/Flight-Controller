@@ -89,12 +89,18 @@ struct _Mpu_Data{
 	float gyro_f[3];
 	float dps_f[3];
 	float yaw, roll, pitch;
+	struct _offset{
+		short acce[3];
+		short gyro[3];
+	}offset;
 };
 
 
 u8 MPU_Init(void);
 void MPU_Calculate(void);
+void MPU_Fast_Calculate(void);
 u8 MPU_Get_Raw_Data(void);
+void MPU_Set_Offset_Data(void);
 
 
 #endif
