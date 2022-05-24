@@ -53,9 +53,10 @@ int main(void)
 	DMA1_Channel3->CCR |=1;//enable dma
 
 		__set_PRIMASK(0);//Enable all interrupt
-	//MPU_Set_Offset_Data();
+	//
 	while(1)
 	{
+		//MPU_Set_Offset_Data();
 		CPU_frec_tick++;
 		//NRF24L01_Read_Reg(0x05);
 		//OLED_refresh,3hz
@@ -72,7 +73,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);//清除TIMx的中断待处理位:TIM 中断源 
 	
 	MPU_Get_Raw_Data();
-	MPU_Fast_Calculate();
+	MPU_My_Calculate();
 			if(flag_OLED_refresh)
 		{
 			flag_OLED_refresh = 0;

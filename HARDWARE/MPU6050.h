@@ -99,6 +99,7 @@ struct _Mpu_Data{
 u8 MPU_Init(void);
 void MPU_Calculate(void);
 void MPU_Fast_Calculate(void);
+void MPU_My_Calculate(void);
 u8 MPU_Get_Raw_Data(void);
 void MPU_Set_Offset_Data(void);
 

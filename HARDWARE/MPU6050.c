@@ -33,9 +33,9 @@ u8 MPU_Init(void)
 }
 
 //二阶互补滤波系数，规律：基本时间常数tau得到基本系数a，Kp=2*a，Ki=a^2;
-#define Kp 0.6f                           // proportional gain governs rate of convergence to accelerometer/magnetometer0.6
-#define Ki 0.09f                           // integral gain governs rate of convergence of gyroscope biases0.1
-#define half_T 0.0001
+#define Kp 0.4f                           // proportional gain governs rate of convergence to accelerometer/magnetometer0.6
+#define Ki 0.16f                           // integral gain governs rate of convergence of gyroscope biases0.1
+#define half_T 0.005
 #define IMU_INTEGRAL_LIM  ( 10.0f * ANGLE_TO_RAD )
 
 void MPU_Fast_Calculate(void)
@@ -49,20 +49,21 @@ void MPU_Fast_Calculate(void)
 	if(Mpu_Data.acce[0]!=0||Mpu_Data.acce[1]!=0||Mpu_Data.acce[2]!=0)
 	{ 
 	Mpu_Data.temp = (3653+((double)Mpu_Data.temp)*0.294118);
-	Mpu_Data.gyro_f[0] = (float)Mpu_Data.gyro[0] * 0.03051851;
-	Mpu_Data.gyro_f[1] = (float)Mpu_Data.gyro[1] * 0.03051851;
-	Mpu_Data.gyro_f[2] = (float)Mpu_Data.gyro[2] * 0.03051851;
 
-	//acc数据归一化
-	norm = my_sqrt((float)Mpu_Data.acce[0]*(float)Mpu_Data.acce[0] + (float)Mpu_Data.acce[1]*(float)Mpu_Data.acce[1] + (float)Mpu_Data.acce[2]*(float)Mpu_Data.acce[2]);       
-	Mpu_Data.acce_f[0] = (float)Mpu_Data.acce[0] / norm;
-	Mpu_Data.acce_f[1] = (float)Mpu_Data.acce[1] / norm;
-	Mpu_Data.acce_f[2] = (float)Mpu_Data.acce[2] / norm;
+	Mpu_Data.gyro_f[0] = (float)Mpu_Data.gyro[0] * 0.03051851 * ANGLE_TO_RAD;
+	Mpu_Data.gyro_f[1] = (float)Mpu_Data.gyro[2] * 0.03051851 * ANGLE_TO_RAD;
+	Mpu_Data.gyro_f[2] = (float)Mpu_Data.gyro[1] * 0.03051851 * ANGLE_TO_RAD;
 
 	// estimated direction of gravity and flux (v and w)              估计重力方向和流量/变迁
 	vx = 2*(q1*q3 - q0*q2);												//四元素中xyz的表示
 	vy = 2*(q0*q1 + q2*q3);
 	vz = 1 - 2*(q1*q1 + q2*q2);
+		
+	//acc数据归一化
+	norm = my_sqrt((float)Mpu_Data.acce[0]*(float)Mpu_Data.acce[0] + (float)Mpu_Data.acce[1]*(float)Mpu_Data.acce[1] + (float)Mpu_Data.acce[2]*(float)Mpu_Data.acce[2]);       
+	Mpu_Data.acce_f[0] = (float)Mpu_Data.acce[0] / norm;
+	Mpu_Data.acce_f[1] = (float)Mpu_Data.acce[2] / norm;
+	Mpu_Data.acce_f[2] = (float)Mpu_Data.acce[1] / norm;
 
 	// error is sum of cross product between reference direction of fields and direction measured by sensors
 	ex = (Mpu_Data.acce_f[1]*vz - Mpu_Data.acce_f[2]*vy) ;                         					 //向量外积在相减得到差分就是误差
@@ -183,8 +184,8 @@ void MPU_Calculate(void)
 	q2 = q2 / norm;
 	q3 = q3 / norm;
 
-	Mpu_Data.yaw = fast_atan2(2*q1*q2+2*q0*q3, -2*q2*q2-2*q3*q3+1) *57.3f;
-	Mpu_Data.roll = fast_atan2(2*q2*q3 + 2*q0*q1, -2*q1*q1 - 2*q2*q2 + 1) *57.3f;
+	Mpu_Data.yaw   = fast_atan2(2*q1*q2+2*q0*q3, -2*q2*q2-2*q3*q3+1) *57.3f;
+	Mpu_Data.roll  = fast_atan2(2*q2*q3 + 2*q0*q1, -2*q1*q1 - 2*q2*q2 + 1) *57.3f;
 	Mpu_Data.pitch = asin(-2*q1*q3 + 2*q0*q2) *57.3f; 	
 }
 	
@@ -194,6 +195,44 @@ void MPU_Calculate(void)
 	//250us
 	
 }
+
+u8 time = 0;
+#define MAXERR 5
+void MPU_My_Calculate(void)
+{
+	float norm;
+	
+	//Mpu_Data.yaw   += (float)Mpu_Data.gyro[0] * 0.03051851 * half_T * 2;
+	//Mpu_Data.roll  += (float)Mpu_Data.gyro[2] * 0.03051851 * half_T * 2;
+	//Mpu_Data.pitch += (float)Mpu_Data.gyro[1] * 0.03051851 * half_T * 2;
+	
+	//norm = sqrt((float)Mpu_Data.acce[0]*(float)Mpu_Data.acce[0] + (float)Mpu_Data.acce[1]*(float)Mpu_Data.acce[1] + (float)Mpu_Data.acce[2]*(float)Mpu_Data.acce[2]);
+	
+	if(time %10 == 0)
+	{
+		float p, y, r;
+		p = fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[2])/ANGLE_TO_RAD;
+		y = fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[1])/ANGLE_TO_RAD;
+		r = fast_atan2(Mpu_Data.acce[2],Mpu_Data.acce[1])/ANGLE_TO_RAD;
+		
+		if(ABS(Mpu_Data.pitch - p) < MAXERR)
+	Mpu_Data.pitch= fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[2])/ANGLE_TO_RAD;  
+		if(ABS(Mpu_Data.yaw - y) < MAXERR)
+	Mpu_Data.yaw  = fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[1])/ANGLE_TO_RAD;
+		if(ABS(Mpu_Data.roll - r) < MAXERR)
+	Mpu_Data.roll = fast_atan2(Mpu_Data.acce[2],Mpu_Data.acce[1])/ANGLE_TO_RAD;
+		time = 0;
+	}
+time ++;
+	if(1){
+	Mpu_Data.pitch-=(float)Mpu_Data.gyro[1] * 0.03051851 * half_T * 2;
+	Mpu_Data.yaw  +=(float)Mpu_Data.gyro[2] * 0.03051851 * half_T * 2;
+  Mpu_Data.roll -=(float)Mpu_Data.gyro[0] * 0.03051851 * half_T * 2;
+	}
+}
+
+
+
 //acce x,y,z Temp ,Gyro x,y,z
 u8 MPU_Get_Raw_Data(void)
 {
@@ -202,9 +241,9 @@ u8 MPU_Get_Raw_Data(void)
 	I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14);
 	for(;i < 7;i++)
 		MPU_data[i] = ((u16)MPU_reg_buf[i*2]<<8)|MPU_reg_buf[i*2+1]; 
-	Mpu_Data.gyro[0] -=35;
-	Mpu_Data.gyro[1] +=11;
-	Mpu_Data.gyro[2] -=5 ;
+	Mpu_Data.gyro[0] -=77;
+	Mpu_Data.gyro[1] +=20;
+	Mpu_Data.gyro[2] -=8 ;
 	
 	return 1;
 }

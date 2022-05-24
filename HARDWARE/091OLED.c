@@ -153,8 +153,8 @@ void OLED_ShowString(u8 x,u8 y,u8 *chr,u8 Char_Size)
 	unsigned char j=0;
 	while (chr[j]!='\0')
 	{		OLED_ShowChar(x,y,chr[j],Char_Size);
-			x+=8;
-		if(x>120){x=0;y+=2;}
+		x+=Char_Size==16?8:6;
+		if(x>120){x=0;y+=Char_Size==16?2:1;}
 			j++;
 	}
 }
