@@ -21,6 +21,7 @@ uint8_t NRF24L01_Read_Reg( uint8_t RegAddr )
 	RF24L01_SET_CS_HIGH( );			//取消片选
 	
     return btmp;
+	
 }
 
 /**
@@ -610,8 +611,10 @@ void RF24L01_Init( void )
 {
     uint8_t addr[5] = {INIT_ADDR};
 
+		NRF24L01_Gpio_Init();
+		
     RF24L01_SET_CE_HIGH( );
-    NRF24L01_Clear_IRQ_Flag( IRQ_ALL );
+    //NRF24L01_Clear_IRQ_Flag( IRQ_ALL );
 #if DYNAMIC_PACKET == 1
 
     NRF24L01_Write_Reg( DYNPD, ( 1 << 0 ) ); 	//使能通道1动态数据长度
@@ -621,13 +624,14 @@ void RF24L01_Init( void )
 	
 #elif DYNAMIC_PACKET == 0
     
-    L01_WriteSingleReg( L01REG_RX_PW_P0, FIXED_PACKET_LEN );	//固定数据长度
+ //   L01_WriteSingleReg( L01REG_RX_PW_P0, FIXED_PACKET_LEN );	//固定数据长度
 	
 #endif	//DYNAMIC_PACKET
 
     NRF24L01_Write_Reg( CONFIG, /*( 1<<MASK_RX_DR ) |*/		//接收中断
-                                      ( 1 << EN_CRC ) |     //使能CRC 1个字节
-                                      ( 1 << PWR_UP ) );    //开启设备
+                                      ( 0 << EN_CRC ) |     //使能CRC 1个字节
+                                      ( 1 << PWR_UP ) |
+																			( 1 << PRIM_RX));    //开启设备
     NRF24L01_Write_Reg( EN_AA, ( 1 << ENAA_P0 ) );   		//通道0自动应答
     NRF24L01_Write_Reg( EN_RXADDR, ( 1 << ERX_P0 ) );		//通道0接收
     NRF24L01_Write_Reg( SETUP_AW, AW_5BYTES );     			//地址宽度 5个字节

@@ -9,8 +9,6 @@
 #include "timer.h"
 
 
-
-
 short MPU_data[7],temp,a[3];
 
 extern u8 USART_RX_BUF[200], flag_OLED_refresh;
@@ -34,7 +32,7 @@ int main(void)
 		}
 	//SystemInit
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	TIM3_Int_Init(720,1000);
+	TIM1_Int_Init(720,1000);
 	delay_init();
 	Soft_IIC1_Init();
 	SPI1_Init();
@@ -58,9 +56,8 @@ int main(void)
 	{
 		//MPU_Set_Offset_Data();
 		CPU_frec_tick++;
-		//NRF24L01_Read_Reg(0x05);
+		NRF24L01_Read_Reg(0x02);
 		//OLED_refresh,3hz
-
 	}
  }
 

@@ -1,6 +1,6 @@
 #include "timer.h"
 
-void TIM3_Int_Init(u16 arr,u16 psc)
+void TIM1_Int_Init(u16 arr,u16 psc)
 {
   TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
   NVIC_InitTypeDef NVIC_InitStructure;

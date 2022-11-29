@@ -8,14 +8,9 @@
             </JLink>
             <ScriptFile Name="D:\STM32\My Project\Flight Controller\jscope.jscope\unspecified" />
             <ElfFile Name="D:\STM32\My Project\Flight Controller\OBJ\Air Plane.axf" />
-            <DataFile Name="" />
-            <RawFile Name="" />
             <Scope>
                 <Options TimeResolutionUs="200000" />
             </Scope>
-            <Trigger>
-                <Options Level="0.000000" Symbol="gyro[0]" On="0" Auto="0" Rise="1" Fall="0" />
-            </Trigger>
         </Configuration>
         <Windows>
             <Graph Show="1" />
@@ -23,25 +18,25 @@
         </Windows>
         <SelectedSymbols>
             <Symbol>
-                <Options Name="yaw" Address="0x200004E4" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-197" YMaxSampled="189" YAvgSampled="75" Offset="4" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="50" MaxValue="200" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="yaw" Address="0x200004E4" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-185" YMaxSampled="193" YAvgSampled="0" Offset="4" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="50" MaxValue="200" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="roll" Address="0x200004E8" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-124" YMaxSampled="176" YAvgSampled="94" Offset="8" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="100" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="roll" Address="0x200004E8" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-201" YMaxSampled="176" YAvgSampled="0" Offset="8" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="100" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="pitch" Address="0x200004EC" Type="float" TypeID="1" Size="4" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="-96" YMaxSampled="73" YAvgSampled="18" Offset="12" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="50" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="pitch" Address="0x200004EC" Type="float" TypeID="1" Size="4" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="-181" YMaxSampled="68" YAvgSampled="0" Offset="12" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="50" MaxValue="-2147483648" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="norm" Address="0x20000448" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="191" GraphColorBlue="255" YMinSampled="41736" YMaxSampled="112985" YAvgSampled="78764" Offset="16" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="100000" MaxValue="100000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="norm" Address="0x20000448" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="191" GraphColorBlue="255" YMinSampled="6104" YMaxSampled="227111" YAvgSampled="0" Offset="16" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="100000" MaxValue="100000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="gyro[0]" Address="0x200004B8" Type="short" TypeID="11" Size="2" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="-30561" YMaxSampled="32691" YAvgSampled="-71" Offset="20" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10000" MaxValue="40000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="gyro[0]" Address="0x200004B8" Type="short" TypeID="11" Size="2" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="-26688" YMaxSampled="32690" YAvgSampled="0" Offset="20" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10000" MaxValue="40000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="gyro[1]" Address="0x200004BA" Type="short" TypeID="11" Size="2" GraphColorRed="0" GraphColorGreen="191" GraphColorBlue="255" YMinSampled="-15808" YMaxSampled="17769" YAvgSampled="68" Offset="22" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10000" MaxValue="10000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="gyro[1]" Address="0x200004BA" Type="short" TypeID="11" Size="2" GraphColorRed="0" GraphColorGreen="191" GraphColorBlue="255" YMinSampled="-26068" YMaxSampled="21634" YAvgSampled="0" Offset="22" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10000" MaxValue="10000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="gyro[2]" Address="0x200004BC" Type="short" TypeID="11" Size="2" GraphColorRed="0" GraphColorGreen="100" GraphColorBlue="0" YMinSampled="-19113" YMaxSampled="25769" YAvgSampled="-163" Offset="24" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10000" MaxValue="40000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
+                <Options Name="gyro[2]" Address="0x200004BC" Type="short" TypeID="11" Size="2" GraphColorRed="0" GraphColorGreen="100" GraphColorBlue="0" YMinSampled="-15122" YMaxSampled="11253" YAvgSampled="0" Offset="24" ShowInGraph="0" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="10000" MaxValue="40000" File="..\HARDWARE\MPU6050.c" Scope="0" DrawStyle="0" />
             </Symbol>
         </SelectedSymbols>
     </Project>

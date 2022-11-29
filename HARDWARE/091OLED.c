@@ -1,11 +1,13 @@
 #include <091OLED.h>
 #include <OLEDFONT.h>
 
-
+#define ADDR_091 0x3c 
+#define ADDR_096 0x7a
+#define OLED_ADDR ADDR_091
 void OLED_WR_Byte(unsigned dat,unsigned cmd)
 {
-	if(cmd) I2C1_Soft_Single_Write(0x3c, 0x40, dat);
-	else I2C1_Soft_Single_Write(0x3c, 0x00, dat);
+	if(cmd) I2C1_Soft_Single_Write(OLED_ADDR, 0x40, dat);
+	else I2C1_Soft_Single_Write(OLED_ADDR, 0x00, dat);
 }
 
 
@@ -188,7 +190,7 @@ void OLED_Init(void)
 	OLED_WR_Byte(0xC8,OLED_CMD);//-not offset
 
 	OLED_WR_Byte(0x81,OLED_CMD);//设置对比度
-	OLED_WR_Byte(0x40,OLED_CMD);
+	OLED_WR_Byte(0x30,OLED_CMD);
 
 	OLED_WR_Byte(0xa1,OLED_CMD);//段重定向设置
 
@@ -212,7 +214,7 @@ void OLED_Init(void)
 	OLED_WR_Byte(0xdb,OLED_CMD);
 	OLED_WR_Byte(0x49,OLED_CMD);
 	
-	OLED_WR_Byte(0x8d,OLED_CMD);
+	OLED_WR_Byte(0x8d,OLED_CMD);//set charge pump enable
 	OLED_WR_Byte(0x14,OLED_CMD);
 	
 	OLED_WR_Byte(0xaE|1,OLED_CMD);//Set Display ON

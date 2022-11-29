@@ -5,7 +5,7 @@
 #include "delay.h"
 
 /** 配置和选项定义 */
-#define DYNAMIC_PACKET      1 		//1:动态数据包, 0:固定
+#define DYNAMIC_PACKET      0 		//1:动态数据包, 0:固定
 #define FIXED_PACKET_LEN    32		//包长度
 #define REPEAT_CNT          15		//重复次数
 #define INIT_ADDR           0x34,0x43,0x10,0x10,0x01
@@ -14,11 +14,11 @@
 /** RF24L01硬件接口定义 */
 #define RF24L01_CE_GPIO_PORT			GPIOA
 #define RF24L01_CE_GPIO_CLK				RCC_APB2Periph_GPIOA
-#define RF24L01_CE_GPIO_PIN				GPIO_Pin_2
+#define RF24L01_CE_GPIO_PIN				GPIO_Pin_8
 
 #define RF24L01_IRQ_GPIO_PORT			GPIOA
 #define RF24L01_IRQ_GPIO_CLK			RCC_APB2Periph_GPIOA
-#define RF24L01_IRQ_GPIO_PIN			GPIO_Pin_3
+#define RF24L01_IRQ_GPIO_PIN			GPIO_Pin_9
 
 #define RF24L01_CS_GPIO_PORT			SPI_NSS_GPIO_PORT
 #define RF24L01_CS_GPIO_CLK				SPI_NSS_GPIO_CLK
@@ -210,6 +210,6 @@ uint8_t NRF24L01_TxPacket( uint8_t *txbuf, uint8_t Length );
 uint8_t NRF24L01_RxPacket( uint8_t *rxbuf );
 void NRF24L01_Gpio_Init( void );
 void RF24L01_Init( void );	
-
+void GPIO_24G_Init(void);
 
 #endif

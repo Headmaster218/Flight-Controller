@@ -208,11 +208,6 @@ void MPU_My_Calculate(void)
 	
 	if(time %10 == 0)
 	{
-		//float p, y, r;
-		//p = fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[2])/ANGLE_TO_RAD;
-		//y = fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[1])/ANGLE_TO_RAD;
-		//r = fast_atan2(Mpu_Data.acce[2],Mpu_Data.acce[1])/ANGLE_TO_RAD;
-		
 		norm = sqrt(total[0]*total[0] + total[1]*total[1] + total[2]*total[2]);
 		
 		if(norm > 75000 && norm < 84000)
@@ -243,7 +238,7 @@ u8 MPU_Get_Raw_Data(void)
 	Mpu_Data.gyro[0] -=77;
 	Mpu_Data.gyro[1] +=20;
 	Mpu_Data.gyro[2] -=8 ;
-	
+	Mpu_Data.temp = (3653+((double)Mpu_Data.temp)*0.294118);
 	return 1;
 }
 
