@@ -463,6 +463,16 @@
               <FileType>5</FileType>
               <FilePath>..\SYSTEM\my_math.h</FilePath>
             </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SYSTEM\adc.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -657,6 +667,16 @@
               <FileName>24G.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\HARDWARE\24G.h</FilePath>
+            </File>
+            <File>
+              <FileName>serio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\serio.c</FilePath>
+            </File>
+            <File>
+              <FileName>serio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\serio.h</FilePath>
             </File>
           </Files>
         </Group>

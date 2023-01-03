@@ -8,6 +8,7 @@
 "..\obj\usart.o"
 "..\obj\timer.o"
 "..\obj\my_math.o"
+"..\obj\adc.o"
 "..\obj\core_cm3.o"
 "..\obj\startup_stm32f10x_hd.o"
 "..\obj\misc.o"
@@ -37,6 +38,7 @@
 "..\obj\091oled.o"
 "..\obj\gps.o"
 "..\obj\24g.o"
+"..\obj\serio.o"
 --ro-base 0x08000000 --entry 0x08000000 --rw-base 0x20000000 --entry Reset_Handler --first __Vectors --strict --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Listings\Air Plane.map" -o "..\OBJ\Air Plane.axf"

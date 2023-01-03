@@ -1,8 +1,8 @@
 #include <iic.h>
 #define RCC_I2C1	     RCC_APB2Periph_GPIOB
 #define I2C1_PORT      GPIOB
-#define I2C1_Pin_SCL   GPIO_Pin_6
-#define I2C1_Pin_SDA   GPIO_Pin_7
+#define I2C1_Pin_SCL   GPIO_Pin_8
+#define I2C1_Pin_SDA   GPIO_Pin_9
 
 u8 I2C_RX_BUF[20], I2C_TX_BUF[20];
 
@@ -12,39 +12,40 @@ void Soft_IIC1_Init(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	I2C_InitTypeDef I2C_InitStructure;
 		
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_I2C1,ENABLE);
 		
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+	GPIO_InitStructure.GPIO_Pin = I2C1_Pin_SCL;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_Init(I2C1_PORT, &GPIO_InitStructure);
 		
 		for(;i<10;i++)
 		{
-			GPIO_SetBits(GPIOB, GPIO_Pin_6);
+			GPIO_SetBits(I2C1_PORT, I2C1_Pin_SCL);
 			delay_us(10);
-			GPIO_ResetBits(GPIOB, GPIO_Pin_6);
+			GPIO_ResetBits(I2C1_PORT, I2C1_Pin_SCL);
 			delay_us(10);	
 		}
 		
-	GPIO_DeInit(GPIOB);
+	GPIO_DeInit(I2C1_PORT);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1,ENABLE);
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
+	GPIO_PinRemapConfig(GPIO_Remap_I2C1,ENABLE);
+	GPIO_InitStructure.GPIO_Pin = I2C1_Pin_SCL | I2C1_Pin_SDA;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_Init(I2C1_PORT, &GPIO_InitStructure);
 		
-	I2C_DeInit(I2C1);
+	//I2C_DeInit(I2C1);
 	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C ; 
 	I2C_InitStructure.I2C_Ack = I2C_Ack_Disable; 
 	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-	I2C_InitStructure.I2C_ClockSpeed = 300000; 
+	I2C_InitStructure.I2C_ClockSpeed = 200000; //400,000 / 8 
 	I2C_InitStructure.I2C_OwnAddress1 = 0x01;
 	I2C_Init(I2C1, &I2C_InitStructure);
 	I2C_Cmd (I2C1,ENABLE);
 		
-	IIC2_DMA_Init();
+	//IIC2_DMA_Init();
 }
 
 
@@ -97,7 +98,6 @@ void IIC2_DMA_Init(void)
 		I2C_DMACmd(I2C1, ENABLE);
 }
 
-
 //0 send, 1 receive
 //µ¥×Ö½ÚÐ´Èë
 int I2C1_Soft_Single_Write(u8 SlaveAddress,u8 REG_Address,u8 REG_data)		
@@ -139,6 +139,7 @@ int I2C1_Soft_Single_Write(u8 SlaveAddress,u8 REG_Address,u8 REG_data)
 	I2C_GenerateSTOP(I2C1,ENABLE);
 	return SUCCESS;
 	}
+	
 	
 	int I2C1_Soft_Mult_Write(u8 SlaveAddress,u8 REG_Address,u8 * ptChar,u8 size)
 	{
