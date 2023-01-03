@@ -13,6 +13,8 @@
  
   void UART_GPS_Init(u32 bound){
   //GPIO端口设置
+		
+		/*
   GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
@@ -45,12 +47,12 @@
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位	
 	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
-	USART_InitStructure.USART_Mode = USART_Mode_Rx /*|USART_Mode_Tx*/;	//收发模式
+	USART_InitStructure.USART_Mode = USART_Mode_Rx |USART_Mode_Tx;	//收发模式
 
   USART_Init(USART3, &USART_InitStructure); //初始化串口1
   USART_ITConfig(USART3, USART_IT_IDLE, ENABLE);//开启串口空闲中断
   USART_Cmd(USART3, ENABLE);                    //使能串口1 
-
+*/
 }
 
   void UART_24G_Init(u32 bound){

@@ -14,7 +14,7 @@
                 "d:\\STM32\\My Project\\Flight Controller"
             ],
             "defines": [
-                "STM32F10X_MD",
+                "STM32F10X_LD",
                 "USE_STDPERIPH_DRIVER",
                 "__CC_ARM",
                 "__arm__",

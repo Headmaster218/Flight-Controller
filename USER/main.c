@@ -33,23 +33,23 @@ int voltage,tmpvol,tmp=32;
 int main(void)
 {
 	__set_PRIMASK(1);//Close all interrupt
-	//SystemInit
+	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	//TIM1_Int_Init(720,1000);
 	delay_init();
 	Soft_IIC1_Init();
-	UART_GPS_Init(9600); //GPS
+	//UART_GPS_Init(9600); //GPS
+	//GPS_DMA_Init();
 	//HardwareInit
 	delay_ms(300);
-	PWM_Init(1000,1440);//50hz
-	Adc_Init();
-	ADC_DMA_Init();
+	//PWM_Init(1000,1440);//50hz
+	//Adc_Init();
+	//ADC_DMA_Init();
 	//RF24L01_Init();
 	MPU_Init();
-	GPS_DMA_Init();
 	OLED_Init();
 	OLED_ShowString(0,0,"   cTime:  :  :",12);
-	//OLED_ShowString(0,1,"H:   M  GPSx",12);
+	OLED_ShowString(0,1,"H:   M  GPSx",12);
 	USART3->SR;USART3->DR;
 	DMA1_Channel3->CCR &= 0xFE;//disable dma
 	DMA1_Channel3->CNDTR =200;
@@ -61,7 +61,8 @@ int main(void)
 	{
 		
 		Get_Bat_Vol();
-		
+		delay_ms(10);
+		MPU_Get_Raw_Data();
 		//MPU_Set_Offset_Data();
 		//CPU_frec_tick++;
 		TIM2->CCR1 = pwm;//25-125

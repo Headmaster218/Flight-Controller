@@ -12,9 +12,9 @@ void Soft_IIC1_Init(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	I2C_InitTypeDef I2C_InitStructure;
 		
-	RCC_APB2PeriphClockCmd(RCC_I2C1,ENABLE);
-		
-	GPIO_InitStructure.GPIO_Pin = I2C1_Pin_SCL;
+	RCC_APB2PeriphClockCmd(RCC_I2C1|RCC_APB2Periph_AFIO,ENABLE);
+	/*
+	GPIO_InitStructure.GPIO_Pin = I2C1_Pin_SCL| I2C1_Pin_SDA;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(I2C1_PORT, &GPIO_InitStructure);
@@ -26,25 +26,26 @@ void Soft_IIC1_Init(void)
 			GPIO_ResetBits(I2C1_PORT, I2C1_Pin_SCL);
 			delay_us(10);	
 		}
-		
-	GPIO_DeInit(I2C1_PORT);
+		*/
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1,ENABLE);
 	GPIO_PinRemapConfig(GPIO_Remap_I2C1,ENABLE);
+	
 	GPIO_InitStructure.GPIO_Pin = I2C1_Pin_SCL | I2C1_Pin_SDA;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(I2C1_PORT, &GPIO_InitStructure);
 		
-	//I2C_DeInit(I2C1);
-	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C ; 
-	I2C_InitStructure.I2C_Ack = I2C_Ack_Disable; 
+	I2C_DeInit(I2C1);
+	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
 	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-	I2C_InitStructure.I2C_ClockSpeed = 200000; //400,000 / 8 
+	I2C_InitStructure.I2C_ClockSpeed = 400000; //400,000 / 8 
 	I2C_InitStructure.I2C_OwnAddress1 = 0x01;
 	I2C_Init(I2C1, &I2C_InitStructure);
 	I2C_Cmd (I2C1,ENABLE);
-		
+	I2C_GenerateSTOP(I2C1,ENABLE);
+	I2C_GenerateSTART(I2C1,ENABLE);
 	//IIC2_DMA_Init();
 }
 
@@ -102,42 +103,7 @@ void IIC2_DMA_Init(void)
 //单字节写入
 int I2C1_Soft_Single_Write(u8 SlaveAddress,u8 REG_Address,u8 REG_data)		
 {
-	u32 delay = 0;
-	I2C_GenerateSTART(I2C1,ENABLE);
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_MODE_SELECT))
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}
-	delay = 0;
-	I2C_Send7bitAddress(I2C1,SlaveAddress<<1,I2C_Direction_Transmitter);//okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}
-	delay = 0;
-	I2C_SendData(I2C1,REG_Address);
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}
-	delay = 0;
-	delay = 0;
-	I2C_SendData(I2C1,REG_data);
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_TRANSMITTED))
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}
-	delay = 0;
-	I2C_GenerateSTOP(I2C1,ENABLE);
-	return SUCCESS;
+	I2C1_Soft_Mult_Write(SlaveAddress,REG_Address,&REG_data,1);
 	}
 	
 	
@@ -197,6 +163,7 @@ int I2C1_Soft_Single_Read(u8 SlaveAddress,u8 REG_Address)
 	int I2C1_Soft_Mult_Read(u8 SlaveAddress,u8 REG_Address,u8 * ptChar,u8 size)
 {
 		uint32_t delay = 0;
+		u8 i=0;
 	I2C_GenerateSTART(I2C1,ENABLE);//起始信号
 	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_MODE_SELECT))
 	{
@@ -224,8 +191,6 @@ int I2C1_Soft_Single_Read(u8 SlaveAddress,u8 REG_Address)
 	if(size != 1)
 	I2C_AcknowledgeConfig(I2C1, ENABLE);
 	
-	
-	
 	I2C_GenerateSTART(I2C1,ENABLE);//起始信号
 	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_MODE_SELECT))
 	{
@@ -233,42 +198,31 @@ int I2C1_Soft_Single_Read(u8 SlaveAddress,u8 REG_Address)
 		return ERROR;
 	delay++;
 	}
-		
+	I2C1->SR1;
 	delay = 0;
 	I2C_Send7bitAddress(I2C1,SlaveAddress<<1,I2C_Direction_Receiver);//发送设备地址+读信号
-	
-		if(size == 1)
-	{
-		while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))//EV6
-	{
-	if(delay > TIME_OUT)
-		return ERROR;
-	delay++;
-	}	
-	I2C1->SR1;//EV6_1
-	I2C1->SR2;
-	delay = I2C_ReceiveData(I2C1);
-	I2C_GenerateSTOP(I2C1,ENABLE);
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_RECEIVED));//EV7
-	return delay;
-	}
-	
-	
 	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
 	{
 	if(delay > TIME_OUT)
 		return ERROR;
 	delay++;
-	}	
+	}
+	I2C1->SR1;
+	I2C1->SR2;
+	delay=0;
 	
-
-	for(;size > 0; size--) 
+	for(i=1;i<size; i++) 
 	{
-		delay_us(30);
+		while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_RECEIVED));//EV7
 		*ptChar++ = I2C_ReceiveData(I2C1);
 	}
-	I2C_AcknowledgeConfig(I2C1,DISABLE);
-	I2C_GenerateSTOP(I2C1,ENABLE);
-	Soft_IIC1_Init();
-	return delay;
+	if(size != 1)
+	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_RECEIVED));//EV7_1
+	I2C_AcknowledgeConfig(I2C1, DISABLE);
+	I2C_GenerateSTOP(I2C1,size==1?DISABLE:ENABLE);
+	*ptChar = I2C_ReceiveData(I2C1);
+	
+	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_BYTE_RECEIVED));//EV7
+	I2C_AcknowledgeConfig(I2C1, ENABLE);
+	return 0;
 }	

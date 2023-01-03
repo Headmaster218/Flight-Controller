@@ -567,7 +567,7 @@ Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=..\obj\startup_stm32f10x_hd.d -o..\obj\startup_stm32f10x_hd.o -IC:
 \Users\Hm-Server\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.0\Device\Includ
 e -IC:\Keil_v5\ARM\CMSIS\Include --predefine="__UVISION_VERSION SETA 531" --pre
-define="STM32F10X_MD SETA 1" --list=.\listings\startup_stm32f10x_hd.lst ..\CORE
+define="STM32F10X_LD SETA 1" --list=.\listings\startup_stm32f10x_hd.lst ..\CORE
 \startup_stm32f10x_hd.s
 
 
