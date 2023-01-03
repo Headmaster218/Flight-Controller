@@ -58,11 +58,11 @@ void Adc_Init(void)
 		; // 等待校准完成
 
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE); // 注释掉软件启动AD转换
-	ADC_ExternalTrigConvCmd(ADC1, ENABLE);	// 使能外部定时器触发
+	//ADC_ExternalTrigConvCmd(ADC1, ENABLE);	// 使能外部定时器触发
 }
 
 // DMA配置
-u16 ADC_TempValue[4]; // DMA缓存区
+u16 ADC_DMA_Value[4]; // DMA缓存区
 void ADC_DMA_Init(void)
 {
 
@@ -74,7 +74,7 @@ void ADC_DMA_Init(void)
 	DMA_DeInit(DMA1_Channel1);												 // 复位DMA1的第1通道
 	DMA_InitStruct.DMA_PeripheralBaseAddr = (u32)&ADC1->DR;					 // DMA对应的外设基地址
 	DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord; // 转换结果16bits
-	DMA_InitStruct.DMA_MemoryBaseAddr = (u32)ADC_TempValue;
+	DMA_InitStruct.DMA_MemoryBaseAddr = (u32)ADC_DMA_Value;
 	DMA_InitStruct.DMA_DIR = DMA_DIR_PeripheralSRC;					 // DMA的转换模式是SRC模式，外设to内存
 	DMA_InitStruct.DMA_M2M = DMA_M2M_Disable;						 // M2M模式禁止，memory to memory
 	DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord; // DMA搬运的数据16bits
@@ -100,27 +100,35 @@ void ADC_DMA_Init(void)
 }
 
 u16 adc_vol[4];
-u16 nummm[4];
+int tmpvol[4];
+int nummm[4];
 //需要10ms
-u16 Get_Bat_Vol(void)
+u8 adc_times=0;
+u16 Get_Adc(void)
 {
-	u8 i;
-	int tmpvol[4]=0;
-	for(i=0;i<10;i++)
-		{
-			tmpvol[0]+=ADC_TempValue[0];
-			tmpvol[1]+=ADC_TempValue[1];
-			tmpvol[2]+=ADC_TempValue[2];
-			tmpvol[3]+=ADC_TempValue[3];
-			delay_ms(1);
-		}
-	adc_vol[0]=tmpvol[0]/10*3195/10000;
-	adc_vol[1]=tmpvol[1]/10*nummm[1];
+	if(adc_times==10)
+	{
+		adc_times=0;
+		adc_vol[0]=tmpvol[0]/10*3195/10000;
+		adc_vol[1]=tmpvol[1]/10*nummm[1];
+		tmpvol[0]=0;
+		tmpvol[1]=0;
+		tmpvol[2]=0;
+		tmpvol[3]=0;
+	}
+	else
+	{
+		adc_times++;
+		tmpvol[0]+=ADC_DMA_Value[0];
+		tmpvol[1]+=ADC_DMA_Value[1];
+		tmpvol[2]+=ADC_DMA_Value[2];
+		tmpvol[3]+=ADC_DMA_Value[3];
+	}
 		return tmpvol[0]/10*3195/10000;
 }
 
 
-
+/*
 // 获得ADC值
 // ch:通道值 0~3
 u16 Get_Adc(u8 ch)
@@ -134,8 +142,8 @@ u16 Get_Adc(u8 ch)
 		; // 等待转换结束
 
 	return ADC_GetConversionValue(ADC1); // 返回最近一次ADC1规则组的转换结果
-}
-
+}*/
+/*
 float Get_Adc_Average(u8 ch, u8 times)
 {
 	float temp_val = 0;
@@ -156,3 +164,4 @@ float Get_Temperature(void)
 	temp = Get_Adc_Average(9, 3);
 	return 1.42 * temp * temp * temp - 9.299 * temp * temp + 39.23 * temp - 25.93;
 }
+*/

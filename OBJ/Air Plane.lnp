@@ -3,7 +3,6 @@
 "..\obj\stm32f10x_it.o"
 "..\obj\system_stm32f10x.o"
 "..\obj\iic.o"
-"..\obj\spi.o"
 "..\obj\delay.o"
 "..\obj\usart.o"
 "..\obj\timer.o"
@@ -35,10 +34,10 @@
 "..\obj\stm32f10x_usart.o"
 "..\obj\stm32f10x_wwdg.o"
 "..\obj\mpu6050.o"
-"..\obj\091oled.o"
 "..\obj\gps.o"
-"..\obj\24g.o"
 "..\obj\serio.o"
+"..\obj\091oled.o"
+"..\obj\24g.o"
 --ro-base 0x08000000 --entry 0x08000000 --rw-base 0x20000000 --entry Reset_Handler --first __Vectors --strict --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Listings\Air Plane.map" -o "..\OBJ\Air Plane.axf"

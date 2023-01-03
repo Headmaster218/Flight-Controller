@@ -1,6 +1,4 @@
 ..\obj\24g.o: ..\HARDWARE\24G.c
-..\obj\24g.o: ..\HARDWARE\24G.h
-..\obj\24g.o: ..\SYSTEM\spi.h
 ..\obj\24g.o: ..\SYSTEM\sys.h
 ..\obj\24g.o: ..\USER\stm32f10x.h
 ..\obj\24g.o: ..\CORE\core_cm3.h
@@ -31,4 +29,11 @@
 ..\obj\24g.o: ..\STM32F10x_FWLib\inc\stm32f10x_usart.h
 ..\obj\24g.o: ..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h
 ..\obj\24g.o: ..\STM32F10x_FWLib\inc\misc.h
+..\obj\24g.o: ..\HARDWARE\24G.h
 ..\obj\24g.o: ..\SYSTEM\delay.h
+..\obj\24g.o: ..\HARDWARE\GPS.h
+..\obj\24g.o: ..\HARDWARE\MPU6050.h
+..\obj\24g.o: ..\SYSTEM\iic.h
+..\obj\24g.o: ..\SYSTEM\my_math.h
+..\obj\24g.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\obj\24g.o: ..\SYSTEM\adc.h

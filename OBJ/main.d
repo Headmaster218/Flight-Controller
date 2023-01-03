@@ -38,7 +38,6 @@
 ..\obj\main.o: ..\SYSTEM\usart.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\main.o: ..\HARDWARE\GPS.h
-..\obj\main.o: ..\SYSTEM\spi.h
 ..\obj\main.o: ..\HARDWARE\24G.h
 ..\obj\main.o: ..\HARDWARE\serio.h
 ..\obj\main.o: ..\SYSTEM\timer.h

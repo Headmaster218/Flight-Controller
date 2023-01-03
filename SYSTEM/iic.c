@@ -13,20 +13,6 @@ void Soft_IIC1_Init(void)
 	I2C_InitTypeDef I2C_InitStructure;
 		
 	RCC_APB2PeriphClockCmd(RCC_I2C1|RCC_APB2Periph_AFIO,ENABLE);
-	/*
-	GPIO_InitStructure.GPIO_Pin = I2C1_Pin_SCL| I2C1_Pin_SDA;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(I2C1_PORT, &GPIO_InitStructure);
-		
-		for(;i<10;i++)
-		{
-			GPIO_SetBits(I2C1_PORT, I2C1_Pin_SCL);
-			delay_us(10);
-			GPIO_ResetBits(I2C1_PORT, I2C1_Pin_SCL);
-			delay_us(10);	
-		}
-		*/
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1,ENABLE);
 	GPIO_PinRemapConfig(GPIO_Remap_I2C1,ENABLE);
 	
@@ -40,7 +26,7 @@ void Soft_IIC1_Init(void)
 	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
 	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-	I2C_InitStructure.I2C_ClockSpeed = 400000; //400,000 / 8 
+	I2C_InitStructure.I2C_ClockSpeed = 200000; //400,000 / 8 
 	I2C_InitStructure.I2C_OwnAddress1 = 0x01;
 	I2C_Init(I2C1, &I2C_InitStructure);
 	I2C_Cmd (I2C1,ENABLE);

@@ -8,13 +8,14 @@
                 "d:\\STM32\\My Project\\Flight Controller\\USER",
                 "d:\\STM32\\My Project\\Flight Controller\\HARDWARE",
                 "d:\\STM32\\My Project\\Flight Controller\\SYSTEM",
+                "d:\\STM32\\my-stm32f1xx-library\\HARDWARE",
                 "C:\\Keil_v5\\ARM\\ARMCC\\include",
                 "C:\\Keil_v5\\ARM\\ARMCC\\include\\rw",
                 "d:\\STM32\\My Project\\Flight Controller\\STM32F10x_FWLib\\src",
                 "d:\\STM32\\My Project\\Flight Controller"
             ],
             "defines": [
-                "STM32F10X_LD",
+                "STM32F10X_MD",
                 "USE_STDPERIPH_DRIVER",
                 "__CC_ARM",
                 "__arm__",
