@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-25 14:52:32
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-03 19:39:01
+ * @LastEditTime: 2023-01-04 12:51:02
  * @FilePath: \USER\main.c
  * @Description: 
  * 
@@ -23,8 +23,6 @@
 short MPU_data[7],temp,a[3];
 
 extern u8 USART_RX_BUF[200], flag_OLED_refresh;
-extern struct GGA_DATA gga_data;
-extern struct _Mpu_Data Mpu_Data;
 
 int CPU_frec_tick = 0, CPU_freq = 0;
 u16 pwm=75;
@@ -45,16 +43,16 @@ int main(void)
 	delay_ms(100);
 	MPU_Init();
 	OLED_Init();
-	OLED_ShowString(0,0,"   cTime:  :  :",12);
-	OLED_ShowString(0,1,"H:   M  GPSx",12);
+	OLED_ShowString(0,0,"   cTime:  :  :",16);
+	OLED_ShowString(0,2,"H:   M  GPSx",16);
 	/*
 	USART3->SR;USART3->DR;
 	DMA1_Channel3->CCR &= 0xFE;//disable dma
 	DMA1_Channel3->CNDTR =200;
 	DMA1_Channel3->CCR |=1;//enable dma
 */
-		__set_PRIMASK(0);//Enable all interrupt
-	//
+	__set_PRIMASK(0);//Enable all interrupt
+
 	while(1)
 	{
 		
@@ -74,8 +72,13 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 	else
 		cnt++;
 	Get_Adc();
-	PWM_Output();
-	if(cnt%25==0)
+	MPU_Get_Raw_Data();
+	MPU_My_Calculate();
+	if(cnt%2)//50Hz
+	{
+		PWM_Output();
+	}
+	if(cnt%25==0)//4Hz
 	{
 		Wireless_Send_Data();
 	}
@@ -84,8 +87,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)//检查指定的TIM中断发生与否:TIM 中断�? 
 		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);//清除TIMx的中断待处理�?:TIM 中断�? 
 	
-	MPU_Get_Raw_Data();
-	MPU_My_Calculate();
+
 			if(flag_OLED_refresh)
 		{
 			flag_OLED_refresh = 0;
@@ -107,4 +109,3 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 			OLED_ShowNum(90,3,CPU_freq, 6,12);
 	}
 }
-

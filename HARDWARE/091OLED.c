@@ -2,8 +2,8 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-11-24 22:00:53
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-28 10:43:26
- * @FilePath: \USERd:\STM32\My Project\Masaji_Chair\HARDWARE\091OLED.c
+ * @LastEditTime: 2023-01-04 12:50:14
+ * @FilePath: \USERd:\STM32\My Project\Flight Controller\HARDWARE\091OLED.c
  * @Description: 
  * OLED library
  * Copyright (c) 2022 by Headmaster1615, All Rights Reserved. 
@@ -26,6 +26,21 @@ void OLED_WR_Byte(unsigned dat, unsigned cmd)
 	else
 		I2C1_Soft_Single_Write(0x3c, 0x00, dat);
 }
+
+/**
+ * @description: link mcu's iic
+ * @param {unsigned} dat
+ * @param {unsigned} cmd OLED_CMD/OLED_DATA
+ * @return {*}
+ */
+void OLED_Multi_WR_Byte(u8 *dat, unsigned cmd, u8 len)
+{
+	if (cmd)
+		I2C1_Soft_Mult_Write(0x3c, 0x40, dat, len);
+	else
+		I2C1_Soft_Mult_Write(0x3c, 0x00, dat, len);
+}
+
 
 /**
  * @description: 内容坐标设置
@@ -90,17 +105,14 @@ void OLED_ShowChar(u8 x, u8 y, u8 chr, u8 Char_Size)
 	if (Char_Size == 16)
 	{
 		OLED_Set_Pos(x, y);
-		for (i = 0; i < 8; i++)
-			OLED_WR_Byte(F8X16[c * 16 + i], OLED_DATA);
+		OLED_Multi_WR_Byte((u8*)&F8X16[c * 16], OLED_DATA, 8);
 		OLED_Set_Pos(x, y + 1);
-		for (i = 0; i < 8; i++)
-			OLED_WR_Byte(F8X16[c * 16 + i + 8], OLED_DATA);
+		OLED_Multi_WR_Byte((u8*)&F8X16[c * 16 + 8], OLED_DATA, 8);
 	}
 	else
 	{
 		OLED_Set_Pos(x, y);
-		for (i = 0; i < 6; i++)
-			OLED_WR_Byte(F6x8[c][i], OLED_DATA);
+		OLED_Multi_WR_Byte((u8*)&F6x8[c][0], OLED_DATA, 6);
 	}
 }
 // m^n函数
@@ -175,6 +187,22 @@ void OLED_ShowString(u8 x, u8 y, u8 *chr, u8 Char_Size)
 		j++;
 	}
 }
+/*
+void OLED_ShowString(u8 x, u8 y, u8 *chr, u8 Char_Size)
+{
+	u8 j = 0;
+	while (chr[j] != '\0')
+	{
+		OLED_ShowChar(x, y, chr[j], Char_Size);
+		x += Char_Size == 16 ? 8 : 6;
+		if (x > 120)
+		{
+			x = 0;
+			y += Char_Size == 16 ? 2 : 1;
+		}
+		j++;
+	}
+}*/
 
 /***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
 void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[])

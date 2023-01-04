@@ -9,7 +9,11 @@
  * Copyright (c) 2022 by Headmaster1615, All Rights Reserved.
  */
 #include "serio.h"
+#include "24G.h"
+#include "sys.h"
+
 struct serio_data_ serio_data;
+
 void PWM_Output()
 {//25-125
 	TIM_SetCompare1(TIM3, serio_data.pwm_output_offset[0] + serio_data.pwm_output[0]);

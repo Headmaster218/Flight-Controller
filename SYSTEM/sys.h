@@ -1,25 +1,17 @@
+/*
+ * @Author: Headmaster1615  e-mail:hm-218@qq.com
+ * @Date: 2022-05-17 00:21:42
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2023-01-04 12:12:01
+ * @FilePath: \USERd:\STM32\My Project\Flight Controller\SYSTEM\sys.h
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by Headmaster1615, All Rights Reserved. 
+ */
 #ifndef __SYS_H
 #define __SYS_H	
 #include "stm32f10x.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK STM32开发板		   
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//修改日期:2012/8/18
-//版本：V1.7
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2009-2019
-//All rights reserved
-////////////////////////////////////////////////////////////////////////////////// 	 
-
-//0,不支持ucos
-//1,支持ucos
-#define SYSTEM_SUPPORT_OS		0		//定义系统文件夹是否支持UCOS
 																	    
-	 
-//位带操作,实现51类似的GPIO控制功能
-//具体实现思想,参考<<CM3权威指南>>第五章(87页~92页).
 //IO口操作宏定义
 #define BITBAND(addr, bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2)) 
 #define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr)) 

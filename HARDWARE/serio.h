@@ -19,4 +19,5 @@ struct serio_data_
 };
 
 void PWM_Init(u16 arr,u16 psc);
+void PWM_Output(void);
 #endif

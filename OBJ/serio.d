@@ -30,3 +30,5 @@
 ..\obj\serio.o: ..\STM32F10x_FWLib\inc\stm32f10x_usart.h
 ..\obj\serio.o: ..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h
 ..\obj\serio.o: ..\STM32F10x_FWLib\inc\misc.h
+..\obj\serio.o: ..\HARDWARE\24G.h
+..\obj\serio.o: ..\SYSTEM\delay.h

@@ -3,6 +3,8 @@
         "adc.h": "c",
         "gps.h": "c",
         "mpu6050.h": "c",
-        "serio.h": "c"
+        "serio.h": "c",
+        "sys.h": "c",
+        "091oled.h": "c"
     }
 }
