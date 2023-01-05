@@ -41,6 +41,7 @@ void OLED_ShowFloat(u8 x, u8 y, float num, u8 ilen, u8 flen, u8 size2);
 void OLED_ShowString(u8 x, u8 y, u8 *p, u8 Char_Size);
 void OLED_Set_Pos(u8 x, u8 y);
 void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[]);
+void OLED_Refresh(u8 BMP[]);
 void Start_Horizontal_Scroll(u8 dir, u8 start, u8 end, u8 interval);
 void OLED_Set_Brightness(u8 bright);
 

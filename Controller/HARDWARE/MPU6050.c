@@ -4,7 +4,6 @@ struct _Mpu_Data Mpu_Data;
 
 u8 MPU_Init(void)
 { 
-	u16 data ,lpf;
 	I2C1_Soft_Single_Write(MPU_ADDR,MPU_PWR_MGMT1_REG,0X80);	//复位MPU6050
 	delay_ms(200);
 	I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG,0X00);	//唤醒MPU6050 
@@ -165,6 +164,7 @@ u8 MPU_Get_Raw_Data(void)
 	Mpu_Data.gyro[0] -=77;
 	Mpu_Data.gyro[1] +=20;
 	Mpu_Data.gyro[2] -=8 ;
+	Mpu_Data.gyro_f[0] = Mpu_Data.gyro[0]*0.03051851;
 	Mpu_Data.temp = (3653+((double)Mpu_Data.temp)*0.294118);
 	return 1;
 }

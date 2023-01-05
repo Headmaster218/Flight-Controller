@@ -12,14 +12,14 @@
 #define __ADC_H	
 #include "sys.h"
 
-extern struct ADC_Value_  ADC_Value[8];
-
 struct ADC_Value_
 {
 	short offset;
     u16 percent;//0-200
     u16 ADC_raw_Value;
 };
+
+extern struct ADC_Value_ ADC_Value[8];
 
 void Adc_Init(void);
 void ADC_DMA_Init(void);

@@ -11,7 +11,7 @@
 #include "adc.h"
 #include "delay.h"
 u16 ADC_DMA_Value[8]; // DMA缓存区
-struct ADC_Value_  ADC_Value[8];
+struct ADC_Value_ ADC_Value[8];
 int tmpvol[8];
 //需要10ms
 u8 adc_times=0;

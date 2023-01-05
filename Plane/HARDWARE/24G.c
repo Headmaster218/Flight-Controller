@@ -20,14 +20,14 @@ void Wireless_Send_Data()
 {
     u8 i=0;
     send_Data.ECC_Code = 0;
-    send_Data.height = (u8)(gga_data.height/10);
-    send_Data.spd = (u8)(gga_data.speed);
-    send_Data.voltage = (u8)(adc_vol[0]/10);
+    send_Data.height = (u8)(GPS_Data.height/10);
+    send_Data.spd = (u8)(GPS_Data.speed);
+    send_Data.voltage = (u8)((ADC_Value[0].num-9000)*7/100);
     send_Data.pitch = (short)(Mpu_Data.pitch*100);
     send_Data.roll = (short)(Mpu_Data.roll*100);
     send_Data.temperature = (u8)((Mpu_Data.temp+10000)/200);
-    send_Data.latitude = (short)(gga_data.lat_f*100);
-    send_Data.longitude = (short)(gga_data.lon_f*100);
+    send_Data.latitude = (short)(GPS_Data.lat_f*100);
+    send_Data.longitude = (short)(GPS_Data.lon_f*100);
     for(;i<sizeof(send_Data);i++)
         send_Data.ECC_Code += *((u8*)&send_Data+i);
     send_Data.ECC_Code += send_Data.ECC_Code;

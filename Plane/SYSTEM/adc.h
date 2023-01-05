@@ -14,6 +14,15 @@
 
 extern u16 adc_vol[4];;
 
+struct ADC_Value_
+{
+	short offset;
+    u16 num;//0-200
+    u16 ADC_raw_Value;
+};
+
+extern struct ADC_Value_ ADC_Value[4];
+
 void Adc_Init(void);
 void ADC_DMA_Init(void);
 u16 Get_Adc(void);

@@ -48,7 +48,7 @@ struct send_data_//8 Byte
 void Wireless_Init(void);
 void Wireless_UART_Init(u32);
 void Wireless_DMA_Init(void);
-void Wireless_Send_Data();
+void Wireless_Send_Data(void);
 
 
 #endif

@@ -16,10 +16,6 @@ History:
 #include "sys.h"
 #include "math.h"
 
-#define ABS(x) ( (x)>0?(x):-(x) )
-#define LIMIT( x,min,max ) ( (x) < (min)  ? (min) : ( (x) > (max) ? (max) : (x) ) )
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 
 #define TAN_MAP_RES     0.003921569f     /* (smallest non-zero value in table) */

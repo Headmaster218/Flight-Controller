@@ -3,7 +3,7 @@
 #include <091OLED.h>
 #include "usart.h"
 
-struct GGA_DATA gga_data;
+struct GPS_Data_ GPS_Data;
 extern int CPU_frec_tick, CPU_freq;
 
 void GPS_Init(void)
@@ -76,46 +76,47 @@ void USART3_IRQHandler(void) // ø’œ–÷–∂œ
 
 	while (USART_RX_BUF[temppointer++] != 'N')
 		;
-	gga_data.speed = atoi(USART_RX_BUF + temppointer + 1);
+	GPS_Data.speed = atoi(USART_RX_BUF + temppointer + 1);
 	while (USART_RX_BUF[temppointer++] != '$' && temppointer < 199)
 		;
 	if (temppointer == 199)
 		return;
 
-	gga_data.time[0] = (8 + (USART_RX_BUF[temppointer + 6] - 0x30) * 10 + (USART_RX_BUF[temppointer + 7] - 0x30));
-	gga_data.time[0] -= gga_data.time[0] >= 24 ? 24 : 0;
-	gga_data.time[1] = (USART_RX_BUF[temppointer + 8] - 0x30) * 10 + (USART_RX_BUF[temppointer + 9] - 0x30);
-	gga_data.time[2] = (USART_RX_BUF[temppointer + 10] - 0x30) * 10 + (USART_RX_BUF[temppointer + 11] - 0x30);
+	GPS_Data.time[0] = (8 + (USART_RX_BUF[temppointer + 6] - 0x30) * 10 + (USART_RX_BUF[temppointer + 7] - 0x30));
+	GPS_Data.time[0] -= GPS_Data.time[0] >= 24 ? 24 : 0;
+	GPS_Data.time[1] = (USART_RX_BUF[temppointer + 8] - 0x30) * 10 + (USART_RX_BUF[temppointer + 9] - 0x30);
+	GPS_Data.time[2] = (USART_RX_BUF[temppointer + 10] - 0x30) * 10 + (USART_RX_BUF[temppointer + 11] - 0x30);
 
 	temppointer += 16;
-	gga_data.lon_f = atof(USART_RX_BUF + temppointer);
+	GPS_Data.lon_f = atof(USART_RX_BUF + temppointer);
 	while (USART_RX_BUF[temppointer++] != ',')
 		;
 	while (USART_RX_BUF[temppointer++] != ',')
 		;
-	gga_data.lat_f = atof(USART_RX_BUF + temppointer);
+	GPS_Data.lat_f = atof(USART_RX_BUF + temppointer);
 	while (USART_RX_BUF[temppointer++] != ',')
 		;
 	while (USART_RX_BUF[temppointer++] != ',')
 		;
 	while (USART_RX_BUF[temppointer++] != ',')
 		;
-	gga_data.num = atoi(USART_RX_BUF + temppointer);
+	GPS_Data.num = atoi(USART_RX_BUF + temppointer);
 
 	while (USART_RX_BUF[temppointer++] != ',')
 		;
 	while (USART_RX_BUF[temppointer++] != ',')
 		;
-	gga_data.height = atoi(USART_RX_BUF + temppointer);
+	GPS_Data.height = atoi(USART_RX_BUF + temppointer);
+	
+	GPS_Data.lon_real = (int)(GPS_Data.lon_f / 100)+ (GPS_Data.lon_f - ((int)GPS_Data.lon_f / 100) * 100) / 60+ (GPS_Data.lon_f- (int)GPS_Data.lon_f)/600000;
+	GPS_Data.lat_real = (int)(GPS_Data.lat_f / 100)+ (GPS_Data.lat_f - ((int)GPS_Data.lat_f / 100) * 100) / 60+ (GPS_Data.lat_f- (int)GPS_Data.lat_f)/600000;
 
 	// restart DMA
 	DMA1_Channel3->CCR &= 0xFE; // disable dma
 	DMA1_Channel3->CNDTR = 200;
 	DMA1_Channel3->CCR |= 1; // enable dma
 
-	flag_OLED_refresh = 1;
-	CPU_freq = 3 * CPU_frec_tick;
-	CPU_frec_tick = 0;
+
 	USART3->SR;
 	USART3->DR;
 }

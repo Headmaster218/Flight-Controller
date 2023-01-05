@@ -604,16 +604,6 @@
           <GroupName>HARDWARE</GroupName>
           <Files>
             <File>
-              <FileName>MPU6050.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\MPU6050.c</FilePath>
-            </File>
-            <File>
-              <FileName>MPU6050.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\HARDWARE\MPU6050.h</FilePath>
-            </File>
-            <File>
               <FileName>serio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\serio.c</FilePath>

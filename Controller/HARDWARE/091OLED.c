@@ -2,8 +2,8 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-11-24 22:00:53
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-04 12:50:14
- * @FilePath: \USERd:\STM32\My Project\Flight Controller\HARDWARE\091OLED.c
+ * @LastEditTime: 2023-01-06 00:34:28
+ * @FilePath: \USERd:\STM32\My Project\Flight Controller\Controller\HARDWARE\091OLED.c
  * @Description: 
  * OLED library
  * Copyright (c) 2022 by Headmaster1615, All Rights Reserved. 
@@ -12,7 +12,7 @@
 #include <091OLED.h>
 #include <OLEDFONT.h>
 
-//u8 OLED_Buffer[8][128]={1,2,3,4,5,6,7,8,9};
+
 
 //链接底层iic
 /**
@@ -52,9 +52,12 @@ void OLED_Multi_WR_Byte(u8 *dat, unsigned cmd, u8 len)
  */
 void OLED_Set_Pos(u8 x, u8 y)
 {
-	OLED_WR_Byte(0xb0 + y, OLED_CMD);
-	OLED_WR_Byte(((x & 0xf0) >> 4) | 0x10, OLED_CMD);
-	OLED_WR_Byte((x & 0x0f), OLED_CMD);
+	u8 dat[3];
+	dat[0]=0xb0 + y;
+	dat[1]=((x & 0xf0) >> 4) | 0x10;
+	dat[2]=(x & 0x0f);
+
+	OLED_Multi_WR_Byte(dat,OLED_CMD,3);
 }
 
 /**
@@ -189,22 +192,6 @@ void OLED_ShowString(u8 x, u8 y, u8 *chr, u8 Char_Size)
 		j++;
 	}
 }
-/*
-void OLED_ShowString(u8 x, u8 y, u8 *chr, u8 Char_Size)
-{
-	u8 j = 0;
-	while (chr[j] != '\0')
-	{
-		OLED_ShowChar(x, y, chr[j], Char_Size);
-		x += Char_Size == 16 ? 8 : 6;
-		if (x > 120)
-		{
-			x = 0;
-			y += Char_Size == 16 ? 2 : 1;
-		}
-		j++;
-	}
-}*/
 
 /***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
 void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[])
@@ -220,6 +207,22 @@ void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[])
 			OLED_WR_Byte(BMP[j++], OLED_DATA);
 		}
 	}
+}
+
+/***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
+
+void OLED_Refresh(u8 BMP[])//35fps
+{
+	u16 i=0;
+	for(;i<8;i++)
+	{
+		OLED_Set_Pos(0,i);
+		OLED_Multi_WR_Byte(BMP+128*i, OLED_DATA, 128);
+		delay_us(1);
+	}
+	
+
+
 }
 
 // dir:L,R

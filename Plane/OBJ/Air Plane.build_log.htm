@@ -27,24 +27,22 @@ Project File Date:  01/05/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Airplane'
-compiling 24G.c...
-..\HARDWARE\24G.h(51): warning:  #1295-D: Deprecated declaration Wireless_Send_Data - give arg types
-  void Wireless_Send_Data();
-..\SYSTEM\my_math.h(19): warning:  #47-D: incompatible redefinition of macro "ABS"  (declared at line 16 of "..\SYSTEM\sys.h")
-  #define ABS(x) ( (x)>0?(x):-(x) )
-..\SYSTEM\my_math.h(20): warning:  #47-D: incompatible redefinition of macro "LIMIT"  (declared at line 15 of "..\SYSTEM\sys.h")
-  #define LIMIT( x,min,max ) ( (x) < (min)  ? (min) : ( (x) > (max) ? (max) : (x) ) )
-..\SYSTEM\my_math.h(21): warning:  #47-D: incompatible redefinition of macro "MIN"  (declared at line 18 of "..\SYSTEM\sys.h")
-  #define MIN(a, b) ((a) < (b) ? (a) : (b))
-..\SYSTEM\my_math.h(22): warning:  #47-D: incompatible redefinition of macro "MAX"  (declared at line 17 of "..\SYSTEM\sys.h")
-  #define MAX(a, b) ((a) > (b) ? (a) : (b))
-..\HARDWARE\24G.c(156): warning:  #1-D: last line of file ends without a newline
-  }
-..\HARDWARE\24G.c: 6 warnings, 0 errors
+compiling GPS.c...
+..\HARDWARE\GPS.c(79): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
+  	GPS_Data.speed = atoi(USART_RX_BUF + temppointer + 1);
+..\HARDWARE\GPS.c(91): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
+  	GPS_Data.lon_f = atof(USART_RX_BUF + temppointer);
+..\HARDWARE\GPS.c(96): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
+  	GPS_Data.lat_f = atof(USART_RX_BUF + temppointer);
+..\HARDWARE\GPS.c(103): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
+  	GPS_Data.num = atoi(USART_RX_BUF + temppointer);
+..\HARDWARE\GPS.c(109): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
+  	GPS_Data.height = atoi(USART_RX_BUF + temppointer);
+..\HARDWARE\GPS.c: 5 warnings, 0 errors
 linking...
-Program Size: Code=21904 RO-data=2872 RW-data=1168 ZI-data=2040  
+Program Size: Code=22364 RO-data=2872 RW-data=1116 ZI-data=2076  
 FromELF: creating hex file...
-"..\OBJ\Air Plane.axf" - 0 Error(s), 6 Warning(s).
+"..\OBJ\Air Plane.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 

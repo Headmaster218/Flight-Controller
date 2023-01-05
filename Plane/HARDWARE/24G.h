@@ -16,7 +16,7 @@ extern struct send_data_ send_Data;
 extern struct receive_data_ receive_Data;
 
 //frequency 4Hz
-struct send_data_//14 Byte
+struct send_data_//16 Byte
 {
     u8 height;// /10
     u8 spd;//km/h
@@ -29,7 +29,7 @@ struct send_data_//14 Byte
 
     short latitude;//(degree*100)
     short longitude;//(degree*100)
-	  short pitch;//*100
+	short pitch;//*100
     short roll;//*100
 };
 
@@ -48,7 +48,7 @@ struct receive_data_//8 Byte
 void Wireless_Init(void);
 void Wireless_UART_Init(u32);
 void Wireless_DMA_Init(void);
-void Wireless_Send_Data();
+void Wireless_Send_Data(void);
 
 
 #endif
