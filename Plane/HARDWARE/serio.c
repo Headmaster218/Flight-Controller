@@ -2,8 +2,8 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-12-30 22:09:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-03 19:38:21
- * @FilePath: \USERd:\STM32\My Project\Flight Controller\HARDWARE\serio.c
+ * @LastEditTime: 2023-01-05 15:07:08
+ * @FilePath: \USERd:\STM32\My Project\Flight Controller\Plane\HARDWARE\serio.c
  * @Description:
  *
  * Copyright (c) 2022 by Headmaster1615, All Rights Reserved.
@@ -16,11 +16,18 @@ struct serio_data_ serio_data;
 
 void PWM_Output()
 {//25-125
-	TIM_SetCompare1(TIM3, serio_data.pwm_output_offset[0] + serio_data.pwm_output[0]);
+	serio_data.pwm_output[0] = receive_Data.acc*5;
+	serio_data.pwm_output[1] = LIMIT((((short)receive_Data.LR-100)*1.5 + receive_Data.flap/4),-150,150);//+-150
+	serio_data.pwm_output[2] = LIMIT((((short)receive_Data.LR-100)*-1.5 - receive_Data.flap/4),-150,150);//+-150
+	serio_data.pwm_output[3] = ((short)receive_Data.UD-100)*1.5;
+	serio_data.pwm_output[4] = ((short)receive_Data.HLR-100)*1.5;
+	
+	//电调，左翼，右翼，平尾，垂尾
+	TIM_SetCompare2(TIM2, serio_data.pwm_output_offset[0] + serio_data.pwm_output[0]);
 	TIM_SetCompare4(TIM3, serio_data.pwm_output_offset[1] + serio_data.pwm_output[1]);
 	TIM_SetCompare3(TIM3, serio_data.pwm_output_offset[2] + serio_data.pwm_output[2]);
-	TIM_SetCompare1(TIM2, serio_data.pwm_output_offset[3] + serio_data.pwm_output[3]);
-	TIM_SetCompare2(TIM2, serio_data.pwm_output_offset[4] + serio_data.pwm_output[4]);
+	TIM_SetCompare1(TIM3, serio_data.pwm_output_offset[3] + serio_data.pwm_output[3]);
+	TIM_SetCompare1(TIM2, serio_data.pwm_output_offset[4] + serio_data.pwm_output[4]);
 }
 
 // TIM3 PWM部分初始化
@@ -92,12 +99,12 @@ void PWM_Init(u16 arr, u16 psc)
 	serio_data.pwm_output_offset[0] = 250;
 	serio_data.pwm_output_offset[1] = 750+40;
 	serio_data.pwm_output_offset[2] = 750-45;
-	serio_data.pwm_output_offset[3] = 750;
+	serio_data.pwm_output_offset[3] = 750+25;
 	serio_data.pwm_output_offset[4] = 750;
 
-	serio_data.pwm_output[0] = 500;
-	serio_data.pwm_output[1] = 500;
-	serio_data.pwm_output[2] = 500;
-	serio_data.pwm_output[3] = 500;
-	serio_data.pwm_output[4] = 500;
+	serio_data.pwm_output[0] = 0;
+	serio_data.pwm_output[1] = 0;
+	serio_data.pwm_output[2] = 0;
+	serio_data.pwm_output[3] = 0;
+	serio_data.pwm_output[4] = 0;
 }

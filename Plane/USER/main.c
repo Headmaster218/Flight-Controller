@@ -18,7 +18,8 @@
 #include "serio.h"
 #include "timer.h"
 #include "adc.h"
-
+#include "led.h"
+#include "sys.h"
 
 short MPU_data[7],temp,a[3];
 
@@ -31,6 +32,7 @@ int main(void)
 	__set_PRIMASK(1);//Close all interrupt
 	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	LED_Init();
 	delay_init();
 	Soft_IIC1_Init();
 	PWM_Init(10000,144);//50hz
@@ -62,12 +64,12 @@ int main(void)
 
 	}
  }
-	u8 cnt=0;
+u8 cnt=0;
 //100Hz
 void TIM1_UP_IRQHandler(void)   //TIM3中断
 {
 
-	if(cnt==100)
+	if(cnt==99)
 		cnt=0;
 	else
 		cnt++;
@@ -80,6 +82,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 	}
 	if(cnt%25==0)//4Hz
 	{
+		PCout(14)=!PCout(14);
 		Wireless_Send_Data();
 	}
 	

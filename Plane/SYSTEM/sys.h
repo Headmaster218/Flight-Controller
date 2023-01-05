@@ -2,8 +2,8 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-17 00:21:42
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-04 12:12:01
- * @FilePath: \USERd:\STM32\My Project\Flight Controller\SYSTEM\sys.h
+ * @LastEditTime: 2023-01-05 15:05:27
+ * @FilePath: \USERd:\STM32\My Project\Flight Controller\Plane\SYSTEM\sys.h
  * @Description: 
  * 
  * Copyright (c) 2023 by Headmaster1615, All Rights Reserved. 
@@ -11,6 +11,12 @@
 #ifndef __SYS_H
 #define __SYS_H	
 #include "stm32f10x.h"
+
+#define LIMIT(x,min,max) (x<min?min:(x>max?max:x))
+#define ABS(x) (x>0?x:-x)
+#define MAX(x,y) (x>y?x:y)
+#define MIN(x,y) (x<y?x:y)
+
 																	    
 //IO口操作宏定义
 #define BITBAND(addr, bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2)) 

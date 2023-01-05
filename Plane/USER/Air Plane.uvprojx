@@ -644,11 +644,6 @@
               <FilePath>..\HARDWARE\serio.h</FilePath>
             </File>
             <File>
-              <FileName>OLEDFONT.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\my-stm32f1xx-library\HARDWARE\OLEDFONT.h</FilePath>
-            </File>
-            <File>
               <FileName>091OLED.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\091OLED.c</FilePath>
@@ -667,6 +662,16 @@
               <FileName>24G.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\HARDWARE\24G.h</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\led.h</FilePath>
             </File>
           </Files>
         </Group>

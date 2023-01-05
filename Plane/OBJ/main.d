@@ -42,3 +42,4 @@
 ..\obj\main.o: ..\HARDWARE\serio.h
 ..\obj\main.o: ..\SYSTEM\timer.h
 ..\obj\main.o: ..\SYSTEM\adc.h
+..\obj\main.o: ..\HARDWARE\led.h
