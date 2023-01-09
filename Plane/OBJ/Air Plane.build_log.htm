@@ -27,22 +27,11 @@ Project File Date:  01/05/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Airplane'
-compiling GPS.c...
-..\HARDWARE\GPS.c(79): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
-  	GPS_Data.speed = atoi(USART_RX_BUF + temppointer + 1);
-..\HARDWARE\GPS.c(91): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
-  	GPS_Data.lon_f = atof(USART_RX_BUF + temppointer);
-..\HARDWARE\GPS.c(96): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
-  	GPS_Data.lat_f = atof(USART_RX_BUF + temppointer);
-..\HARDWARE\GPS.c(103): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
-  	GPS_Data.num = atoi(USART_RX_BUF + temppointer);
-..\HARDWARE\GPS.c(109): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "const char *"
-  	GPS_Data.height = atoi(USART_RX_BUF + temppointer);
-..\HARDWARE\GPS.c: 5 warnings, 0 errors
+compiling serio.c...
 linking...
-Program Size: Code=22364 RO-data=2872 RW-data=1116 ZI-data=2076  
+Program Size: Code=21564 RO-data=2872 RW-data=1104 ZI-data=2168  
 FromELF: creating hex file...
-"..\OBJ\Air Plane.axf" - 0 Error(s), 5 Warning(s).
+"..\OBJ\Air Plane.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 

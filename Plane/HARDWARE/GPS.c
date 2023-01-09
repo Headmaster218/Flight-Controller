@@ -12,7 +12,7 @@ void GPS_Init(void)
 	GPS_DMA_Init();
 }
 
-u8 USART_RX_BUF[200];
+u8 USART_RX_BUF[256];
 void GPS_DMA_Init(void)
 {
 	NVIC_InitTypeDef NVIC_InitStructure;

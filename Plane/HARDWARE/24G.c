@@ -32,29 +32,44 @@ void Wireless_Send_Data()
         send_Data.ECC_Code += *((u8*)&send_Data+i);
     send_Data.ECC_Code += send_Data.ECC_Code;
 	
+	/*	for(;i<sizeof(send_Data);i++)
+	{
+		((u8*)&send_Data)[i]=i;
+	}*/
+
+	
 	DMA1_Channel4->CCR &= 0xFE; // disable dma
 	DMA1_Channel4->CNDTR = sizeof(send_Data);
 	DMA1_Channel4->CCR |= 1; // enable dma
 }
 
-void USART1_IRQHandler(void) // 空闲中断
+void DMA1_Channel5_IRQHandler()
 {
-    u8 temp=0,i;
-    for(i=0;i<sizeof(DMA_receive_Data);i++)
-        temp += *((u8*)&DMA_receive_Data+i);
-    if(DMA_receive_Data.ECC_Code == temp)
+		 u8 temp=0,i;
+	DMA_ClearFlag(DMA1_IT_TC5);
+
+	for(i=0;i<sizeof(DMA_receive_Data);i++)
+        DMA_receive_Data.ECC_Code -= *((u8*)&DMA_receive_Data+sizeof(DMA_receive_Data)-1-i);
+    if(DMA_receive_Data.ECC_Code == 0)
     {
         receive_Data = DMA_receive_Data;
     }
+}
+
+u8 uart_time_cnt=0;
+void USART1_IRQHandler(void) //接收中断
+{
 
 	USART1->SR;
 	USART1->DR;
+	uart_time_cnt=0;
 }
 
 void Wireless_Init()
 {
 	Wireless_UART_Init(19200);
 	Wireless_DMA_Init();
+	send_Data.end_of_this=0xffff;
 }
 
 void Wireless_UART_Init(u32 bound)
@@ -67,7 +82,8 @@ void Wireless_UART_Init(u32 bound)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_AFIO, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE); // 使能USART1，GPIOA时钟
 	GPIO_PinRemapConfig(GPIO_Remap_USART1, ENABLE);
-
+	
+	
     ////USART1_TX   GPIOA.9
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; // PA.9
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -81,8 +97,8 @@ void Wireless_UART_Init(u32 bound)
 
     // Usart1 NVIC 配置
     NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3; // 抢占优先级3
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;        // 子优先级3
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2; // 抢占优先级3
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;        // 子优先级3
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;           // IRQ通道使能
     NVIC_Init(&NVIC_InitStructure);                           // 根据指定的参数初始化VIC寄存器
 
@@ -96,7 +112,7 @@ void Wireless_UART_Init(u32 bound)
     USART_InitStructure.USART_Mode = USART_Mode_Rx |USART_Mode_Tx;              // 收发模式
 
     USART_Init(USART1, &USART_InitStructure);      // 初始化串口1
-    USART_ITConfig(USART1, USART_IT_IDLE, ENABLE); // 开启串口空闲中断
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE); // 开启串口空闲中断
     USART_Cmd(USART1, ENABLE);                     // 使能串口1
 }
 
@@ -142,11 +158,12 @@ void Wireless_DMA_Init(void)
     DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;                 // 内存地址递增
     DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte; // 外设数据宽度：BYTE
     DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;         // 内存数据宽度：BYTE
-    DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;                           // （注：DMA_Mode_Normal为正常模式，DMA_Mode_Circular为循环模式）
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;//DMA_Mode_Normal;                           // （注：DMA_Mode_Normal为正常模式，DMA_Mode_Circular为循环模式）
     DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;                 // 优先级：高
     DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;                            // 内存：内存（都）
     DMA_Init(DMA1_Channel5, &DMA_InitStructure);
-    DMA_ClearFlag(DMA1_FLAG_GL5);
+	DMA_ITConfig(DMA1_Channel5,DMA_IT_TC,ENABLE);
+    DMA_ClearFlag(DMA1_IT_TC5);
     DMA_Cmd(DMA1_Channel5, ENABLE);
 
     // 开启DMA发送发成中断

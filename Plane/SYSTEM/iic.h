@@ -9,7 +9,7 @@
 #define SDA1_H         I2C1_PORT->BSRR = I2C1_Pin_SDA
 #define SDA1_L         I2C1_PORT->BRR  = I2C1_Pin_SDA
 #define SDA1_read      I2C1_PORT->IDR  & I2C1_Pin_SDA
-#define TIME_OUT			 0x100
+#define TIME_OUT			 0x10
 
 void IIC2_DMA_Init(void);
 void Soft_IIC1_Init(void);

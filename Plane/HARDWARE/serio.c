@@ -16,9 +16,10 @@ struct serio_data_ serio_data;
 
 void PWM_Output()
 {//25-125
-	serio_data.pwm_output[0] = receive_Data.acc*5;
-	serio_data.pwm_output[1] = LIMIT((((short)receive_Data.LR-100)*1.5 + receive_Data.flap/4),-150,150);//+-150
-	serio_data.pwm_output[2] = LIMIT((((short)receive_Data.LR-100)*-1.5 - receive_Data.flap/4),-150,150);//+-150
+	//50-150 250-750
+	serio_data.pwm_output[0] = receive_Data.acc*2.5;
+	serio_data.pwm_output[1] = LIMIT((((short)receive_Data.LR-100)*-1.5 - receive_Data.flap/3),-150,150);//+-150
+	serio_data.pwm_output[2] = LIMIT((((short)receive_Data.LR-100)*-1.5 + receive_Data.flap/3),-150,150);//+-150
 	serio_data.pwm_output[3] = ((short)receive_Data.UD-100)*1.5;
 	serio_data.pwm_output[4] = ((short)receive_Data.HLR-100)*1.5;
 	
@@ -95,7 +96,7 @@ void PWM_Init(u16 arr, u16 psc)
 	TIM_Cmd(TIM3, ENABLE); // 使能TIM3
 	TIM_Cmd(TIM2, ENABLE); // 使能TIM3
 
-	serio_data.pwm_output_offset[0] = 250;
+	serio_data.pwm_output_offset[0] = 500;
 	serio_data.pwm_output_offset[1] = 750+40;
 	serio_data.pwm_output_offset[2] = 750-45;
 	serio_data.pwm_output_offset[3] = 750+25;

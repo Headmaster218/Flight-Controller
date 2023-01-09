@@ -28,7 +28,7 @@ int main(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	LED_Init();
 	delay_init();
-	Soft_IIC1_Init();
+	//Soft_IIC1_Init();
 	PWM_Init(10000,144);//50hz
 	Adc_Init();
 	ADC_DMA_Init();
@@ -38,9 +38,9 @@ int main(void)
 	//HardwareInit
 	delay_ms(100);
 	MPU_Init();
-	OLED_Init();
-	OLED_ShowString(0,0,"   cTime:  :  :",16);
-	OLED_ShowString(0,2,"H:   M  GPSx",16);
+	//OLED_Init();
+	//OLED_ShowString(0,0,"   cTime:  :  :",16);
+	//OLED_ShowString(0,2,"H:   M  GPSx",16);
 	/*
 	USART3->SR;USART3->DR;
 	DMA1_Channel3->CCR &= 0xFE;//disable dma
@@ -60,10 +60,20 @@ int main(void)
 	}
  }
 u8 cnt=0;
+ extern u8 uart_time_cnt;
 //100Hz
 void TIM1_UP_IRQHandler(void)   //TIM3中断
 {
-
+		
+	if(uart_time_cnt>1)
+	{
+		DMA1_Channel5->CCR &= 0xFE; // disable dma
+			DMA1_Channel5->CNDTR = sizeof(DMA_receive_Data);
+			DMA1_Channel5->CCR |= 1; // enable dma
+	}
+	
+	
+uart_time_cnt++;
 	if(cnt==99)
 		cnt=0;
 	else
@@ -77,7 +87,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 	}
 	if(cnt%25==0)//4Hz
 	{
-		PCout(14)=!PCout(14);
+		//PCout(14)=!PCout(14);
 		Wireless_Send_Data();
 	}
 	

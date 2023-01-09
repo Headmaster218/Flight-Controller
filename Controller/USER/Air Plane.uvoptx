@@ -188,7 +188,7 @@
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>DMA_receive_Data,0x0A</ItemText>
+          <ItemText>DMA_receive_Data,0x10</ItemText>
         </Ww>
         <Ww>
           <count>7</count>

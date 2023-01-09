@@ -16,33 +16,37 @@ extern struct send_data_ send_Data;
 extern struct receive_data_ receive_Data;
 
 //frequency 4Hz
-struct receive_data_//14 Byte
+struct receive_data_//18 Byte
 {
+	u8 ECC_Code;//sum
     u8 height;// /10
     u8 spd;//km/h
 
     u8 voltage;//(V-10.6)*50(percent)
     u8 temperature;//(C+100)*2
 
-    u8 ECC_Code;//sum
+    
     u8 reserved[3];
 
     short latitude;//(degree*100)
     short longitude;//(degree*100)
 	short pitch;//*100
     short roll;//*100
+	short end_of_this;//=0xFFFF
 };
 
 //frequency 20Hz
-struct send_data_//8 Byte
+struct send_data_//10 Byte
 {
+	u8 ECC_Code;//sum
     u8 acc;//engine 0-200
     u8 LR;//left-right 0-200
     u8 UD;//up-down 0-200
     u8 HLR;//horizontal wing right-left 0-200
-    u8 ECC_Code;//sum
+    
     u8 flap;//ΩÛ“Ì
     u8 reserved[2];
+	short end_of_this;//=0xFFFF
 };
 
 void Wireless_Init(void);
