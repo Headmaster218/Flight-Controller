@@ -32,3 +32,4 @@
 ..\obj\serio.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\serio.o: ..\HARDWARE\24G.h
 ..\obj\serio.o: ..\SYSTEM\delay.h
+..\obj\serio.o: ..\HARDWARE\GPS.h

@@ -22,7 +22,7 @@ void Wireless_Send_Data()
     send_Data.ECC_Code = 0;
     send_Data.height = (u8)(GPS_Data.height/10);
     send_Data.spd = (u8)(GPS_Data.speed);
-    send_Data.voltage = (u8)((ADC_Value[0].num-9000)*7/100);
+    send_Data.voltage = (u8)((ADC_Value[0].num-9500)*7/100);
     send_Data.pitch = (short)(Mpu_Data.pitch*100);
     send_Data.roll = (short)(Mpu_Data.roll*100);
     send_Data.temperature = (u8)((Mpu_Data.temp+10000)/200);
@@ -30,7 +30,6 @@ void Wireless_Send_Data()
     send_Data.longitude = (short)(GPS_Data.lon_f*100);
     for(;i<sizeof(send_Data);i++)
         send_Data.ECC_Code += *((u8*)&send_Data+i);
-    send_Data.ECC_Code += send_Data.ECC_Code;
 	
 	/*	for(;i<sizeof(send_Data);i++)
 	{
@@ -42,12 +41,12 @@ void Wireless_Send_Data()
 	DMA1_Channel4->CNDTR = sizeof(send_Data);
 	DMA1_Channel4->CCR |= 1; // enable dma
 }
-
+u8 controler_offline_cnt=0,controler_offline_flag=0;
 void DMA1_Channel5_IRQHandler()
 {
 		 u8 temp=0,i;
 	DMA_ClearFlag(DMA1_IT_TC5);
-
+	controler_offline_cnt=0;
 	for(i=0;i<sizeof(DMA_receive_Data);i++)
         DMA_receive_Data.ECC_Code -= *((u8*)&DMA_receive_Data+sizeof(DMA_receive_Data)-1-i);
     if(DMA_receive_Data.ECC_Code == 0)

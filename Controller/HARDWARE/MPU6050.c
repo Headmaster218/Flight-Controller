@@ -20,10 +20,91 @@ u8 MPU_Init(void)
 		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG,0X01);	//设置CLKSEL,PLL X轴为参考
 		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT2_REG,0X00);	//加速度与陀螺仪都工作
  	}
+	Mpu_Data.offset.gyro[0]=38;
+	Mpu_Data.offset.gyro[1]=-9;
+	Mpu_Data.offset.gyro[2]=13;
+	Mpu_Data.offset.acce[0]=0;
+	Mpu_Data.offset.acce[1]=0;
+	Mpu_Data.offset.acce[2]=525;
 	return 1;
 	
 }
 
+
+u8 MPU_times = 0;
+#define MAXERR 5
+double norm, total[3] = {0};
+void MPU_My_Calculate(void)
+{
+	total[0] += Mpu_Data.acce_f[0];
+	total[1] += Mpu_Data.acce_f[1];
+	total[2] += Mpu_Data.acce_f[2];
+	
+	if(MPU_times %10 == 0)
+	{
+		norm = sqrt(total[0]*total[0] + total[1]*total[1] + total[2]*total[2]);
+		
+		if(norm > 95 && norm < 105)
+		{
+	Mpu_Data.pitch= fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[2])/ANGLE_TO_RAD;  
+	Mpu_Data.yaw  = fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[1])/ANGLE_TO_RAD;
+	Mpu_Data.roll = fast_atan2(Mpu_Data.acce[2],Mpu_Data.acce[1])/ANGLE_TO_RAD;	
+		}
+		MPU_times = 0;
+		total[0] = total[1] = total[2] = 0;
+	}
+MPU_times++;
+	
+	Mpu_Data.pitch-=(double)Mpu_Data.gyro[1] * 0.03051851 * 0.01;
+	Mpu_Data.yaw  +=(double)Mpu_Data.gyro[2] * 0.03051851 * 0.01;
+	Mpu_Data.roll -=(double)Mpu_Data.gyro[0] * 0.03051851 * 0.01;//100hz;
+}
+
+//acce x,y,z Temp ,Gyro x,y,z
+u8 MPU_Get_Raw_Data(void)
+{
+	u8 MPU_reg_buf[14],i = 0;
+	short *MPU_data = (void*)Mpu_Data.acce;
+	if(ERROR==I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14))
+		return 0;
+	for(;i < 7;i++)
+		MPU_data[i] = ((u16)MPU_reg_buf[i*2]<<8)|MPU_reg_buf[i*2+1]; 
+	Mpu_Data.gyro[0] +=Mpu_Data.offset.gyro[0];
+	Mpu_Data.gyro[1] +=Mpu_Data.offset.gyro[1];
+	Mpu_Data.gyro[2] +=Mpu_Data.offset.gyro[2];
+	Mpu_Data.acce[0] +=Mpu_Data.offset.acce[0];
+	Mpu_Data.acce[1] +=Mpu_Data.offset.acce[1];
+	Mpu_Data.acce[2] +=Mpu_Data.offset.acce[2];
+	
+	Mpu_Data.gyro_f[0] = Mpu_Data.gyro[0]*0.03051851;
+	Mpu_Data.gyro_f[1] = Mpu_Data.gyro[1]*0.03051851;
+	Mpu_Data.gyro_f[2] = Mpu_Data.gyro[2]*0.03051851;
+	Mpu_Data.acce_f[0] = Mpu_Data.acce[0]*0.001196326;
+	Mpu_Data.acce_f[1] = Mpu_Data.acce[1]*0.001196326;
+	Mpu_Data.acce_f[2] = Mpu_Data.acce[2]*0.001196326;
+	
+	Mpu_Data.temp = (3653+((double)Mpu_Data.temp)*0.294118);
+	return 1;
+}
+
+//wait 5s to set offset
+void MPU_Set_Offset_Data(void)
+{
+	u16 i = 0;
+	float total[3] = {0};
+	   for(;i<5000;i++)
+	{
+		delay_ms(1);
+		total[0] += Mpu_Data.gyro[0];       
+		total[1] += Mpu_Data.gyro[1];   
+		total[2] += Mpu_Data.gyro[2];   
+	}
+	Mpu_Data.offset.gyro[0] = total[0]/5000;
+	Mpu_Data.offset.gyro[1] = total[1]/5000;
+	Mpu_Data.offset.gyro[2] = total[2]/5000;
+}
+
+/*
 //二阶互补滤波系数，规律：基本时间常数tau得到基本系数a，Kp=2*a，Ki=a^2;
 #define Kp 0.4f                           // proportional gain governs rate of convergence to accelerometer/magnetometer0.6
 #define Ki 0.16f                           // integral gain governs rate of convergence of gyroscope biases0.1
@@ -121,69 +202,4 @@ void MPU_Calculate(void)
 	//250us
 	
 }
-
-
-u8 time = 0;
-#define MAXERR 5
-float norm, total[3] = {0};
-void MPU_My_Calculate(void)
-{
-	total[0] += Mpu_Data.acce[0];
-	total[1] += Mpu_Data.acce[1];
-	total[2] += Mpu_Data.acce[2];
-	
-	if(time %10 == 0)
-	{
-		norm = sqrt(total[0]*total[0] + total[1]*total[1] + total[2]*total[2]);
-		
-		if(norm > 75000 && norm < 84000)
-		{
-	Mpu_Data.pitch= fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[2])/ANGLE_TO_RAD;  
-	Mpu_Data.yaw  = fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[1])/ANGLE_TO_RAD;
-	Mpu_Data.roll = fast_atan2(Mpu_Data.acce[2],Mpu_Data.acce[1])/ANGLE_TO_RAD;	
-		}
-		time = 0;
-		total[0] = total[1] = total[2] = 0;
-	}
-time ++;
-	if(1){
-	Mpu_Data.pitch-=(float)Mpu_Data.gyro[1] * 0.03051851 * 0.01;
-	Mpu_Data.yaw  +=(float)Mpu_Data.gyro[2] * 0.03051851 * 0.01;
-  Mpu_Data.roll -=(float)Mpu_Data.gyro[0] * 0.03051851 * 0.01;//100hz;
-	}
-}
-
-//acce x,y,z Temp ,Gyro x,y,z
-u8 MPU_Get_Raw_Data(void)
-{
-	u8 MPU_reg_buf[14],i = 0;
-	short *MPU_data = (void*)Mpu_Data.acce;
-	I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14);
-	for(;i < 7;i++)
-		MPU_data[i] = ((u16)MPU_reg_buf[i*2]<<8)|MPU_reg_buf[i*2+1]; 
-	Mpu_Data.gyro[0] -=77;
-	Mpu_Data.gyro[1] +=20;
-	Mpu_Data.gyro[2] -=8 ;
-	Mpu_Data.gyro_f[0] = Mpu_Data.gyro[0]*0.03051851;
-	Mpu_Data.temp = (3653+((double)Mpu_Data.temp)*0.294118);
-	return 1;
-}
-
-//wait 5s to set offset
-void MPU_Set_Offset_Data(void)
-{
-	u16 i = 0;
-	float total[3] = {0};
-	   for(;i<5000;i++)
-	{
-		delay_ms(1);
-		total[0] += Mpu_Data.gyro[0];       
-		total[1] += Mpu_Data.gyro[1];   
-		total[2] += Mpu_Data.gyro[2];   
-	}
-	Mpu_Data.offset.gyro[0] = total[0]/5000;
-	Mpu_Data.offset.gyro[1] = total[1]/5000;
-	Mpu_Data.offset.gyro[2] = total[2]/5000;
-}
-
-
+*/

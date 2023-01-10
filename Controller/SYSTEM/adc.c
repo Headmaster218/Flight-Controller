@@ -25,10 +25,7 @@ u16 Get_Adc(void)
 		}
 	
 	/*
-	u8 i=0;
-	if(adc_times==10)
-	{
-		adc_times=0;
+
 		adc_vol[0]=tmpvol[0]/10;//左摇杆上下通道
 		adc_vol[1]=tmpvol[1]/10;//左摇杆左右通道
 		adc_vol[2]=tmpvol[2]/10;//右摇杆上下通道
@@ -36,22 +33,10 @@ u16 Get_Adc(void)
 		adc_vol[4]=tmpvol[4]/10;//左电位器通道
 		adc_vol[5]=tmpvol[5]/10;//右电位器通道
 		adc_vol[6]=tmpvol[6]/10;//电池电压通道
-		for(i=0;i<8;i++)
-		{
-			tmpvol[i]=0;
-		}
-	}
-	else
-	{
-		adc_times++;
-		for(i=0;i<8;i++)
-		{
-			tmpvol[i]=ADC_DMA_Value[i];
-		}
-	}*/
+*/
 		return 0;
 }
-int times=0;
+
 void DMA1_Channel1_IRQHandler(void)
 {
 	if (DMA_GetITStatus(DMA1_IT_TC1) == SET)
@@ -59,7 +44,6 @@ void DMA1_Channel1_IRQHandler(void)
 		DMA_ClearITPendingBit(DMA1_IT_TC1);
 		Get_Adc();
 	}
-	times++;
 }
 
 

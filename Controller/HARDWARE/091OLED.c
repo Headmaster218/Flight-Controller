@@ -21,12 +21,10 @@
  * @param {unsigned} cmd OLED_CMD/OLED_DATA
  * @return {*}
  */
-void OLED_WR_Byte(unsigned dat, unsigned cmd)
+void OLED_WR_Byte(u8 dat, u8 cmd)
 {
-	if (cmd)
-		I2C1_Soft_Single_Write(0x3c, 0x40, dat);
-	else
-		I2C1_Soft_Single_Write(0x3c, 0x00, dat);
+	OLED_Multi_WR_Byte(&dat,cmd, 1);
+
 }
 
 /**
@@ -35,7 +33,7 @@ void OLED_WR_Byte(unsigned dat, unsigned cmd)
  * @param {unsigned} cmd OLED_CMD/OLED_DATA
  * @return {*}
  */
-void OLED_Multi_WR_Byte(u8 *dat, unsigned cmd, u8 len)
+void OLED_Multi_WR_Byte(u8 *dat, u8 cmd, u8 len)
 {
 	if (cmd)
 		I2C1_Soft_Mult_Write(0x3c, 0x40, dat, len);
@@ -133,21 +131,23 @@ u32 oled_pow(u8 m, u8 n)
 // x,y :起点坐标
 // ilen :整数的位数
 // flen :小数的位数
-// size:字体大小16/12
+// size:字体大小16/8
 void OLED_ShowFloat(u8 x, u8 y, float num, u8 ilen, u8 flen, u8 size2)
 {
+	u8 i;
+	size2=size2==16?16:12;
 	OLED_ShowChar(x + size2 / 2 * ilen, y, '.', size2);
 	OLED_ShowNum(x, y, num, ilen, size2);
-	ilen = flen;
-	while (ilen--)
+	i = flen;
+	while (i--)
 		num *= 10;
-	OLED_ShowNum(x + size2 / 2 * flen + 6, y, num, flen, size2);
+	OLED_ShowNum(x + size2 / 2 * ilen + size2/4, y, num, flen, size2);
 }
 
 //显示数字
 // x,y :起点坐标
 // len :数字的位数
-// size:字体大小16/12
+// size:字体大小16/8
 // mode:模式	0,填充模式;1,叠加模式
 // num:数值(-32767~32766);
 void OLED_ShowNum(u8 x, u8 y, int num, u8 len, u8 size2)
@@ -256,7 +256,7 @@ void OLED_Init(void)
 {
 	OLED_WR_Byte(0xAE | 0, OLED_CMD); // Set Display OFF
 
-	OLED_Set_Brightness(0x2);
+	OLED_Set_Brightness(0x50);
 
 	OLED_WR_Byte(0xa6 | 0, OLED_CMD); // Set Normal/Inverse Display
 

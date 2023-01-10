@@ -638,6 +638,26 @@
               <FileType>5</FileType>
               <FilePath>..\HARDWARE\24G.h</FilePath>
             </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>MPU6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\MPU6050.c</FilePath>
+            </File>
+            <File>
+              <FileName>MPU6050.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\MPU6050.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

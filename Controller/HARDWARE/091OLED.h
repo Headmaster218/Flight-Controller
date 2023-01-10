@@ -29,8 +29,8 @@
 // OLED控制用函数
 #define Scroll_Cmd(cmd) OLED_WR_Byte(0x2e|cmd, OLED_CMD) //启动滚动
 #define OLED_ShowChinese(x, y, no) OLED_DrawBMP(x, y, 16, 16, no);
-void OLED_WR_Byte(unsigned dat, unsigned cmd);
-void OLED_Multi_WR_Byte(u8 *dat, unsigned cmd, u8 len);
+void OLED_WR_Byte(u8 dat, u8 cmd);
+void OLED_Multi_WR_Byte(u8 *dat, u8 cmd, u8 len);
 void OLED_Display_Cmd(u8 state);
 void OLED_Init(void);
 void OLED_Clear(void);

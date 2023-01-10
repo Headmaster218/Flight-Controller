@@ -36,3 +36,5 @@
 ..\obj\24g.o: ..\SYSTEM\my_math.h
 ..\obj\24g.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\24g.o: ..\SYSTEM\adc.h
+..\obj\24g.o: ..\HARDWARE\091OLED.h
+..\obj\24g.o: ..\HARDWARE\led.h

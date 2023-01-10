@@ -13,7 +13,7 @@
 #include "delay.h"
 
 extern struct send_data_ send_Data;
-extern struct receive_data_ receive_Data;
+extern struct receive_data_ receive_Data,DMA_receive_Data;
 
 //frequency 4Hz
 struct receive_data_//18 Byte
@@ -21,11 +21,8 @@ struct receive_data_//18 Byte
 	u8 ECC_Code;//sum
     u8 height;// /10
     u8 spd;//km/h
-
     u8 voltage;//(V-10.6)*50(percent)
     u8 temperature;//(C+100)*2
-
-    
     u8 reserved[3];
 
     short latitude;//(degree*100)
@@ -45,10 +42,12 @@ struct send_data_//10 Byte
     u8 HLR;//horizontal wing right-left 0-200
     
     u8 flap;//ΩÛ“Ì
-    u8 reserved[2];
+	u8 bits;//0-7 0:LED line	1:Auto Back	2:Auto Fly	3:
+    u8 reserved[1];
 	short end_of_this;//=0xFFFF
 };
 
+void OLED_Receive_Refresh(void);
 void Wireless_Init(void);
 void Wireless_UART_Init(u32);
 void Wireless_DMA_Init(void);

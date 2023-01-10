@@ -65,7 +65,8 @@ u8 MPU_Get_Raw_Data(void)
 {
 	u8 MPU_reg_buf[14],i = 0;
 	short *MPU_data = (void*)Mpu_Data.acce;
-	I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14);
+	if(ERROR==I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14))
+		return 0;
 	for(;i < 7;i++)
 		MPU_data[i] = ((u16)MPU_reg_buf[i*2]<<8)|MPU_reg_buf[i*2+1]; 
 	Mpu_Data.gyro[0] +=Mpu_Data.offset.gyro[0];

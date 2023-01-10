@@ -83,6 +83,8 @@ void USART3_IRQHandler(void) // ø’œ–÷–∂œ
 		return;
 
 	GPS_Data.time[0] = (8 + (USART_RX_BUF[temppointer + 6] - 0x30) * 10 + (USART_RX_BUF[temppointer + 7] - 0x30));
+	if(GPS_Data.time[0]<60)
+	{
 	GPS_Data.time[0] -= GPS_Data.time[0] >= 24 ? 24 : 0;
 	GPS_Data.time[1] = (USART_RX_BUF[temppointer + 8] - 0x30) * 10 + (USART_RX_BUF[temppointer + 9] - 0x30);
 	GPS_Data.time[2] = (USART_RX_BUF[temppointer + 10] - 0x30) * 10 + (USART_RX_BUF[temppointer + 11] - 0x30);
@@ -110,7 +112,9 @@ void USART3_IRQHandler(void) // ø’œ–÷–∂œ
 	
 	GPS_Data.lon_real = (int)(GPS_Data.lon_f / 100)+ (GPS_Data.lon_f - ((int)GPS_Data.lon_f / 100) * 100) / 60+ (GPS_Data.lon_f- (int)GPS_Data.lon_f)/600000;
 	GPS_Data.lat_real = (int)(GPS_Data.lat_f / 100)+ (GPS_Data.lat_f - ((int)GPS_Data.lat_f / 100) * 100) / 60+ (GPS_Data.lat_f- (int)GPS_Data.lat_f)/600000;
-
+	}
+	else
+		GPS_Data.speed=0;
 	// restart DMA
 	DMA1_Channel3->CCR &= 0xFE; // disable dma
 	DMA1_Channel3->CNDTR = 200;

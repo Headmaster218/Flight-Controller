@@ -14,7 +14,7 @@
 
 extern struct send_data_ send_Data;
 extern struct receive_data_ receive_Data,DMA_receive_Data;
-
+extern u8 uart_time_cnt,controler_offline_cnt,controler_offline_flag;
 //frequency 4Hz
 struct send_data_//16 Byte
 {
@@ -44,7 +44,8 @@ struct receive_data_//10 Byte
     u8 HLR;//horizontal wing left-right 0-200
     
 	u8 flap;//ΩÛ“Ì
-    u8 reserved[2];
+	u8 bits;//0-7 0:LED
+    u8 reserved[1];
 	short end_of_this;//=0xFFFF
 };
 

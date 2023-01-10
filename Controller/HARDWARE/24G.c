@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-17 00:21:42
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-05 15:20:51
+ * @LastEditTime: 2023-01-10 10:26:42
  * @FilePath: \USERd:\STM32\My Project\Flight Controller\Controller\HARDWARE\24G.c
  * @Description:
  *
@@ -12,8 +12,20 @@
 #include "24G.h"
 #include "MPU6050.h"
 #include "adc.h"
+#include "091OLED.h"
+#include "led.h"
 struct send_data_ send_Data;
 struct receive_data_ receive_Data,DMA_receive_Data;
+
+void OLED_Receive_Refresh(void)
+{
+    OLED_ShowNum(0,2,receive_Data.voltage*10/7+950,4,16);
+    OLED_ShowString(0,4,"angle",16);
+    OLED_ShowString(0,6,"distance",16);
+    OLED_ShowNum(63,0,receive_Data.height*10,4,16);
+    OLED_ShowNum(63,2,receive_Data.spd,4,16);  
+    OLED_ShowNum(63,4,receive_Data.temperature/2-50,4,16);
+}
 
 void Wireless_Send_Data()
 {
@@ -21,9 +33,10 @@ void Wireless_Send_Data()
     send_Data.ECC_Code=0;
     send_Data.acc=(u8)(ADC_Value[0].percent);//左摇杆上下通道
     send_Data.HLR=(u8)(ADC_Value[1].percent);//左摇杆左右通道
-    send_Data.UD=(u8)(ADC_Value[2].percent);//右摇杆上下通道
+    send_Data.UD=(u8)(200-ADC_Value[2].percent);//右摇杆上下通道
     send_Data.LR=(u8)(ADC_Value[3].percent);//右摇杆左右通道
     send_Data.flap=(u8)(ADC_Value[4].percent);//左电位器通道
+    send_Data.bits=PBin(12)?send_Data.bits|1:send_Data.bits&0xFE;
     for(;i<sizeof(send_Data);i++)
         send_Data.ECC_Code += *((u8*)&send_Data+i);
 	/*
@@ -39,33 +52,27 @@ void Wireless_Send_Data()
 	DMA1_Channel4->CNDTR = sizeof(send_Data);
 	DMA1_Channel4->CCR |= 1; // enable dma
 }
-u8 upper_reveive;
-void USART1_IRQHandler(void) //接收中断
+void DMA1_Channel5_IRQHandler()
 {
-    u8 temp=0,i;
-	if(USART1->DR==0xff)
-	{
-		if(upper_reveive==0xff)
-		{
-			DMA1_Channel5->CCR &= 0xFE; // disable dma
-			DMA1_Channel5->CNDTR = sizeof(DMA_receive_Data);
-			DMA1_Channel5->CCR |= 1; // enable dma
-			USART1->SR;
-			USART1->DR;
-			upper_reveive=0;
-			return;
-		}
-		else
-			upper_reveive=USART1->DR;
-	}
-    for(i=0;i<sizeof(DMA_receive_Data);i++)
-        temp += *((u8*)&DMA_receive_Data+i);
-    if(DMA_receive_Data.ECC_Code == temp)
+		 u8 temp=0,i;
+	DMA_ClearFlag(DMA1_IT_TC5);
+	PCout(13)=!PCin(13);
+	for(i=0;i<sizeof(DMA_receive_Data);i++)
+        DMA_receive_Data.ECC_Code -= *((u8*)&DMA_receive_Data+sizeof(DMA_receive_Data)-1-i);
+    if(DMA_receive_Data.ECC_Code == 0)
     {
         receive_Data = DMA_receive_Data;
+		OLED_Receive_Refresh();
     }
+}
+
+u8 uart_time_cnt=0;
+void USART1_IRQHandler(void) //接收中断
+{
+
 	USART1->SR;
 	USART1->DR;
+	uart_time_cnt=0;
 }
 
 void Wireless_Init()
