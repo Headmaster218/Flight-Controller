@@ -37,6 +37,7 @@ int main(void)
 	MPU_Init();
 	OLED_Init();
 	__set_PRIMASK(0);//Enable all interrupt
+	OLED_Receive_Refresh();
 	while(1)//没有中断时3,000,000/s  2,800,000
 	{
 		CPU_Free_Time++;
@@ -57,13 +58,14 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		DMA1_Channel5->CCR |= 1; // enable dma
 	}
 	
-	if(MPU_Get_Raw_Data())
-		MPU_My_Calculate();
+	//if(MPU_Get_Raw_Data())
+		//MPU_My_Calculate();
 	if(cnt==99)
 	{
 		cnt=0;
 		OLED_ShowFloat(0,0,(float)ADC_Value[6].ADC_raw_Value*0.00459,1,2,16);
 		OLED_ShowChar(28,0,'V',16);
+		//
 	}
 	else
 		cnt++;
@@ -75,6 +77,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 	if(cnt%5==0)//20Hz
 	{
 		Wireless_Send_Data();
+		
 	}
 	
 	

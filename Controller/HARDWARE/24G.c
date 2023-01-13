@@ -21,10 +21,14 @@ void OLED_Receive_Refresh(void)
 {
     OLED_ShowNum(0,2,receive_Data.voltage*10/7+950,4,16);
     OLED_ShowString(0,4,"angle",16);
-    OLED_ShowString(0,6,"distance",16);
-    OLED_ShowNum(63,0,receive_Data.height*10,4,16);
-    OLED_ShowNum(63,2,receive_Data.spd,4,16);  
-    OLED_ShowNum(63,4,receive_Data.temperature/2-50,4,16);
+    OLED_ShowNum(0,6,receive_Data.longitude,8,16);
+	OLED_ShowNum(63,6,receive_Data.latitude,8,16);
+	OLED_ShowString(83,0,"H:",16);
+    OLED_ShowNum(96,0,receive_Data.height*10,4,16);
+	OLED_ShowString(83,2,"V:",16);
+    OLED_ShowNum(96,2,receive_Data.spd,4,16);  
+	OLED_ShowString(83,4,"T:",16);
+    OLED_ShowNum(96,4,receive_Data.temperature/2-50,4,16);
 }
 
 void Wireless_Send_Data()
