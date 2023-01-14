@@ -11,24 +11,22 @@
 #include "adc.h"
 #include "delay.h"
 
-
 struct ADC_Value_ ADC_Value[4];
 u16 ADC_DMA_Value[8]; // DMA缓存区
 int nummm[4];
-//需要10ms
-u8 adc_times=0;
+// 需要10ms
+u8 adc_times = 0;
 u16 Get_Adc(void)
 {
-	u8 i=0;
-	for(i=0;i<4;i++)
-		{
-			ADC_Value[i].ADC_raw_Value=ADC_DMA_Value[i]+ADC_Value[i].offset;
-		}
-		ADC_Value[0].num=ADC_Value[0].ADC_raw_Value*3195/1000;
+	u8 i = 0;
+	for (i = 0; i < 4; i++)
+	{
+		ADC_Value[i].ADC_raw_Value = ADC_DMA_Value[i] + ADC_Value[i].offset;
+	}
+	ADC_Value[0].num = ADC_Value[0].ADC_raw_Value * 3195 / 1000;
 
-		return 1;
+	return 1;
 }
-
 
 /*
 // 获得ADC值
@@ -115,7 +113,7 @@ void Adc_Init(void)
 		; // 等待校准完成
 
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE); // 注释掉软件启动AD转换
-	//ADC_ExternalTrigConvCmd(ADC1, ENABLE);	// 使能外部定时器触发
+											// ADC_ExternalTrigConvCmd(ADC1, ENABLE);	// 使能外部定时器触发
 }
 
 // DMA配置
@@ -142,8 +140,8 @@ void ADC_DMA_Init(void)
 
 	// 转换模式：常用循环缓存模式。如果M2M开启了，则这个模式失效
 	// 另一种是Normal模式：不循环，仅一次DMA
-	 DMA_InitStruct.DMA_Mode  = DMA_Mode_Circular;
-	//DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;
+	DMA_InitStruct.DMA_Mode = DMA_Mode_Circular;
+	// DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;
 
 	DMA_InitStruct.DMA_Priority = DMA_Priority_High; // DMA优先级，高
 	DMA_InitStruct.DMA_BufferSize = 4;				 // DMA缓存大小

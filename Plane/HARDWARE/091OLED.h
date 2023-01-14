@@ -4,9 +4,9 @@
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
  * @LastEditTime: 2023-01-04 12:23:31
  * @FilePath: \USERd:\STM32\My Project\Flight Controller\HARDWARE\091OLED.h
- * @Description: 
- * 
- * Copyright (c) 2023 by Headmaster1615, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2023 by Headmaster1615, All Rights Reserved.
  */
 #ifndef __091OLED_H
 #define __091OLED_H
@@ -14,20 +14,20 @@
 #include <delay.h>
 #include <iic.h>
 
-#define RESOLUTION 128*64
-#if RESOLUTION == 128*64
+#define RESOLUTION 128 * 64
+#if RESOLUTION == 128 * 64
 #define Max_Row 64
-#elif RESOLUTION == 128*32
+#elif RESOLUTION == 128 * 32
 #define Max_Row 32
 #endif
 
 #define BIG_FONT 16
 #define SMALL_FONT 8
 #define Max_Column 128
-#define OLED_CMD 0  //写命令
-#define OLED_DATA 1 //写数据
+#define OLED_CMD 0  // 写命令
+#define OLED_DATA 1 // 写数据
 // OLED控制用函数
-#define Scroll_Cmd(cmd) OLED_WR_Byte(0x2e|cmd, OLED_CMD) //启动滚动
+#define Scroll_Cmd(cmd) OLED_WR_Byte(0x2e | cmd, OLED_CMD) // 启动滚动
 #define OLED_ShowChinese(x, y, no) OLED_DrawBMP(x, y, 16, 16, no);
 void OLED_WR_Byte(unsigned dat, unsigned cmd);
 void OLED_Multi_WR_Byte(u8 *dat, unsigned cmd, u8 len);
@@ -43,6 +43,5 @@ void OLED_Set_Pos(u8 x, u8 y);
 void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[]);
 void Start_Horizontal_Scroll(u8 dir, u8 start, u8 end, u8 interval);
 void OLED_Set_Brightness(u8 bright);
-
 
 #endif

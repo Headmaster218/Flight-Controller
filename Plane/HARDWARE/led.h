@@ -1,21 +1,17 @@
+/*
+ * @Author: Headmaster1615  e-mail:hm-218@qq.com
+ * @Date: 2023-01-14 18:10:56
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2023-01-14 19:20:56
+ * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Plane\HARDWARE\led.h
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by Headmaster1615, All Rights Reserved. 
+ */
 #ifndef __LED_H
-#define __LED_H	 
+#define __LED_H
 #include "sys.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK战舰STM32开发板
-//LED驱动代码	   
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//修改日期:2012/9/2
-//版本：V1.0
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2009-2019
-//All rights reserved									  
-////////////////////////////////////////////////////////////////////////////////// 
 
+void LED_Init(void); // 初始化
 
-void LED_Init(void);//初始化
-
-		 				    
 #endif

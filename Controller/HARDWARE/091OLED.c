@@ -4,17 +4,15 @@
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
  * @LastEditTime: 2023-01-06 13:09:55
  * @FilePath: \USERd:\STM32\My Project\Flight Controller\Controller\HARDWARE\091OLED.c
- * @Description: 
+ * @Description:
  * OLED library
- * Copyright (c) 2022 by Headmaster1615, All Rights Reserved. 
+ * Copyright (c) 2022 by Headmaster1615, All Rights Reserved.
  */
 
 #include <091OLED.h>
 #include <OLEDFONT.h>
 
-
-
-//链接底层iic
+// 链接底层iic
 /**
  * @description: link mcu's iic
  * @param {unsigned} dat
@@ -23,8 +21,7 @@
  */
 void OLED_WR_Byte(u8 dat, u8 cmd)
 {
-	OLED_Multi_WR_Byte(&dat,cmd, 1);
-
+	OLED_Multi_WR_Byte(&dat, cmd, 1);
 }
 
 /**
@@ -41,7 +38,6 @@ void OLED_Multi_WR_Byte(u8 *dat, u8 cmd, u8 len)
 		I2C1_Soft_Mult_Write(0x3c, 0x00, dat, len);
 }
 
-
 /**
  * @description: 内容坐标设置
  * @param {u8} x坐标
@@ -51,11 +47,11 @@ void OLED_Multi_WR_Byte(u8 *dat, u8 cmd, u8 len)
 void OLED_Set_Pos(u8 x, u8 y)
 {
 	u8 dat[3];
-	dat[0]=0xb0 + y;
-	dat[1]=((x & 0xf0) >> 4) | 0x10;
-	dat[2]=(x & 0x0f);
+	dat[0] = 0xb0 + y;
+	dat[1] = ((x & 0xf0) >> 4) | 0x10;
+	dat[2] = (x & 0x0f);
 
-	OLED_Multi_WR_Byte(dat,OLED_CMD,3);
+	OLED_Multi_WR_Byte(dat, OLED_CMD, 3);
 }
 
 /**
@@ -75,21 +71,21 @@ void OLED_Clear(void)
 	u8 i, n;
 	for (i = 0; i < 8; i++)
 	{
-		OLED_WR_Byte(0xb0 + i, OLED_CMD); //设置页地址（0~7）
-		OLED_WR_Byte(0x00, OLED_CMD);	  //设置显示位置—列低地址
-		OLED_WR_Byte(0x10, OLED_CMD);	  //设置显示位置—列高地址
+		OLED_WR_Byte(0xb0 + i, OLED_CMD); // 设置页地址（0~7）
+		OLED_WR_Byte(0x00, OLED_CMD);	  // 设置显示位置—列低地址
+		OLED_WR_Byte(0x10, OLED_CMD);	  // 设置显示位置—列高地址
 		for (n = 0; n < 128; n++)
 			OLED_WR_Byte(0, OLED_DATA);
 	}
 }
 
-//在指定位置显示一个字符,包括部分字符
-// x:0~127
-// y:0~63
-// mode:0,反白显示;1,正常显示
-// size:选择字体 16/8
+// 在指定位置显示一个字符,包括部分字符
+//  x:0~127
+//  y:0~63
+//  mode:0,反白显示;1,正常显示
+//  size:选择字体 16/8
 /**
- * @description: 
+ * @description:
  * @param {u8} x 0-127 pixel
  * @param {u8} y 0-7 page
  * @param {u8} chr char
@@ -99,7 +95,7 @@ void OLED_Clear(void)
 void OLED_ShowChar(u8 x, u8 y, u8 chr, u8 Char_Size)
 {
 	u8 c = 0;
-	c = chr - ' '; //得到偏移后的值
+	c = chr - ' '; // 得到偏移后的值
 	if (x > Max_Column - 1)
 	{
 		x -= Max_Column;
@@ -108,14 +104,14 @@ void OLED_ShowChar(u8 x, u8 y, u8 chr, u8 Char_Size)
 	if (Char_Size == 16)
 	{
 		OLED_Set_Pos(x, y);
-		OLED_Multi_WR_Byte((u8*)&F8X16[c * 16], OLED_DATA, 8);
+		OLED_Multi_WR_Byte((u8 *)&F8X16[c * 16], OLED_DATA, 8);
 		OLED_Set_Pos(x, y + 1);
-		OLED_Multi_WR_Byte((u8*)&F8X16[c * 16 + 8], OLED_DATA, 8);
+		OLED_Multi_WR_Byte((u8 *)&F8X16[c * 16 + 8], OLED_DATA, 8);
 	}
 	else
 	{
 		OLED_Set_Pos(x, y);
-		OLED_Multi_WR_Byte((u8*)&F6x8[c][0], OLED_DATA, 6);
+		OLED_Multi_WR_Byte((u8 *)&F6x8[c][0], OLED_DATA, 6);
 	}
 }
 // m^n函数
@@ -127,29 +123,29 @@ u32 oled_pow(u8 m, u8 n)
 	return result;
 }
 
-//显示小数
-// x,y :起点坐标
-// ilen :整数的位数
-// flen :小数的位数
-// size:字体大小16/8
+// 显示小数
+//  x,y :起点坐标
+//  ilen :整数的位数
+//  flen :小数的位数
+//  size:字体大小16/8
 void OLED_ShowFloat(u8 x, u8 y, float num, u8 ilen, u8 flen, u8 size2)
 {
 	u8 i;
-	size2=size2==16?16:12;
+	size2 = size2 == 16 ? 16 : 12;
 	OLED_ShowChar(x + size2 / 2 * ilen, y, '.', size2);
 	OLED_ShowNum(x, y, num, ilen, size2);
 	i = flen;
 	while (i--)
 		num *= 10;
-	OLED_ShowNum(x + size2 / 2 * ilen + size2/4, y, num<0?-num:num, flen, size2);
+	OLED_ShowNum(x + size2 / 2 * ilen + size2 / 4, y, num < 0 ? -num : num, flen, size2);
 }
 
-//显示数字
-// x,y :起点坐标
-// len :数字的位数
-// size:字体大小16/8
-// mode:模式	0,填充模式;1,叠加模式
-// num:数值(-32767~32766);
+// 显示数字
+//  x,y :起点坐标
+//  len :数字的位数
+//  size:字体大小16/8
+//  mode:模式	0,填充模式;1,叠加模式
+//  num:数值(-32767~32766);
 void OLED_ShowNum(u8 x, u8 y, int num, u8 len, u8 size2)
 {
 	u8 t, temp;
@@ -177,7 +173,7 @@ void OLED_ShowNum(u8 x, u8 y, int num, u8 len, u8 size2)
 		OLED_ShowChar(x + (size2 / 2) * t, y, temp + '0', size2);
 	}
 }
-//显示一个字符号串
+// 显示一个字符号串
 void OLED_ShowString(u8 x, u8 y, u8 *chr, u8 Char_Size)
 {
 	u8 j = 0;
@@ -212,13 +208,13 @@ void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[])
 
 /***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
 
-void OLED_Refresh(u8 BMP[])//35fps
+void OLED_Refresh(u8 BMP[]) // 35fps
 {
-	u16 i=0;
-	for(;i<8;i++)
+	u16 i = 0;
+	for (; i < 8; i++)
 	{
-		OLED_Set_Pos(0,i);
-		OLED_Multi_WR_Byte(BMP+128*i, OLED_DATA, 128);
+		OLED_Set_Pos(0, i);
+		OLED_Multi_WR_Byte(BMP + 128 * i, OLED_DATA, 128);
 		delay_us(1);
 	}
 }
@@ -228,7 +224,7 @@ void OLED_Refresh(u8 BMP[])//35fps
 // len:0-7
 // end:0-7
 // interval:0-7
-#define Scroll_Cmd(cmd) OLED_WR_Byte(0x2e|cmd, OLED_CMD) //启动滚动
+#define Scroll_Cmd(cmd) OLED_WR_Byte(0x2e | cmd, OLED_CMD) // 启动滚动
 void Start_Horizontal_Scroll(u8 dir, u8 start, u8 end, u8 interval)
 {
 	Scroll_Cmd(0);
@@ -248,11 +244,11 @@ void Start_Horizontal_Scroll(u8 dir, u8 start, u8 end, u8 interval)
 
 void OLED_Set_Brightness(u8 bright)
 {
-	OLED_WR_Byte(0x81, OLED_CMD); //设置对比度
+	OLED_WR_Byte(0x81, OLED_CMD); // 设置对比度
 	OLED_WR_Byte(bright, OLED_CMD);
 };
 
-//初始化SSD1306
+// 初始化SSD1306
 void OLED_Init(void)
 {
 	OLED_WR_Byte(0xAE | 0, OLED_CMD); // Set Display OFF
@@ -263,7 +259,7 @@ void OLED_Init(void)
 
 	OLED_WR_Byte(0xB0, OLED_CMD);	  // Set Page Start Address for Page Addressing Mode
 	OLED_WR_Byte(0x40, OLED_CMD);	  // Set Display Start Line
-	OLED_WR_Byte(0xa0 | 1, OLED_CMD); //屏幕反向
+	OLED_WR_Byte(0xa0 | 1, OLED_CMD); // 屏幕反向
 
 	OLED_WR_Byte(0xC8, OLED_CMD); // C0/C8Set COM Output Scan Direction
 
@@ -278,7 +274,7 @@ void OLED_Init(void)
 	OLED_WR_Byte(0x02, OLED_CMD); // 128*32
 #endif
 
-	OLED_WR_Byte(0xa8, OLED_CMD); //设置驱动路数
+	OLED_WR_Byte(0xa8, OLED_CMD); // 设置驱动路数
 	OLED_WR_Byte(0x3f, OLED_CMD);
 
 	// Set Display Clock Divide Ratio/Oscillator Frequency

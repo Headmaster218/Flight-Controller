@@ -16,11 +16,11 @@
 struct serio_data_ serio_data;
 
 void PWM_Output()
-{//25-125
-	//50-150 250-750
-	if(controler_offline_flag)
+{ // 25-125
+	// 50-150 250-750
+	if (controler_offline_flag)
 	{
-		if(GPS_Data.speed>20)
+		if (GPS_Data.speed > 20)
 			serio_data.pwm_output[0] = 150;
 		else
 			serio_data.pwm_output[0] = 0;
@@ -28,19 +28,17 @@ void PWM_Output()
 		serio_data.pwm_output[2] = 0;
 		serio_data.pwm_output[3] = 0;
 		serio_data.pwm_output[4] = 0;
-		
 	}
 	else
 	{
-		serio_data.pwm_output[0] = receive_Data.acc*2.5;
-		serio_data.pwm_output[1] = LIMIT((((short)receive_Data.LR-100)*-1.5 - ((short)receive_Data.flap-100)),-150,150);//+-150
-		serio_data.pwm_output[2] = LIMIT((((short)receive_Data.LR-100)*-1.5 + ((short)receive_Data.flap-100)),-150,150);//+-150
-		serio_data.pwm_output[3] = ((short)receive_Data.UD-100)*1.5;
-		serio_data.pwm_output[4] = ((short)receive_Data.HLR-100)*1.5;
+		serio_data.pwm_output[0] = receive_Data.acc * 2.5;
+		serio_data.pwm_output[1] = LIMIT((((short)receive_Data.LR - 100) * -1.5 - ((short)receive_Data.flap - 100)), -150, 150); //+-150
+		serio_data.pwm_output[2] = LIMIT((((short)receive_Data.LR - 100) * -1.5 + ((short)receive_Data.flap - 100)), -150, 150); //+-150
+		serio_data.pwm_output[3] = ((short)receive_Data.UD - 100) * 1.5;
+		serio_data.pwm_output[4] = ((short)receive_Data.HLR - 100) * 1.5;
 	}
 
-	
-	//电调，左翼，右翼，平尾，垂尾
+	// 电调，左翼，右翼，平尾，垂尾
 	TIM_SetCompare2(TIM2, serio_data.pwm_output_offset[0] + serio_data.pwm_output[0]);
 	TIM_SetCompare4(TIM3, serio_data.pwm_output_offset[1] + serio_data.pwm_output[1]);
 	TIM_SetCompare3(TIM3, serio_data.pwm_output_offset[2] + serio_data.pwm_output[2]);
@@ -109,19 +107,19 @@ void PWM_Init(u16 arr, u16 psc)
 	TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Enable);
 	TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Enable);
 	TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Enable);
-	
+
 	serio_data.pwm_output_offset[0] = 500;
-	serio_data.pwm_output_offset[1] = 750+40;
-	serio_data.pwm_output_offset[2] = 750-60;
-	serio_data.pwm_output_offset[3] = 750+25;
-	serio_data.pwm_output_offset[4] = 750+40;
+	serio_data.pwm_output_offset[1] = 750 + 40;
+	serio_data.pwm_output_offset[2] = 750 - 60;
+	serio_data.pwm_output_offset[3] = 750 + 25;
+	serio_data.pwm_output_offset[4] = 750 + 40;
 
 	serio_data.pwm_output[0] = 0;
 	serio_data.pwm_output[1] = 0;
 	serio_data.pwm_output[2] = 0;
 	serio_data.pwm_output[3] = 0;
 	serio_data.pwm_output[4] = 0;
-	
+
 	TIM_SetCompare2(TIM2, serio_data.pwm_output_offset[0] + serio_data.pwm_output[0]);
 	TIM_SetCompare4(TIM3, serio_data.pwm_output_offset[1] + serio_data.pwm_output[1]);
 	TIM_SetCompare3(TIM3, serio_data.pwm_output_offset[2] + serio_data.pwm_output[2]);
@@ -130,5 +128,4 @@ void PWM_Init(u16 arr, u16 psc)
 
 	TIM_Cmd(TIM3, ENABLE); // 使能TIM3
 	TIM_Cmd(TIM2, ENABLE); // 使能TIM3
-
 }

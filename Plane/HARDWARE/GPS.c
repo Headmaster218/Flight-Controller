@@ -70,7 +70,7 @@ void USART3_IRQHandler(void) // 空闲中断
 	GPIOC->ODR ^= GPIO_Pin_13;
 	//$GPVTG,,T,,M,0.029,N,0.001,K,D*2C
 	//$GPGGA,060826.00,2236.91284,N,11403.24705,E,2,08,1.03,107.8,M,-2.4,M,,0000*4A
-	//01234567890123456789012345678901234567890123456789012345678901234567890123456
+	// 01234567890123456789012345678901234567890123456789012345678901234567890123456
 	// GPS数据处理
 	temppointer = 0;
 
@@ -83,43 +83,42 @@ void USART3_IRQHandler(void) // 空闲中断
 		return;
 
 	GPS_Data.time[0] = (8 + (USART_RX_BUF[temppointer + 6] - 0x30) * 10 + (USART_RX_BUF[temppointer + 7] - 0x30));
-	if(GPS_Data.time[0]<60)
+	if (GPS_Data.time[0] < 60)
 	{
-	GPS_Data.time[0] -= GPS_Data.time[0] >= 24 ? 24 : 0;
-	GPS_Data.time[1] = (USART_RX_BUF[temppointer + 8] - 0x30) * 10 + (USART_RX_BUF[temppointer + 9] - 0x30);
-	GPS_Data.time[2] = (USART_RX_BUF[temppointer + 10] - 0x30) * 10 + (USART_RX_BUF[temppointer + 11] - 0x30);
+		GPS_Data.time[0] -= GPS_Data.time[0] >= 24 ? 24 : 0;
+		GPS_Data.time[1] = (USART_RX_BUF[temppointer + 8] - 0x30) * 10 + (USART_RX_BUF[temppointer + 9] - 0x30);
+		GPS_Data.time[2] = (USART_RX_BUF[temppointer + 10] - 0x30) * 10 + (USART_RX_BUF[temppointer + 11] - 0x30);
 
-	temppointer += 16;
-	GPS_Data.lon_f = atof(USART_RX_BUF + temppointer);
-	while (USART_RX_BUF[temppointer++] != ',')
-		;
-	while (USART_RX_BUF[temppointer++] != ',')
-		;
-	GPS_Data.lat_f = atof(USART_RX_BUF + temppointer);
-	while (USART_RX_BUF[temppointer++] != ',')
-		;
-	while (USART_RX_BUF[temppointer++] != ',')
-		;
-	while (USART_RX_BUF[temppointer++] != ',')
-		;
-	GPS_Data.num = atoi(USART_RX_BUF + temppointer);
+		temppointer += 16;
+		GPS_Data.lon_f = atof(USART_RX_BUF + temppointer);
+		while (USART_RX_BUF[temppointer++] != ',')
+			;
+		while (USART_RX_BUF[temppointer++] != ',')
+			;
+		GPS_Data.lat_f = atof(USART_RX_BUF + temppointer);
+		while (USART_RX_BUF[temppointer++] != ',')
+			;
+		while (USART_RX_BUF[temppointer++] != ',')
+			;
+		while (USART_RX_BUF[temppointer++] != ',')
+			;
+		GPS_Data.num = atoi(USART_RX_BUF + temppointer);
 
-	while (USART_RX_BUF[temppointer++] != ',')
-		;
-	while (USART_RX_BUF[temppointer++] != ',')
-		;
-	GPS_Data.height = atoi(USART_RX_BUF + temppointer);
-	
-	GPS_Data.lon_real = (int)(GPS_Data.lon_f / 100)+ (GPS_Data.lon_f - ((int)GPS_Data.lon_f / 100) * 100) / 60+ (GPS_Data.lon_f- (int)GPS_Data.lon_f)/600000;
-	GPS_Data.lat_real = (int)(GPS_Data.lat_f / 100)+ (GPS_Data.lat_f - ((int)GPS_Data.lat_f / 100) * 100) / 60+ (GPS_Data.lat_f- (int)GPS_Data.lat_f)/600000;
+		while (USART_RX_BUF[temppointer++] != ',')
+			;
+		while (USART_RX_BUF[temppointer++] != ',')
+			;
+		GPS_Data.height = atoi(USART_RX_BUF + temppointer);
+
+		GPS_Data.lon_real = (int)(GPS_Data.lon_f / 100) + (GPS_Data.lon_f - ((int)GPS_Data.lon_f / 100) * 100) / 60 + (GPS_Data.lon_f - (int)GPS_Data.lon_f) / 600000;
+		GPS_Data.lat_real = (int)(GPS_Data.lat_f / 100) + (GPS_Data.lat_f - ((int)GPS_Data.lat_f / 100) * 100) / 60 + (GPS_Data.lat_f - (int)GPS_Data.lat_f) / 600000;
 	}
 	else
-		GPS_Data.speed=0;
+		GPS_Data.speed = 0;
 	// restart DMA
 	DMA1_Channel3->CCR &= 0xFE; // disable dma
 	DMA1_Channel3->CNDTR = 200;
 	DMA1_Channel3->CCR |= 1; // enable dma
-
 
 	USART3->SR;
 	USART3->DR;

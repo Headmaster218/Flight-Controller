@@ -3,33 +3,33 @@
 struct _Mpu_Data Mpu_Data;
 
 u8 MPU_Init(void)
-{ 
-	I2C1_Soft_Single_Write(MPU_ADDR,MPU_PWR_MGMT1_REG,0X80);	//复位MPU6050
+{
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X80); // 复位MPU6050
 	delay_ms(200);
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG,0X00);	//唤醒MPU6050 
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_GYRO_CFG_REG,2<<3);;					//gyro传感器,±1000dps *0.03051851 ->d/s
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_ACCEL_CFG_REG,1<<3);;					//acce传感器,±4g      *0.001196326 ->m/s2  //float have 7 useful number
-	I2C1_Soft_Single_Write(MPU_ADDR,MPU_CFG_REG, 0x05);					//fliter 10hz
-	//lpf = I2C1_Soft_Single_Write(MPU_ADDR, MPU_SAMPLE_RATE_REG, 9);//采样频率=1000 /（1+SMPLRT_DIV)
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_INT_EN_REG,0X00);	//关闭所有中断
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_USER_CTRL_REG,0X00);	//I2C主模式关闭
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_FIFO_EN_REG,0X00);	//关闭FIFO
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_INTBP_CFG_REG,0X80);	//INT引脚低电平有效
-	if(I2C1_Soft_Single_Read(MPU_ADDR,MPU_DEVICE_ID_REG) == MPU_ADDR)//器件ID正确
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X00); // 唤醒MPU6050
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_GYRO_CFG_REG, 2 << 3);
+	; // gyro传感器,±1000dps *0.03051851 ->d/s
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_ACCEL_CFG_REG, 1 << 3);
+	;													 // acce传感器,±4g      *0.001196326 ->m/s2  //float have 7 useful number
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_CFG_REG, 0x05); // fliter 10hz
+	// lpf = I2C1_Soft_Single_Write(MPU_ADDR, MPU_SAMPLE_RATE_REG, 9);//采样频率=1000 /（1+SMPLRT_DIV)
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_INT_EN_REG, 0X00);				// 关闭所有中断
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_USER_CTRL_REG, 0X00);			// I2C主模式关闭
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_FIFO_EN_REG, 0X00);			// 关闭FIFO
+	I2C1_Soft_Single_Write(MPU_ADDR, MPU_INTBP_CFG_REG, 0X80);			// INT引脚低电平有效
+	if (I2C1_Soft_Single_Read(MPU_ADDR, MPU_DEVICE_ID_REG) == MPU_ADDR) // 器件ID正确
 	{
-		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG,0X01);	//设置CLKSEL,PLL X轴为参考
-		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT2_REG,0X00);	//加速度与陀螺仪都工作
- 	}
-	Mpu_Data.offset.gyro[0]=38;
-	Mpu_Data.offset.gyro[1]=-9;
-	Mpu_Data.offset.gyro[2]=13;
-	Mpu_Data.offset.acce[0]=0;
-	Mpu_Data.offset.acce[1]=0;
-	Mpu_Data.offset.acce[2]=525;
+		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X01); // 设置CLKSEL,PLL X轴为参考
+		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT2_REG, 0X00); // 加速度与陀螺仪都工作
+	}
+	Mpu_Data.offset.gyro[0] = 38;
+	Mpu_Data.offset.gyro[1] = -9;
+	Mpu_Data.offset.gyro[2] = 13;
+	Mpu_Data.offset.acce[0] = 0;
+	Mpu_Data.offset.acce[1] = 0;
+	Mpu_Data.offset.acce[2] = 525;
 	return 1;
-	
 }
-
 
 u8 MPU_times = 0;
 #define MAXERR 5
@@ -39,69 +39,69 @@ void MPU_My_Calculate(void)
 	total[0] += Mpu_Data.acce_f[0];
 	total[1] += Mpu_Data.acce_f[1];
 	total[2] += Mpu_Data.acce_f[2];
-	
-	if(MPU_times %10 == 0)
+
+	if (MPU_times % 10 == 0)
 	{
-		norm = sqrt(total[0]*total[0] + total[1]*total[1] + total[2]*total[2]);
-		
-		if(norm > 95 && norm < 105)
+		norm = sqrt(total[0] * total[0] + total[1] * total[1] + total[2] * total[2]);
+
+		if (norm > 95 && norm < 105)
 		{
-	Mpu_Data.pitch= fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[2])/ANGLE_TO_RAD;  
-	Mpu_Data.yaw  = fast_atan2(Mpu_Data.acce[0],Mpu_Data.acce[1])/ANGLE_TO_RAD;
-	Mpu_Data.roll = fast_atan2(Mpu_Data.acce[2],Mpu_Data.acce[1])/ANGLE_TO_RAD;	
+			Mpu_Data.pitch = fast_atan2(Mpu_Data.acce[0], Mpu_Data.acce[2]) / ANGLE_TO_RAD;
+			Mpu_Data.yaw = fast_atan2(Mpu_Data.acce[0], Mpu_Data.acce[1]) / ANGLE_TO_RAD;
+			Mpu_Data.roll = fast_atan2(Mpu_Data.acce[2], Mpu_Data.acce[1]) / ANGLE_TO_RAD;
 		}
 		MPU_times = 0;
 		total[0] = total[1] = total[2] = 0;
 	}
-MPU_times++;
-	
-	Mpu_Data.pitch-=(double)Mpu_Data.gyro[1] * 0.03051851 * 0.01;
-	Mpu_Data.yaw  +=(double)Mpu_Data.gyro[2] * 0.03051851 * 0.01;
-	Mpu_Data.roll -=(double)Mpu_Data.gyro[0] * 0.03051851 * 0.01;//100hz;
+	MPU_times++;
+
+	Mpu_Data.pitch -= (double)Mpu_Data.gyro[1] * 0.03051851 * 0.01;
+	Mpu_Data.yaw += (double)Mpu_Data.gyro[2] * 0.03051851 * 0.01;
+	Mpu_Data.roll -= (double)Mpu_Data.gyro[0] * 0.03051851 * 0.01; // 100hz;
 }
 
-//acce x,y,z Temp ,Gyro x,y,z
+// acce x,y,z Temp ,Gyro x,y,z
 u8 MPU_Get_Raw_Data(void)
 {
-	u8 MPU_reg_buf[14],i = 0;
-	short *MPU_data = (void*)Mpu_Data.acce;
-	if(ERROR==I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14))
+	u8 MPU_reg_buf[14], i = 0;
+	short *MPU_data = (void *)Mpu_Data.acce;
+	if (ERROR == I2C1_Soft_Mult_Read(MPU_ADDR, MPU_ACCEL_XOUTH_REG, MPU_reg_buf, 14))
 		return ERROR;
-	for(;i < 7;i++)
-		MPU_data[i] = ((u16)MPU_reg_buf[i*2]<<8)|MPU_reg_buf[i*2+1]; 
-	Mpu_Data.gyro[0] +=Mpu_Data.offset.gyro[0];
-	Mpu_Data.gyro[1] +=Mpu_Data.offset.gyro[1];
-	Mpu_Data.gyro[2] +=Mpu_Data.offset.gyro[2];
-	Mpu_Data.acce[0] +=Mpu_Data.offset.acce[0];
-	Mpu_Data.acce[1] +=Mpu_Data.offset.acce[1];
-	Mpu_Data.acce[2] +=Mpu_Data.offset.acce[2];
-	
-	Mpu_Data.gyro_f[0] = Mpu_Data.gyro[0]*0.03051851;
-	Mpu_Data.gyro_f[1] = Mpu_Data.gyro[1]*0.03051851;
-	Mpu_Data.gyro_f[2] = Mpu_Data.gyro[2]*0.03051851;
-	Mpu_Data.acce_f[0] = Mpu_Data.acce[0]*0.001196326;
-	Mpu_Data.acce_f[1] = Mpu_Data.acce[1]*0.001196326;
-	Mpu_Data.acce_f[2] = Mpu_Data.acce[2]*0.001196326;
-	
-	Mpu_Data.temp = (3653+((double)Mpu_Data.temp)*0.294118);
+	for (; i < 7; i++)
+		MPU_data[i] = ((u16)MPU_reg_buf[i * 2] << 8) | MPU_reg_buf[i * 2 + 1];
+	Mpu_Data.gyro[0] += Mpu_Data.offset.gyro[0];
+	Mpu_Data.gyro[1] += Mpu_Data.offset.gyro[1];
+	Mpu_Data.gyro[2] += Mpu_Data.offset.gyro[2];
+	Mpu_Data.acce[0] += Mpu_Data.offset.acce[0];
+	Mpu_Data.acce[1] += Mpu_Data.offset.acce[1];
+	Mpu_Data.acce[2] += Mpu_Data.offset.acce[2];
+
+	Mpu_Data.gyro_f[0] = Mpu_Data.gyro[0] * 0.03051851;
+	Mpu_Data.gyro_f[1] = Mpu_Data.gyro[1] * 0.03051851;
+	Mpu_Data.gyro_f[2] = Mpu_Data.gyro[2] * 0.03051851;
+	Mpu_Data.acce_f[0] = Mpu_Data.acce[0] * 0.001196326;
+	Mpu_Data.acce_f[1] = Mpu_Data.acce[1] * 0.001196326;
+	Mpu_Data.acce_f[2] = Mpu_Data.acce[2] * 0.001196326;
+
+	Mpu_Data.temp = (3653 + ((double)Mpu_Data.temp) * 0.294118);
 	return SUCCESS;
 }
 
-//wait 5s to set offset
+// wait 5s to set offset
 void MPU_Set_Offset_Data(void)
 {
 	u16 i = 0;
 	float total[3] = {0};
-	   for(;i<5000;i++)
+	for (; i < 5000; i++)
 	{
 		delay_ms(1);
-		total[0] += Mpu_Data.gyro[0];       
-		total[1] += Mpu_Data.gyro[1];   
-		total[2] += Mpu_Data.gyro[2];   
+		total[0] += Mpu_Data.gyro[0];
+		total[1] += Mpu_Data.gyro[1];
+		total[2] += Mpu_Data.gyro[2];
 	}
-	Mpu_Data.offset.gyro[0] = total[0]/5000;
-	Mpu_Data.offset.gyro[1] = total[1]/5000;
-	Mpu_Data.offset.gyro[2] = total[2]/5000;
+	Mpu_Data.offset.gyro[0] = total[0] / 5000;
+	Mpu_Data.offset.gyro[1] = total[1] / 5000;
+	Mpu_Data.offset.gyro[2] = total[2] / 5000;
 }
 
 /*
@@ -128,9 +128,9 @@ void MPU_Calculate(void)
 
 	static float q0 = 1, q1 = 0, q2 = 0, q3 = 0;     // quaternion elements representing the estimated orientation
 	static float exInt = 0, eyInt = 0, ezInt = 0;    // scaled integral error
-	
+
 	//GPIOC->ODR ^= GPIO_Pin_14;
-	
+
 	Mpu_Data.acce_f[0] = (float)Mpu_Data.acce[0] * 0.001196326;
 	Mpu_Data.acce_f[1] = (float)Mpu_Data.acce[1] * 0.001196326;
 	Mpu_Data.acce_f[2] = (float)Mpu_Data.acce[2] * 0.001196326;
@@ -141,14 +141,14 @@ void MPU_Calculate(void)
 	Mpu_Data.dps_f[0]  = Mpu_Data.gyro_f[0] * ANGLE_TO_RAD;
 	Mpu_Data.dps_f[1]  = Mpu_Data.gyro_f[1] * ANGLE_TO_RAD;
 	Mpu_Data.dps_f[2]  = Mpu_Data.gyro_f[2] * ANGLE_TO_RAD;
-	
+
 	//20us
-	
+
 
 	if(Mpu_Data.acce_f[0]!=0||Mpu_Data.acce_f[1]!=0||Mpu_Data.acce_f[2]!=0)
 	{
 	//acc数据归一化
-	norm = my_sqrt(Mpu_Data.acce_f[0]*Mpu_Data.acce_f[0] + Mpu_Data.acce_f[1]*Mpu_Data.acce_f[1] + Mpu_Data.acce_f[2]*Mpu_Data.acce_f[2]);       
+	norm = my_sqrt(Mpu_Data.acce_f[0]*Mpu_Data.acce_f[0] + Mpu_Data.acce_f[1]*Mpu_Data.acce_f[1] + Mpu_Data.acce_f[2]*Mpu_Data.acce_f[2]);
 	Mpu_Data.acce_f[0] = Mpu_Data.acce_f[0] / norm;
 	Mpu_Data.acce_f[1] = Mpu_Data.acce_f[1] / norm;
 	Mpu_Data.acce_f[2] = Mpu_Data.acce_f[2] / norm;
@@ -173,9 +173,9 @@ void MPU_Calculate(void)
 	exInt = LIMIT(exInt, - IMU_INTEGRAL_LIM ,IMU_INTEGRAL_LIM );
 
 	// adjusted gyroscope measurements
-	Mpu_Data.gyro_f[0] = Mpu_Data.gyro_f[0] + Kp *(ex + exInt);					   						
-	Mpu_Data.gyro_f[1] = Mpu_Data.gyro_f[1] + Kp *(ey + eyInt);				   							
-	Mpu_Data.gyro_f[2] = Mpu_Data.gyro_f[2] + Kp *(ez + ezInt);					   					  							
+	Mpu_Data.gyro_f[0] = Mpu_Data.gyro_f[0] + Kp *(ex + exInt);
+	Mpu_Data.gyro_f[1] = Mpu_Data.gyro_f[1] + Kp *(ey + eyInt);
+	Mpu_Data.gyro_f[2] = Mpu_Data.gyro_f[2] + Kp *(ez + ezInt);
 
 	// integrate quaternion rate and normalise						   //四元素的微分方程
 	q0 = q0 + (-q1*Mpu_Data.gyro_f[0] - q2*Mpu_Data.gyro_f[1] - q3*Mpu_Data.gyro_f[2]) *half_T;
@@ -193,13 +193,13 @@ void MPU_Calculate(void)
 
 	Mpu_Data.yaw   = fast_atan2(2*q1*q2+2*q0*q3, -2*q2*q2-2*q3*q3+1) *57.3f;
 	Mpu_Data.roll  = fast_atan2(2*q2*q3 + 2*q0*q1, -2*q1*q1 - 2*q2*q2 + 1) *57.3f;
-	Mpu_Data.pitch = asin(-2*q1*q3 + 2*q0*q2) *57.3f; 	
+	Mpu_Data.pitch = asin(-2*q1*q3 + 2*q0*q2) *57.3f;
 }
-	
-	
+
+
 	//GPIOC->ODR ^= GPIO_Pin_14;
-	
+
 	//250us
-	
+
 }
 */

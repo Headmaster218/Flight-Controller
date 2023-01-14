@@ -86,7 +86,7 @@ void IIC2_DMA_Init(void)
 // µ¥×Ö½ÚÐ´Èë
 int I2C1_Soft_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data)
 {
-	
+
 	return I2C1_Soft_Mult_Write(SlaveAddress, REG_Address, &REG_data, 1);
 }
 

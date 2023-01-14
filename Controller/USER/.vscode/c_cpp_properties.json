@@ -3,16 +3,14 @@
         {
             "name": "Airplane",
             "includePath": [
-                "d:\\STM32\\My Project\\Flight Controller\\Controller\\CORE",
-                "d:\\STM32\\My Project\\Flight Controller\\Controller\\STM32F10x_FWLib\\inc",
-                "d:\\STM32\\My Project\\Flight Controller\\Controller\\USER",
-                "d:\\STM32\\My Project\\Flight Controller\\Controller\\HARDWARE",
-                "d:\\STM32\\My Project\\Flight Controller\\Controller\\SYSTEM",
-                "d:\\STM32\\My Project\\my-stm32f1xx-library\\HARDWARE",
-                "C:\\Keil_v5\\ARM\\ARMCC\\include",
-                "C:\\Keil_v5\\ARM\\ARMCC\\include\\rw",
-                "d:\\STM32\\My Project\\Flight Controller\\Controller\\STM32F10x_FWLib\\src",
-                "d:\\STM32\\My Project\\Flight Controller\\Controller"
+                "d:\\Program_Data\\STM32\\Flight-Controler\\Controller\\CORE",
+                "d:\\Program_Data\\STM32\\Flight-Controler\\Controller\\STM32F10x_FWLib\\inc",
+                "d:\\Program_Data\\STM32\\Flight-Controler\\Controller\\USER",
+                "d:\\Program_Data\\STM32\\Flight-Controler\\Controller\\HARDWARE",
+                "d:\\Program_Data\\STM32\\Flight-Controler\\Controller\\SYSTEM",
+                "d:\\Program_Data\\STM32\\my-stm32f1xx-library\\HARDWARE",
+                "d:\\Program_Data\\STM32\\Flight-Controler\\Controller\\STM32F10x_FWLib\\src",
+                "d:\\Program_Data\\STM32\\Flight-Controler\\Controller"
             ],
             "defines": [
                 "STM32F10X_LD",

@@ -15,7 +15,7 @@
 struct serio_data_ serio_data;
 
 void PWM_Output()
-{//25-125
+{ // 25-125
 	TIM_SetCompare1(TIM3, serio_data.pwm_output_offset[0] + serio_data.pwm_output[0]);
 	TIM_SetCompare4(TIM3, serio_data.pwm_output_offset[1] + serio_data.pwm_output[1]);
 	TIM_SetCompare3(TIM3, serio_data.pwm_output_offset[2] + serio_data.pwm_output[2]);
@@ -89,8 +89,8 @@ void PWM_Init(u16 arr, u16 psc)
 	TIM_Cmd(TIM2, ENABLE); // Ê¹ÄÜTIM3
 
 	serio_data.pwm_output_offset[0] = 250;
-	serio_data.pwm_output_offset[1] = 750+40;
-	serio_data.pwm_output_offset[2] = 750-45;
+	serio_data.pwm_output_offset[1] = 750 + 40;
+	serio_data.pwm_output_offset[2] = 750 - 45;
 	serio_data.pwm_output_offset[3] = 750;
 	serio_data.pwm_output_offset[4] = 750;
 

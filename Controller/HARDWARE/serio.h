@@ -4,9 +4,9 @@
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
  * @LastEditTime: 2023-01-03 19:38:24
  * @FilePath: \USERd:\STM32\My Project\Flight Controller\HARDWARE\serio.h
- * @Description: 
- * 
- * Copyright (c) 2023 by Headmaster1615, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2023 by Headmaster1615, All Rights Reserved.
  */
 #ifndef __SERIO_H
 #define __SERIO_H
@@ -14,10 +14,10 @@
 
 struct serio_data_
 {
-    u16 pwm_output_offset[5];//电调，左翼，右翼，平尾，垂尾pwm基准值
-    short pwm_output[5];//电调，(左翼，右翼//+-170max,+-130normal)，平尾，垂尾
+    u16 pwm_output_offset[5]; // 电调，左翼，右翼，平尾，垂尾pwm基准值
+    short pwm_output[5];      // 电调，(左翼，右翼//+-170max,+-130normal)，平尾，垂尾
 };
 
-void PWM_Init(u16 arr,u16 psc);
+void PWM_Init(u16 arr, u16 psc);
 void PWM_Output(void);
 #endif
