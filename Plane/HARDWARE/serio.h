@@ -12,10 +12,11 @@
 #define __SERIO_H
 #include "sys.h"
 
-struct serio_data_
+struct serio_Data_
 {
     u16 pwm_output_offset[5]; // 电调，左翼，右翼，平尾，垂尾pwm基准值
     short pwm_output[5];      // 电调，(左翼，右翼//+-170max,+-130normal)，平尾，垂尾
+    short last_pwm_output[5]; // 电调，(左翼，右翼//+-170max,+-130normal)，平尾，垂尾
 };
 
 void PWM_Init(u16 arr, u16 psc);

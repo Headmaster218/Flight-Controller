@@ -2,8 +2,8 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-17 00:21:42
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-05 15:17:55
- * @FilePath: \USERd:\STM32\My Project\Flight Controller\Controller\HARDWARE\24G.h
+ * @LastEditTime: 2023-01-14 23:50:28
+ * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Controller\HARDWARE\24G.h
  * @Description:
  *
  * Copyright (c) 2023 by Headmaster1615, All Rights Reserved.
@@ -23,7 +23,9 @@ struct receive_data_ // 18 Byte
     u8 spd;         // km/h
     u8 voltage;     //(V-10.6)*50(percent)
     u8 temperature; // C*2-100
-    u8 reserved[3];
+
+    u8 bits; // 0-7 0:GPS Offlie flag 1:GPS locate state 2:MPU6050 Offlie flag
+    u8 reserved[2];
 
     short latitude;    //(degree*100)
     short longitude;   //(degree*100)

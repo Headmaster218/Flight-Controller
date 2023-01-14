@@ -1,7 +1,7 @@
 #ifndef __MPU6050_H
 #define __MPU6050_H
 
-extern struct _Mpu_Data Mpu_Data;
+extern struct _MPU_Data MPU_Data;
 #include "sys.h"
 #include "iic.h"
 #include "delay.h"
@@ -80,7 +80,7 @@ extern struct _Mpu_Data Mpu_Data;
 // 如果接V3.3,则IIC地址�?0X69(不包含最低位).
 #define MPU_ADDR 0X68
 
-struct _Mpu_Data
+struct _MPU_Data
 {
 	short acce[3];
 	short temp;
@@ -93,9 +93,11 @@ struct _Mpu_Data
 		short acce[3];
 		short gyro[3];
 	} offset;
+	u8 offline_cnt;	// 掉线计数
+	u8 offline_flag;// 掉线标志
 };
 
-u8 MPU_Init(void);
+u8 MPU_Init(u8);
 void MPU_Calculate(void);
 void MPU_Fast_Calculate(void);
 void MPU_My_Calculate(void);

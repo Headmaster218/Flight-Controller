@@ -76,7 +76,15 @@ void USART3_IRQHandler(void) // ø’œ–÷–∂œ
 
 	while (USART_RX_BUF[temppointer++] != 'N')
 		;
-	GPS_Data.speed = atoi(USART_RX_BUF + temppointer + 1);
+	if(*(USART_RX_BUF + temppointer + 1)<='9' && *(USART_RX_BUF + temppointer + 1)>='0')
+	{
+		GPS_Data.speed = atoi(USART_RX_BUF + temppointer + 1);
+		GPS_Data.locate_state = 1;
+	}
+	else
+	{
+		GPS_Data.locate_state = 0;
+	}
 	while (USART_RX_BUF[temppointer++] != '$' && temppointer < 199)
 		;
 	if (temppointer == 199)

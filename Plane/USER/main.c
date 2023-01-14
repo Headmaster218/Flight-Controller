@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-25 14:52:32
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-14 19:18:06
+ * @LastEditTime: 2023-01-14 23:41:54
  * @FilePath: \USER\main.c
  * @Description:
  *
@@ -35,18 +35,14 @@ int main(void)
 	Wireless_Init();
 	GPS_Init();
 	TIM1_Int_Init(720, 1000);
-	// HardwareInit
 	delay_ms(100);
-	MPU_Init();
+	MPU_Init(1);
 	// OLED_Init();
-	// OLED_ShowString(0,0,"   cTime:  :  :",16);
-	// OLED_ShowString(0,2,"H:   M  GPSx",16);
-
+	
 	__set_PRIMASK(0); // Enable all interrupt
 
 	while (1)
 	{
-
 		delay_ms(10);
 	}
 }
@@ -55,7 +51,7 @@ u8 cnt = 0;
 // 100Hz
 void TIM1_UP_IRQHandler(void) // TIM3中断
 {
-	////////////////////////串口重新接收//////////////////////////////////
+	////////////////////////串口DMA重新设置//////////////////////////////////
 	if (uart_time_cnt++ > 1)
 	{
 		DMA1_Channel5->CCR &= 0xFE; // disable dma
@@ -63,28 +59,58 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 		DMA1_Channel5->CCR |= 1; // enable dma
 	}
 
-	////////////////////////遥控器掉线检测////////////////////////////////
+	////////////////////////掉线检测//////////////////////////////////////
 	controler_offline_cnt++;
 	if (controler_offline_cnt > 50)
 	{
-		controler_offline_cnt = 69;
+		controler_offline_cnt = 60;
 		controler_offline_flag = 1;
-		PCout(14) = 1; // 掉线开灯
+		PCout(14) = 1; // 遥控器掉线开灯
 	}
 	else
 	{
 		controler_offline_flag = 0;
 	}
 
-	////////////////////////Loop清零//////////////////////////////////////
+	GPS_Data.offline_cnt++;
+	if (GPS_Data.offline_cnt > 70)
+	{
+		GPS_Data.offline_cnt = 80;
+		GPS_Data.offline_flag = 1;
+	}
+	else
+	{
+		GPS_Data.offline_flag = 0;
+	}
+
+	MPU_Data.offline_cnt++;
+	if (MPU_Data.offline_cnt > 70)
+	{
+		MPU_Data.offline_cnt = 80;
+		MPU_Data.offline_flag = 1;
+		MPU_Init(0);
+	}
+	else
+	{
+		MPU_Data.offline_flag = 0;
+	}
+
+	////////////////////////Loop清零，1Hz//////////////////////////////////////
 	if (cnt == 99)
+	{
 		cnt = 0;
+	}
 	else
 		cnt++;
+
 	////////////////////////100Hz/////////////////////////////////////////
 	Get_Adc();
 	if (MPU_Get_Raw_Data())
+	{
 		MPU_My_Calculate();
+		MPU_Data.offline_cnt = 0;
+	}
+
 	/////////////////////////////////////////////////////////////////////
 	if (cnt % 2) // 50Hz
 	{
