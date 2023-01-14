@@ -73,6 +73,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 	{
 		controler_offline_cnt=69;
 		controler_offline_flag=1;
+		PCout(14)=1;//掉线开灯
 	}
 	else
 	{
