@@ -66,7 +66,7 @@ u8 MPU_Get_Raw_Data(void)
 	u8 MPU_reg_buf[14],i = 0;
 	short *MPU_data = (void*)Mpu_Data.acce;
 	if(ERROR==I2C1_Soft_Mult_Read(MPU_ADDR,MPU_ACCEL_XOUTH_REG,MPU_reg_buf,14))
-		return 0;
+		return ERROR;
 	for(;i < 7;i++)
 		MPU_data[i] = ((u16)MPU_reg_buf[i*2]<<8)|MPU_reg_buf[i*2+1]; 
 	Mpu_Data.gyro[0] +=Mpu_Data.offset.gyro[0];
@@ -84,7 +84,7 @@ u8 MPU_Get_Raw_Data(void)
 	Mpu_Data.acce_f[2] = Mpu_Data.acce[2]*0.001196326;
 	
 	Mpu_Data.temp = (3653+((double)Mpu_Data.temp)*0.294118);
-	return 1;
+	return SUCCESS;
 }
 
 //wait 5s to set offset

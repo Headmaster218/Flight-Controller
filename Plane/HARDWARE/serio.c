@@ -33,8 +33,8 @@ void PWM_Output()
 	else
 	{
 		serio_data.pwm_output[0] = receive_Data.acc*2.5;
-		serio_data.pwm_output[1] = LIMIT((((short)receive_Data.LR-100)*-1.5 - receive_Data.flap/3),-150,150);//+-150
-		serio_data.pwm_output[2] = LIMIT((((short)receive_Data.LR-100)*-1.5 + receive_Data.flap/3),-150,150);//+-150
+		serio_data.pwm_output[1] = LIMIT((((short)receive_Data.LR-100)*-1.5 - ((short)receive_Data.flap-100)),-150,150);//+-150
+		serio_data.pwm_output[2] = LIMIT((((short)receive_Data.LR-100)*-1.5 + ((short)receive_Data.flap-100)),-150,150);//+-150
 		serio_data.pwm_output[3] = ((short)receive_Data.UD-100)*1.5;
 		serio_data.pwm_output[4] = ((short)receive_Data.HLR-100)*1.5;
 	}
@@ -112,9 +112,9 @@ void PWM_Init(u16 arr, u16 psc)
 	
 	serio_data.pwm_output_offset[0] = 500;
 	serio_data.pwm_output_offset[1] = 750+40;
-	serio_data.pwm_output_offset[2] = 750-45;
+	serio_data.pwm_output_offset[2] = 750-60;
 	serio_data.pwm_output_offset[3] = 750+25;
-	serio_data.pwm_output_offset[4] = 750;
+	serio_data.pwm_output_offset[4] = 750+40;
 
 	serio_data.pwm_output[0] = 0;
 	serio_data.pwm_output[1] = 0;

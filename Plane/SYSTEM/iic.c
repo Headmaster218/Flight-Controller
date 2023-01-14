@@ -8,7 +8,6 @@ u8 I2C_RX_BUF[20], I2C_TX_BUF[20];
 
 void Soft_IIC1_Init(void)
 {
-	u8 i = 0;
 	GPIO_InitTypeDef GPIO_InitStructure;
 	I2C_InitTypeDef I2C_InitStructure;
 
@@ -25,8 +24,8 @@ void Soft_IIC1_Init(void)
 	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
 	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
 	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-	I2C_InitStructure.I2C_ClockSpeed = 100000; // 400,000 / 8
+	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_16_9;
+	I2C_InitStructure.I2C_ClockSpeed = 300000; // 400,000 / 8
 	I2C_InitStructure.I2C_OwnAddress1 = 0x01;
 	I2C_Init(I2C1, &I2C_InitStructure);
 	I2C_Cmd(I2C1, ENABLE);
@@ -87,7 +86,8 @@ void IIC2_DMA_Init(void)
 // 单字节写入
 int I2C1_Soft_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data)
 {
-	I2C1_Soft_Mult_Write(SlaveAddress, REG_Address, &REG_data, 1);
+	
+	return I2C1_Soft_Mult_Write(SlaveAddress, REG_Address, &REG_data, 1);
 }
 
 int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
@@ -137,7 +137,9 @@ int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
 // 单字节读取
 int I2C1_Soft_Single_Read(u8 SlaveAddress, u8 REG_Address)
 {
-	return I2C1_Soft_Mult_Read(SlaveAddress, REG_Address, &REG_Address, 1);
+	u8 back;
+	I2C1_Soft_Mult_Read(SlaveAddress, REG_Address, &back, 1);
+	return back;
 }
 
 // 多字节读取
@@ -208,5 +210,5 @@ int I2C1_Soft_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
 	while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED))
 		; // EV7
 	I2C_AcknowledgeConfig(I2C1, ENABLE);
-	return 0;
+	return SUCCESS;
 }

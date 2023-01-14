@@ -58,8 +58,13 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		DMA1_Channel5->CCR |= 1; // enable dma
 	}
 	
-	//if(MPU_Get_Raw_Data())
-		//MPU_My_Calculate();
+	if(MPU_Get_Raw_Data())
+		MPU_My_Calculate();
+	///////////down////////up
+	//pitch 0  -180  180  +180
+	////////L/////////R
+	//roll	0	-90	-180
+	
 	if(cnt==99)
 	{
 		cnt=0;

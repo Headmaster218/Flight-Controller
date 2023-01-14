@@ -41,12 +41,7 @@ int main(void)
 	//OLED_Init();
 	//OLED_ShowString(0,0,"   cTime:  :  :",16);
 	//OLED_ShowString(0,2,"H:   M  GPSx",16);
-	/*
-	USART3->SR;USART3->DR;
-	DMA1_Channel3->CCR &= 0xFE;//disable dma
-	DMA1_Channel3->CNDTR =200;
-	DMA1_Channel3->CCR |=1;//enable dma
-*/
+
 
 	__set_PRIMASK(0);//Enable all interrupt
 
@@ -64,7 +59,7 @@ u8 cnt=0;
 //100Hz
 void TIM1_UP_IRQHandler(void)   //TIM3中断
 {
-		
+	////////////////////////串口重新接收//////////////////////////////////
 	if(uart_time_cnt++>1)
 	{
 		DMA1_Channel5->CCR &= 0xFE; // disable dma
@@ -72,6 +67,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		DMA1_Channel5->CCR |= 1; // enable dma
 	}
 	
+	////////////////////////遥控器掉线检测////////////////////////////////
 	controler_offline_cnt++;
 	if(controler_offline_cnt>50)
 	{
@@ -83,21 +79,22 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		controler_offline_flag=0;
 	}
 	
-	
+	////////////////////////Loop清零//////////////////////////////////////
 	if(cnt==99)
 		cnt=0;
 	else
 		cnt++;
+	////////////////////////100Hz/////////////////////////////////////////
 	Get_Adc();
 	if(MPU_Get_Raw_Data())
 		MPU_My_Calculate();
+	/////////////////////////////////////////////////////////////////////
 	if(cnt%2)//50Hz
 	{
 		PWM_Output();
 	}
 	if(cnt%25==0)//4Hz
 	{
-		PCout(14)=receive_Data.bits&1;
 		Wireless_Send_Data();
 	}
 	

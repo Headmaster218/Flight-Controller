@@ -141,7 +141,7 @@ void OLED_ShowFloat(u8 x, u8 y, float num, u8 ilen, u8 flen, u8 size2)
 	i = flen;
 	while (i--)
 		num *= 10;
-	OLED_ShowNum(x + size2 / 2 * ilen + size2/4, y, num, flen, size2);
+	OLED_ShowNum(x + size2 / 2 * ilen + size2/4, y, num<0?-num:num, flen, size2);
 }
 
 //显示数字
@@ -159,6 +159,7 @@ void OLED_ShowNum(u8 x, u8 y, int num, u8 len, u8 size2)
 		num = -num;
 		OLED_ShowChar(x, y, '-', size2);
 		x += size2 / 2;
+		len--;
 	}
 	for (t = 0; t < len; t++)
 	{

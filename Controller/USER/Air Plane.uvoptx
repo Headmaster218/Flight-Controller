@@ -153,45 +153,12 @@
           <Name></Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>24</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134222518</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\HARDWARE\24G.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\Air_Plane\../HARDWARE/24G.c\24</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>176</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134223180</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\HARDWARE\091OLED.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\Air_Plane\../HARDWARE/091OLED.c\176</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Mpu_Data,0x10</ItemText>
+          <ItemText>Mpu_Data,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
@@ -217,11 +184,6 @@
           <count>5</count>
           <WinNumber>1</WinNumber>
           <ItemText>receive_Data,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>tmp</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

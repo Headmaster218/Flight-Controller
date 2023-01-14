@@ -52,6 +52,7 @@ void DMA1_Channel5_IRQHandler()
     if(DMA_receive_Data.ECC_Code == 0)
     {
         receive_Data = DMA_receive_Data;
+		PCout(14)=receive_Data.bits&1;
     }
 }
 

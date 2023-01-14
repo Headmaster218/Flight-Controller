@@ -22,7 +22,7 @@ struct receive_data_//18 Byte
     u8 height;// /10
     u8 spd;//km/h
     u8 voltage;//(V-10.6)*50(percent)
-    u8 temperature;//(C+100)*2
+    u8 temperature;//C*2-100
     u8 reserved[3];
 
     short latitude;//(degree*100)

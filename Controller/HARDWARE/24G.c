@@ -28,7 +28,9 @@ void OLED_Receive_Refresh(void)
 	OLED_ShowString(83,2,"V:",16);
     OLED_ShowNum(96,2,receive_Data.spd,4,16);  
 	OLED_ShowString(83,4,"T:",16);
-    OLED_ShowNum(96,4,receive_Data.temperature/2-50,4,16);
+    OLED_ShowNum(96,4,(receive_Data.temperature*2-100),4,16);
+	OLED_ShowFloat(38,0,(float)receive_Data.pitch/100,3,2,16);
+	OLED_ShowFloat(38,2,(float)receive_Data.roll/100,3,2,16);
 }
 
 void Wireless_Send_Data()
@@ -43,14 +45,6 @@ void Wireless_Send_Data()
     send_Data.bits=PBin(12)?send_Data.bits|1:send_Data.bits&0xFE;
     for(;i<sizeof(send_Data);i++)
         send_Data.ECC_Code += *((u8*)&send_Data+i);
-	/*
-	for(;i<sizeof(send_Data);i++)
-	{
-		((u8*)&send_Data)[i]=i;
-	}
-	send_Data.ECC_Code=0;
-	    for(i=0;i<sizeof(send_Data);i++)
-        send_Data.ECC_Code += *((u8*)&send_Data+i);*/
 
 	DMA1_Channel4->CCR &= 0xFE; // disable dma
 	DMA1_Channel4->CNDTR = sizeof(send_Data);

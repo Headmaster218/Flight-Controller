@@ -85,10 +85,9 @@ struct _Mpu_Data{
 	short acce[3];
 	short temp;
 	short gyro[3];
-	float acce_f[3];
-	float gyro_f[3];
-	float dps_f[3];
-	float yaw, roll, pitch;
+	double acce_f[3];
+	double gyro_f[3];
+	double yaw, roll, pitch;
 	struct _offset{
 		short acce[3];
 		short gyro[3];

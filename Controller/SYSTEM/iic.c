@@ -86,8 +86,8 @@ void IIC2_DMA_Init(void)
 // 单字节写入
 int I2C1_Soft_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data)
 {
-	I2C1_Soft_Mult_Write(SlaveAddress, REG_Address, &REG_data, 1);
-	return 0;
+	
+	return I2C1_Soft_Mult_Write(SlaveAddress, REG_Address, &REG_data, 1);
 }
 
 int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
@@ -137,7 +137,9 @@ int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
 // 单字节读取
 int I2C1_Soft_Single_Read(u8 SlaveAddress, u8 REG_Address)
 {
-	return I2C1_Soft_Mult_Read(SlaveAddress, REG_Address, &REG_Address, 1);
+	u8 back;
+	I2C1_Soft_Mult_Read(SlaveAddress, REG_Address, &back, 1);
+	return back;
 }
 
 // 多字节读取
@@ -208,5 +210,5 @@ int I2C1_Soft_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
 	while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED))
 		; // EV7
 	I2C_AcknowledgeConfig(I2C1, ENABLE);
-	return 0;
+	return SUCCESS;
 }
