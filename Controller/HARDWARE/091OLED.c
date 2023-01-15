@@ -2,8 +2,8 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-11-24 22:00:53
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-06 13:09:55
- * @FilePath: \USERd:\STM32\My Project\Flight Controller\Controller\HARDWARE\091OLED.c
+ * @LastEditTime: 2023-01-15 15:44:17
+ * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Controller\HARDWARE\091OLED.c
  * @Description:
  * OLED library
  * Copyright (c) 2022 by Headmaster1615, All Rights Reserved.
@@ -127,17 +127,24 @@ u32 oled_pow(u8 m, u8 n)
 //  x,y :起点坐标
 //  ilen :整数的位数
 //  flen :小数的位数
-//  size:字体大小16/8
+//  size:字体大小16/12
 void OLED_ShowFloat(u8 x, u8 y, float num, u8 ilen, u8 flen, u8 size2)
 {
 	u8 i;
 	size2 = size2 == 16 ? 16 : 12;
+	if(num < 0)
+	{
+		num = -num;
+		OLED_ShowChar(x, y, '-', size2);
+		flen--;
+		x += size2 / 2;
+	}
 	OLED_ShowChar(x + size2 / 2 * ilen, y, '.', size2);
 	OLED_ShowNum(x, y, num, ilen, size2);
 	i = flen;
 	while (i--)
 		num *= 10;
-	OLED_ShowNum(x + size2 / 2 * ilen + size2 / 4, y, num < 0 ? -num : num, flen, size2);
+	OLED_ShowNum(x + size2 / 2 * ilen + size2 / 4, y, num, flen, size2);
 }
 
 // 显示数字
