@@ -1,8 +1,8 @@
 /*
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-25 14:52:32
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-15 15:30:18
+ * @LastEditors: Headmaster1615(Mac)  e-mail:hm-218@qq.com
+ * @LastEditTime: 2023-01-15 19:37:49
  * @FilePath: \USER\main.c
  * @Description:
  *
@@ -32,19 +32,18 @@ int main(void)
 	ADC_DMA_Init();
 	Wireless_Init();
 	TIM1_Int_Init(720, 1000);
-	// HardwareInit
 	delay_ms(100);
 	MPU_Init();
 	OLED_Init();
 	__set_PRIMASK(0); // Enable all interrupt
-	OLED_Receive_Refresh();
+
 	while (1) // 没有中断时3,000,000/s  2,800,000
 	{
 		CPU_Free_Time++;
 	}
 }
 
-extern u8 uart_time_cnt;
+
 u8 cnt = 0;
 // 100Hz
 void TIM1_UP_IRQHandler(void) // TIM3中断
@@ -56,26 +55,28 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 		DMA1_Channel5->CCR |= 1; // enable dma
 	}
 
-	if (MPU_Get_Raw_Data())
-		MPU_My_Calculate();
+	//if (MPU_Get_Raw_Data())
+	//	MPU_My_Calculate();
 
 
 	if (cnt == 99)
-	{
 		cnt = 0;
-		OLED_ShowFloat(0, 0, (float)ADC_Value[6].ADC_raw_Value * 0.00459, 1, 2, 16);
-		OLED_ShowChar(28, 0, 'V', 16);
-		//
-	}
 	else
 		cnt++;
+
 	if (cnt % 2) // 50Hz
 	{
 		PWM_Output();
 	}
+
 	if (cnt % 5 == 0) // 20Hz
 	{
 		Wireless_Send_Data();
+	}
+
+	if (cnt % 25 == 0) // 4Hz
+	{
+		OLED_Receive_Refresh();
 	}
 
 	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET) // 检查指定的TIM中断发生与否:TIM 中断�?

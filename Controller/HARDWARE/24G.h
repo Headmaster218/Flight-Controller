@@ -12,6 +12,7 @@
 #define __24G_H
 #include "delay.h"
 
+extern u8 uart_time_cnt;
 extern struct send_data_ send_Data;
 extern struct receive_data_ receive_Data, DMA_receive_Data;
 

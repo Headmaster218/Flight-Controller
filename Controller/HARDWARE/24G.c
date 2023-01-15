@@ -1,8 +1,8 @@
 /*
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-17 00:21:42
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-15 15:25:57
+ * @LastEditors: Headmaster1615(Mac)  e-mail:hm-218@qq.com
+ * @LastEditTime: 2023-01-15 19:33:44
  * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Controller\HARDWARE\24G.c
  * @Description:
  *
@@ -19,18 +19,39 @@ struct receive_data_ receive_Data, DMA_receive_Data;
 
 void OLED_Receive_Refresh(void)
 {
+    if (receive_Data.bits & 0x01)
+    {
+        OLED_ShowString(0, 6, "GPS OFFLINE", 16);
+    }
+    else if (receive_Data.bits & 0x02)
+    {
+        OLED_ShowString(0, 6, "GPS No LOCATE", 16);
+    }
+    else
+    {
+        OLED_ShowNum(0, 6, receive_Data.longitude, 8, 16);
+        OLED_ShowNum(63, 6, receive_Data.latitude, 8, 16);
+        OLED_ShowString(83, 0, "H:", 16);
+        OLED_ShowNum(96, 0, receive_Data.height * 10, 4, 16);
+        OLED_ShowString(83, 2, "V:", 16);
+        OLED_ShowNum(96, 2, receive_Data.spd, 4, 16);
+    }
+
+    if (receive_Data.bits & 0x04)
+    {
+        OLED_ShowString(38, 0, "NO MPU", 16);
+        OLED_ShowString(38, 2, "NO MPU", 16);
+    }
+    else
+    {
+        OLED_ShowFloat(38, 0, (float)receive_Data.pitch / 100, 3, 3, 16);
+        OLED_ShowFloat(38, 2, (float)receive_Data.roll / 100, 3, 3, 16);
+        OLED_ShowString(83, 4, "T:", 16);
+        OLED_ShowFLoat(96, 4, ((float)receive_Data.temperature - 100) / 3, 2, 1, 16);
+    }
     OLED_ShowNum(0, 2, receive_Data.voltage * 10 / 7 + 950, 4, 16);
-    OLED_ShowString(0, 4, "angle", 16);
-    OLED_ShowNum(0, 6, receive_Data.longitude, 8, 16);
-    OLED_ShowNum(63, 6, receive_Data.latitude, 8, 16);
-    OLED_ShowString(83, 0, "H:", 16);
-    OLED_ShowNum(96, 0, receive_Data.height * 10, 4, 16);
-    OLED_ShowString(83, 2, "V:", 16);
-    OLED_ShowNum(96, 2, receive_Data.spd, 4, 16);
-    OLED_ShowString(83, 4, "T:", 16);
-    OLED_ShowFLoat(96, 4, ((float)receive_Data.temperature-100)/3, 2,1, 16);
-    OLED_ShowFloat(38, 0, (float)receive_Data.pitch / 100, 3, 2, 16);
-    OLED_ShowFloat(38, 2, (float)receive_Data.roll / 100, 3, 2, 16);
+    OLED_ShowFloat(0, 0, (float)ADC_Value[6].ADC_raw_Value * 0.00459, 1, 2, 16);
+	OLED_ShowChar(28, 0, 'V', 16);
 }
 
 void Wireless_Send_Data()
@@ -60,7 +81,6 @@ void DMA1_Channel5_IRQHandler()
     if (DMA_receive_Data.ECC_Code == 0)
     {
         receive_Data = DMA_receive_Data;
-        OLED_Receive_Refresh();
     }
 }
 
