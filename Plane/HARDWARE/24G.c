@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-17 00:21:42
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-14 23:48:34
+ * @LastEditTime: 2023-01-15 15:21:14
  * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Plane\HARDWARE\24G.c
  * @Description:
  *
@@ -29,7 +29,7 @@ void Wireless_Send_Data()
     send_Data.voltage = (u8)((ADC_Value[0].num - 9500) * 7 / 100);
     send_Data.pitch = (short)(MPU_Data.pitch * 100);
     send_Data.roll = (short)(MPU_Data.roll * 100);
-    send_Data.temperature = (u8)((MPU_Data.temp + 10000) / 200);
+    send_Data.temperature = (u8)(MPU_Data.temp*3/100 + 100);
     send_Data.latitude = (short)(GPS_Data.lat_f * 100);
     send_Data.longitude = (short)(GPS_Data.lon_f * 100);
     for (; i < sizeof(send_Data); i++)

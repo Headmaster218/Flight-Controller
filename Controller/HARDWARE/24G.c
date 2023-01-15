@@ -2,8 +2,8 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-17 00:21:42
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-10 10:26:42
- * @FilePath: \USERd:\STM32\My Project\Flight Controller\Controller\HARDWARE\24G.c
+ * @LastEditTime: 2023-01-15 15:25:57
+ * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Controller\HARDWARE\24G.c
  * @Description:
  *
  * Copyright (c) 2023 by Headmaster1615, All Rights Reserved.
@@ -28,7 +28,7 @@ void OLED_Receive_Refresh(void)
     OLED_ShowString(83, 2, "V:", 16);
     OLED_ShowNum(96, 2, receive_Data.spd, 4, 16);
     OLED_ShowString(83, 4, "T:", 16);
-    OLED_ShowNum(96, 4, (receive_Data.temperature * 2 - 100), 4, 16);
+    OLED_ShowFLoat(96, 4, ((float)receive_Data.temperature-100)/3, 2,1, 16);
     OLED_ShowFloat(38, 0, (float)receive_Data.pitch / 100, 3, 2, 16);
     OLED_ShowFloat(38, 2, (float)receive_Data.roll / 100, 3, 2, 16);
 }
