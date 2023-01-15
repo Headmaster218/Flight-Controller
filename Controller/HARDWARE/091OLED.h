@@ -22,7 +22,7 @@
 #endif
 
 #define BIG_FONT 16
-#define SMALL_FONT 8
+#define SMALL_FONT 12
 #define Max_Column 128
 #define OLED_CMD 0  // ะดรüม๎
 #define OLED_DATA 1 // ะดสýพÝ

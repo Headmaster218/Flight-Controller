@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-11-24 22:00:53
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-15 15:44:17
+ * @LastEditTime: 2023-01-15 15:59:03
  * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Controller\HARDWARE\091OLED.c
  * @Description:
  * OLED library
@@ -65,7 +65,10 @@ void OLED_Display_Cmd(u8 state)
 	OLED_WR_Byte(0X10 + 4 * state, OLED_CMD); // DCDC ON
 	OLED_WR_Byte(0XAE | state, OLED_CMD);	  // DISPLAY ON
 }
-
+/**
+ * @description: 		OLED清屏
+ * @return {*}
+ */
 void OLED_Clear(void)
 {
 	u8 i, n;
@@ -79,16 +82,11 @@ void OLED_Clear(void)
 	}
 }
 
-// 在指定位置显示一个字符,包括部分字符
-//  x:0~127
-//  y:0~63
-//  mode:0,反白显示;1,正常显示
-//  size:选择字体 16/8
 /**
- * @description:
- * @param {u8} x 0-127 pixel
- * @param {u8} y 0-7 page
- * @param {u8} chr char
+ * @description:	显示一个字符
+ * @param {u8} x	起点x坐标	0-127
+ * @param {u8} y 	起点y坐标	0-63
+ * @param {u8} chr	字符
  * @param {u8} Char_Size BIG_FONT/SMALL_FONT
  * @return {*}
  */
@@ -123,11 +121,16 @@ u32 oled_pow(u8 m, u8 n)
 	return result;
 }
 
-// 显示小数
-//  x,y :起点坐标
-//  ilen :整数的位数
-//  flen :小数的位数
-//  size:字体大小16/12
+/**
+ * @description: 		显示小数(负数时丢失一位小数精度)
+ * @param {u8} x		起点x坐标	0-127
+ * @param {u8} y		起点y坐标	0-7
+ * @param {float} num	要显示的数
+ * @param {u8} ilen		整数位数
+ * @param {u8} flen		小数位数
+ * @param {u8} size2	字体大小 BIG_FONT/SMALL_FONT
+ * @return {*}
+ */
 void OLED_ShowFloat(u8 x, u8 y, float num, u8 ilen, u8 flen, u8 size2)
 {
 	u8 i;
@@ -147,12 +150,16 @@ void OLED_ShowFloat(u8 x, u8 y, float num, u8 ilen, u8 flen, u8 size2)
 	OLED_ShowNum(x + size2 / 2 * ilen + size2 / 4, y, num, flen, size2);
 }
 
-// 显示数字
-//  x,y :起点坐标
-//  len :数字的位数
-//  size:字体大小16/8
-//  mode:模式	0,填充模式;1,叠加模式
-//  num:数值(-32767~32766);
+
+/**
+ * @description:		显示数字
+ * @param {u8} x		起点x坐标	0-127
+ * @param {u8} y		起点y页坐标	0-7
+ * @param {int} num		数字		(int)
+ * @param {u8} len		数字位数
+ * @param {u8} size2	字体大小	BIG_FONT/SMALL_FONT
+ * @return {*}
+ */
 void OLED_ShowNum(u8 x, u8 y, int num, u8 len, u8 size2)
 {
 	u8 t, temp;
@@ -180,7 +187,15 @@ void OLED_ShowNum(u8 x, u8 y, int num, u8 len, u8 size2)
 		OLED_ShowChar(x + (size2 / 2) * t, y, temp + '0', size2);
 	}
 }
-// 显示一个字符号串
+
+/**
+ * @description: 			显示字符串
+ * @param {u8} x			起始坐标	0-127 pixel
+ * @param {u8} y			起始页		0-7 page
+ * @param {u8} *chr			字符串
+ * @param {u8} Char_Size	字号		BIG_FONT/SMALL_FONT
+ * @return {*}
+ */
 void OLED_ShowString(u8 x, u8 y, u8 *chr, u8 Char_Size)
 {
 	u8 j = 0;
@@ -197,7 +212,15 @@ void OLED_ShowString(u8 x, u8 y, u8 *chr, u8 Char_Size)
 	}
 }
 
-/***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
+/**
+ * @description: 			显示BMP图片
+ * @param {u8} pos_x		起始点坐标x		0～127	
+ * @param {u8} pos_y		起始点页坐标y		0～7
+ * @param {u8} pic_x		图片宽度		0～127
+ * @param {u8} pic_y		图片高度		0～63
+ * @param {u8} BMP			图片首地址
+ * @return {*}
+ */
 void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[])
 {
 	unsigned int j = 0;
@@ -213,8 +236,11 @@ void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[])
 	}
 }
 
-/***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
-
+/**
+ * @description:	全屏幕刷新
+ * @param {u8} BMP	缓冲区
+ * @return {*}
+ */
 void OLED_Refresh(u8 BMP[]) // 35fps
 {
 	u16 i = 0;
@@ -226,12 +252,20 @@ void OLED_Refresh(u8 BMP[]) // 35fps
 	}
 }
 
-// dir:L,R
-// start:0-7
-// len:0-7
-// end:0-7
-// interval:0-7
+/**
+ * @description: 
+ * @return {*}
+ */
 #define Scroll_Cmd(cmd) OLED_WR_Byte(0x2e | cmd, OLED_CMD) // 启动滚动
+
+/**
+ * @description: 		屏幕内容垂直滚动
+ * @param {u8} dir		方向		'L' or 'R'
+ * @param {u8} start	起始页		0-7
+ * @param {u8} end		结束页		0-7
+ * @param {u8} interval	滚动速度	0-7
+ * @return {*}
+ */
 void Start_Horizontal_Scroll(u8 dir, u8 start, u8 end, u8 interval)
 {
 	Scroll_Cmd(0);
@@ -249,6 +283,11 @@ void Start_Horizontal_Scroll(u8 dir, u8 start, u8 end, u8 interval)
 	Scroll_Cmd(1);
 }
 
+/**
+ * @description: 		控制屏幕亮度
+ * @param {u8} bright	亮度值	0-255
+ * @return {*}
+ */
 void OLED_Set_Brightness(u8 bright)
 {
 	OLED_WR_Byte(0x81, OLED_CMD); // 设置对比度
