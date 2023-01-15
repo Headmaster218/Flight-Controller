@@ -53,18 +53,25 @@ void MPU_My_Calculate(void)
 
 		if (norm > 95 && norm < 105)
 		{
-			MPU_Data.pitch = fast_atan2(MPU_Data.acce[0], MPU_Data.acce[2]) / ANGLE_TO_RAD;
-			MPU_Data.yaw = fast_atan2(MPU_Data.acce[0], MPU_Data.acce[1]) / ANGLE_TO_RAD;
-			MPU_Data.roll = fast_atan2(MPU_Data.acce[2], MPU_Data.acce[1]) / ANGLE_TO_RAD;
+			MPU_Data.pitch_raw = fast_atan2(MPU_Data.acce[0], MPU_Data.acce[2]) / ANGLE_TO_RAD;
+			MPU_Data.yaw_raw = fast_atan2(MPU_Data.acce[0], MPU_Data.acce[1]) / ANGLE_TO_RAD;
+			MPU_Data.roll_raw = fast_atan2(MPU_Data.acce[2], MPU_Data.acce[1]) / ANGLE_TO_RAD;
 		}
 		MPU_times = 0;
 		total[0] = total[1] = total[2] = 0;
 	}
 	MPU_times++;
 
-	MPU_Data.pitch -= (double)MPU_Data.gyro[1] * 0.03051851 * 0.01;
-	MPU_Data.yaw += (double)MPU_Data.gyro[2] * 0.03051851 * 0.01;
-	MPU_Data.roll -= (double)MPU_Data.gyro[0] * 0.03051851 * 0.01; // 100hz;
+	MPU_Data.pitch_raw -= (double)MPU_Data.gyro[1] * 0.03051851 * 0.01;
+	MPU_Data.yaw_raw += (double)MPU_Data.gyro[2] * 0.03051851 * 0.01;
+	MPU_Data.roll_raw -= (double)MPU_Data.gyro[0] * 0.03051851 * 0.01; // 100hz;
+
+	///////////down////////up
+	// pitch_raw 0  -180  180  +180
+	////////L/////////R
+	// roll	0	-90	-180
+	MPU_Data.pitch=MPU_Data.pitch_raw-180;
+	MPU_Data.roll=-90-MPU_Data.roll_raw;
 }
 
 // acce x,y,z Temp ,Gyro x,y,z

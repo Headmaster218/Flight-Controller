@@ -87,6 +87,7 @@ struct _MPU_Data
 	short gyro[3];
 	double acce_f[3];
 	double gyro_f[3];
+	double yaw_raw, roll_raw, pitch_raw;
 	double yaw, roll, pitch;
 	struct _offset
 	{

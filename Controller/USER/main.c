@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-25 14:52:32
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-06 00:37:35
+ * @LastEditTime: 2023-01-15 15:30:18
  * @FilePath: \USER\main.c
  * @Description:
  *
@@ -58,10 +58,7 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 
 	if (MPU_Get_Raw_Data())
 		MPU_My_Calculate();
-	///////////down////////up
-	// pitch 0  -180  180  +180
-	////////L/////////R
-	// roll	0	-90	-180
+
 
 	if (cnt == 99)
 	{
