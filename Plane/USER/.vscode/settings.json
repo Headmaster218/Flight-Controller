@@ -6,6 +6,7 @@
         "serio.h": "c",
         "sys.h": "c",
         "091oled.h": "c",
-        "24g.h": "c"
+        "24g.h": "c",
+        "my_math.h": "c"
     }
 }

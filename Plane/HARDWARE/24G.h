@@ -20,14 +20,14 @@ struct send_data_ // 16 Byte
 {
     u8 ECC_Code; // sum
     u8 height;   // /10
+
     u8 spd;      // km/h
-
     u8 voltage;     //(V-10.6)*50(percent)
+
     u8 temperature; //C*3+100
-
-    u8 bits; // 0-7 0:GPS Offlie flag 1:GPS locate state 2:MPU6050 Offlie flag
-    u8 reserved[2];
-
+    u8 bits; // 0-7 0:GPS Offlie flag 1:GPS locate state 2:MPU6050 Offlie flag  
+    
+    u16 distance; //m
     short latitude;    //(degree*100)
     short longitude;   //(degree*100)
     short pitch;       //*100

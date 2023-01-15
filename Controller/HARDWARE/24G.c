@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-17 00:21:42
  * @LastEditors: Headmaster1615(Mac)  e-mail:hm-218@qq.com
- * @LastEditTime: 2023-01-15 19:33:44
+ * @LastEditTime: 2023-01-15 20:04:48
  * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Controller\HARDWARE\24G.c
  * @Description:
  *
@@ -35,6 +35,7 @@ void OLED_Receive_Refresh(void)
         OLED_ShowNum(96, 0, receive_Data.height * 10, 4, 16);
         OLED_ShowString(83, 2, "V:", 16);
         OLED_ShowNum(96, 2, receive_Data.spd, 4, 16);
+        OLED_ShowNum(0, 4, receive_Data.distance, 4, 16);
     }
 
     if (receive_Data.bits & 0x04)

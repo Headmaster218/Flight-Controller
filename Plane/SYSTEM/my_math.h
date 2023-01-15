@@ -27,7 +27,7 @@ History:
 #include "math.h"
 
 #define TAN_MAP_RES 0.003921569f /* (smallest non-zero value in table) */
-#define RAD_PER_DEG 0.017453293f
+#define DEG2RAD 0.017453293f
 #define TAN_MAP_SIZE 256
 #define MY_PPPIII 3.14159f
 #define MY_PPPIII_HALF 1.570796f

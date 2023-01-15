@@ -1,8 +1,8 @@
 /*
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-17 00:21:42
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-15 15:38:07
+ * @LastEditors: Headmaster1615(Mac)  e-mail:hm-218@qq.com
+ * @LastEditTime: 2023-01-15 19:40:19
  * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Plane\HARDWARE\24G.c
  * @Description:
  *
@@ -25,6 +25,7 @@ void Wireless_Send_Data()
     send_Data.bits |= GPS_Data.locate_state << 1;
     send_Data.bits |= MPU_Data.offline_flag << 2;
     send_Data.height = (u8)(GPS_Data.height / 10);
+    send_Data.distance = GPS_Data.distance2home;
     send_Data.spd = (u8)(GPS_Data.speed);
     send_Data.voltage = (u8)((ADC_Value[0].num - 9500) * 7 / 100);
     send_Data.pitch = (short)(MPU_Data.pitch * 100);
@@ -34,11 +35,6 @@ void Wireless_Send_Data()
     send_Data.longitude = (short)(GPS_Data.lon_f * 100);
     for (; i < sizeof(send_Data); i++)
         send_Data.ECC_Code += *((u8 *)&send_Data + i);
-
-    /*	for(;i<sizeof(send_Data);i++)
-    {
-        ((u8*)&send_Data)[i]=i;
-    }*/
 
     DMA1_Channel4->CCR &= 0xFE; // disable dma
     DMA1_Channel4->CNDTR = sizeof(send_Data);
