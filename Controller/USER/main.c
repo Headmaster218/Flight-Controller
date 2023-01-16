@@ -27,7 +27,7 @@ int main(void)
 	delay_init();
 	LED_Init();
 	Soft_IIC1_Init();
-	PWM_Init(10000, 144); // 50hz
+	//PWM_Init(10000, 144); // 50hz
 	Adc_Init();
 	ADC_DMA_Init();
 	Wireless_Init();
@@ -66,7 +66,7 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 
 	if (cnt % 2) // 50Hz
 	{
-		PWM_Output();
+		//PWM_Output();
 	}
 
 	if (cnt % 5 == 0) // 20Hz

@@ -1,6 +1,6 @@
 Dependencies for Project 'Air Plane', Target 'Airplane': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
-F (.\main.c)(0x63C4E02E)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\HARDWARE -I ..\SYSTEM -I ..\..\..\my-stm32f1xx-library\HARDWARE-IC:\Users\Hm-Server\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_LD -DSTM32F10X_LD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x63C4F15C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\HARDWARE -I ..\SYSTEM -I ..\..\..\my-stm32f1xx-library\HARDWARE-IC:\Users\Hm-Server\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_LD -DSTM32F10X_LD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (stm32f10x.h)(0x63BFB4FB)
 I (..\CORE\core_cm3.h)(0x4D523B58)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
@@ -1007,7 +1007,7 @@ I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (..\SYSTEM\iic.h)(0x63C4C771)
 I (..\HARDWARE\OLEDFONT.h)(0x62681D2A)
 F (..\HARDWARE\091OLED.h)(0x63C4C771)()
-F (..\HARDWARE\24G.c)(0x63C4DA64)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\HARDWARE -I ..\SYSTEM -I ..\..\..\my-stm32f1xx-library\HARDWARE-IC:\Users\Hm-Server\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_LD -DSTM32F10X_LD -DUSE_STDPERIPH_DRIVER-o ..\obj\24g.o --omf_browse ..\obj\24g.crf --depend ..\obj\24g.d)
+F (..\HARDWARE\24G.c)(0x63C4F24C)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\HARDWARE -I ..\SYSTEM -I ..\..\..\my-stm32f1xx-library\HARDWARE-IC:\Users\Hm-Server\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_LD -DSTM32F10X_LD -DUSE_STDPERIPH_DRIVER-o ..\obj\24g.o --omf_browse ..\obj\24g.crf --depend ..\obj\24g.d)
 I (..\SYSTEM\sys.h)(0x63B4FCAD)
 I (..\USER\stm32f10x.h)(0x63BFB4FB)
 I (..\CORE\core_cm3.h)(0x4D523B58)

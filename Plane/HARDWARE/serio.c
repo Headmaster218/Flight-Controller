@@ -12,13 +12,25 @@
 #include "24G.h"
 #include "sys.h"
 #include "GPS.h"
+#include "MPU6050.h"
 
 struct serio_Data_ serio_Data;
 
 void PWM_Output()
 { // 25-125
 	// 50-150 250-750
-	if (controler_offline_flag)
+	if(receive_Data.bits&4 && !MPU_Data.offline_flag)
+	{//Auto Fly
+		if(GPS_Data.offline_flag)
+			serio_Data.pwm_output[0] = 150;
+		else
+			serio_Data.pwm_output[0] = (receive_Data.acc/*0-200*/-GPS_Data.speed/*km/h*/)*20;
+		serio_Data.pwm_output[1] = MPU_Data.roll;
+		serio_Data.pwm_output[2] = MPU_Data.roll;//+-150
+		serio_Data.pwm_output[3] = -MPU_Data.pitch;
+		serio_Data.pwm_output[4] = 0;
+	}
+	else if (controler_offline_flag)
 	{
 		if (GPS_Data.speed > 30)
 			serio_Data.pwm_output[0] = 150;

@@ -45,7 +45,7 @@ struct receive_data_ // 10 Byte
     u8 HLR;      // horizontal wing left-right 0-200
 
     u8 flap; // ΩÛ“Ì
-    u8 bits; // 0-7 0:LED
+    u8 bits; // 0-7 0:LED line	1:Auto Back	2:Auto Fly	3:
     u8 reserved[1];
     short end_of_this; //=0xFFFF
 };

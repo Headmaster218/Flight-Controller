@@ -64,7 +64,9 @@ void Wireless_Send_Data()
     send_Data.UD = (u8)(200 - ADC_Value[2].percent); // 右摇杆上下通道
     send_Data.LR = (u8)(ADC_Value[3].percent);       // 右摇杆左右通道
     send_Data.flap = (u8)(ADC_Value[4].percent);     // 左电位器通道
-    send_Data.bits = PBin(12) ? send_Data.bits | 1 : send_Data.bits & 0xFE;
+    send_Data.bits = PBin(12) ? send_Data.bits | 1 : send_Data.bits & 0xFE;//LED line
+	send_Data.bits = PBin(13) ? send_Data.bits | 2 : send_Data.bits & 0xFD;//Auto Back
+	send_Data.bits = PBin(14) ? send_Data.bits | 4 : send_Data.bits & 0xFB;//Auto Fly
     for (; i < sizeof(send_Data); i++)
         send_Data.ECC_Code += *((u8 *)&send_Data + i);
 
