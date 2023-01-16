@@ -19,15 +19,24 @@ struct serio_Data_ serio_Data;
 void PWM_Output()
 { // 25-125
 	// 50-150 250-750
-	if(receive_Data.bits&4 && !MPU_Data.offline_flag)
+	if((receive_Data.bits&4 && !MPU_Data.offline_flag)||controler_offline_flag)
 	{//Auto Fly
-		if(GPS_Data.offline_flag)
-			serio_Data.pwm_output[0] = 150;
+		if(!GPS_Data.offline_flag)
+		{
+			if(controler_offline_flag)
+			{
+				serio_Data.pwm_output[0] = (short)LIMIT(((short)60/*0-200*/-(short)GPS_Data.speed/*km/h*/)*20,0,500);
+			}
+			else
+			{
+				serio_Data.pwm_output[0] = (short)LIMIT(((short)receive_Data.acc/*0-200*/-(short)GPS_Data.speed/*km/h*/)*20,0,500);
+			}
+		}
 		else
-			serio_Data.pwm_output[0] = (receive_Data.acc/*0-200*/-GPS_Data.speed/*km/h*/)*20;
-		serio_Data.pwm_output[1] = MPU_Data.roll;
-		serio_Data.pwm_output[2] = MPU_Data.roll;//+-150
-		serio_Data.pwm_output[3] = -MPU_Data.pitch;
+			serio_Data.pwm_output[0] = 150;
+		serio_Data.pwm_output[1] = (short)MPU_Data.roll*1.5;
+		serio_Data.pwm_output[2] = (short)MPU_Data.roll*1.5;//+-150
+		serio_Data.pwm_output[3] = -(short)MPU_Data.pitch*1.5;
 		serio_Data.pwm_output[4] = 0;
 	}
 	else if (controler_offline_flag)
