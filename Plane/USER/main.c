@@ -49,7 +49,7 @@ int main(void)
 	}
 }
 u8 cnt = 0;
-
+u16 tmppp;
 // 100Hz
 void TIM1_UP_IRQHandler(void) // TIM3中断
 {
@@ -120,6 +120,7 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 	}
 	if (cnt % 25 == 0) // 4Hz
 	{
+		tmppp++;
 		Wireless_Send_Data();
 	}
 

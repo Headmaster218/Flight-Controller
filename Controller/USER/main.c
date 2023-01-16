@@ -48,7 +48,7 @@ u8 cnt = 0;
 // 100Hz
 void TIM1_UP_IRQHandler(void) // TIM3中断
 {
-	if (uart_time_cnt++ > 20)
+	if (uart_time_cnt++ > 2)
 	{
 		DMA1_Channel5->CCR &= 0xFE; // disable dma
 		DMA1_Channel5->CNDTR = sizeof(DMA_receive_Data);
