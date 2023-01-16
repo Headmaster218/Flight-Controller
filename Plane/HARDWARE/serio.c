@@ -21,7 +21,8 @@ void PWM_Output()
 	// 50-150 250-750
 	if((receive_Data.bits&4 && !MPU_Data.offline_flag)||controler_offline_flag)
 	{//Auto Fly
-		if(!GPS_Data.offline_flag)
+		
+		if (GPS_Data.speed > 30 && !GPS_Data.no_locate_flag)
 		{
 			if(controler_offline_flag)
 			{
@@ -32,23 +33,16 @@ void PWM_Output()
 				serio_Data.pwm_output[0] = (short)LIMIT(((short)receive_Data.acc/*0-200*/-(short)GPS_Data.speed/*km/h*/)*20,0,500);
 			}
 		}
+		else if(!controler_offline_flag)
+			serio_Data.pwm_output[0] = receive_Data.acc * 2.5;
 		else
-			serio_Data.pwm_output[0] = 150;
+			serio_Data.pwm_output[0] = 0;
+
+		
 		serio_Data.pwm_output[1] = (short)MPU_Data.roll*1.5;
 		serio_Data.pwm_output[2] = (short)MPU_Data.roll*1.5;//+-150
 		serio_Data.pwm_output[3] = -(short)MPU_Data.pitch*1.5;
-		serio_Data.pwm_output[4] = 0;
-	}
-	else if (controler_offline_flag)
-	{
-		if (GPS_Data.speed > 30)
-			serio_Data.pwm_output[0] = 150;
-		else
-			serio_Data.pwm_output[0] = 0;
-		serio_Data.pwm_output[1] = 0;
-		serio_Data.pwm_output[2] = 0;
-		serio_Data.pwm_output[3] = 0;
-		serio_Data.pwm_output[4] = 0;
+		serio_Data.pwm_output[4] = 100;
 	}
 	else
 	{
