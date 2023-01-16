@@ -24,7 +24,7 @@ void Wireless_Send_Data()
     send_Data.bits |= GPS_Data.offline_flag << 0;
     send_Data.bits |= GPS_Data.no_locate_flag << 1;
     send_Data.bits |= MPU_Data.offline_flag << 2;
-    send_Data.height = (u8)(GPS_Data.height / 10);
+    send_Data.height = (u8)(GPS_Data.height-GPS_Data.home_height / 2);
     send_Data.distance = GPS_Data.distance2home;
     send_Data.spd = (u8)(GPS_Data.speed);
     send_Data.voltage = (u8)((ADC_Value[0].num - 9500) * 7 / 100);

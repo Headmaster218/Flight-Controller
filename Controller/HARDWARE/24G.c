@@ -32,7 +32,7 @@ void OLED_Receive_Refresh(void)
         OLED_ShowNum(0, 6, receive_Data.longitude, 8, 16);
         OLED_ShowNum(63, 6, receive_Data.latitude, 8, 16);
         OLED_ShowString(83, 0, "H:", 16);
-        OLED_ShowNum(96, 0, receive_Data.height * 10, 4, 16);
+        OLED_ShowNum(96, 0, receive_Data.height * 2, 4, 16);
         OLED_ShowString(83, 2, "V:", 16);
         OLED_ShowNum(96, 2, receive_Data.spd, 4, 16);
         OLED_ShowNum(0, 4, receive_Data.distance, 4, 16);

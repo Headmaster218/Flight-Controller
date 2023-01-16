@@ -27,9 +27,9 @@ struct GPS_Data_
 	double lon_real, lat_real; // 实际经纬度
 	double home_lon, home_lat; // 起点经纬度
 	u8 num;					   // 卫星数量
-	short height;
-	short home_height; // 起点高度
-	short speed;		// km/h
+	float height;
+	float home_height; // 起点高度
+	float speed;		// km/h
 	u16 distance2home; // 米
 	u8 home_point_flag; // 起点设定完成标志
 	u8 no_locate_flag;	// 定位状态
