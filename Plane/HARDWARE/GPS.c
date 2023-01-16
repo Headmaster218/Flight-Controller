@@ -58,6 +58,8 @@ u8 home_pos_cnt=0;
 // IN 30 US
 void USART3_IRQHandler(void) // 空闲中断
 {
+	DMA1_Channel3->CCR &= 0xFE; // disable dma
+	GPS_Data.offline_cnt=0;
 	if (DMA1_Channel3->CNDTR < 25)
 	{
 		USART3->SR;
@@ -74,13 +76,12 @@ void USART3_IRQHandler(void) // 空闲中断
 	// 01234567890123456789012345678901234567890123456789012345678901234567890123456
 	// GPS数据处理
 	temppointer = 0;
-
-	while (USART_RX_BUF[temppointer++] != 'N')
-		;
-	if(*(USART_RX_BUF + temppointer + 1)<='9' && *(USART_RX_BUF + temppointer + 1)>='0')
+	if(USART_RX_BUF[15]!='N')
 	{
+		while (USART_RX_BUF[temppointer++] != 'N')
+			;
 		GPS_Data.speed = atoi(USART_RX_BUF + temppointer + 1);
-		GPS_Data.locate_state = 1;
+		GPS_Data.no_locate_flag = 0;
 		home_pos_cnt++;
 		if(!GPS_Data.home_point_flag&&home_pos_cnt>10)
 		{
@@ -93,7 +94,7 @@ void USART3_IRQHandler(void) // 空闲中断
 	else
 	{
 		home_pos_cnt=0;
-		GPS_Data.locate_state = 0;
+		GPS_Data.no_locate_flag = 1;
 	}
 	while (USART_RX_BUF[temppointer++] != '$' && temppointer < 199)
 		;
@@ -134,7 +135,7 @@ void USART3_IRQHandler(void) // 空闲中断
 	else
 		GPS_Data.speed = 0;
 
-	if(GPS_Data.home_point_flag&&GPS_Data.locate_state)
+	if(GPS_Data.home_point_flag&&!GPS_Data.no_locate_flag)
 	{
 		float dist_temp;
 		//R*arcos[cos(Y1)*cos(Y2)*cos(X1-X2)+sin(Y1)*sin(Y2)]。
@@ -142,7 +143,7 @@ void USART3_IRQHandler(void) // 空闲中断
 		GPS_Data.distance2home=sqrt((GPS_Data.height-GPS_Data.home_height)*(GPS_Data.height-GPS_Data.home_height)+ dist_temp*dist_temp);
 	}
 	// restart DMA
-	DMA1_Channel3->CCR &= 0xFE; // disable dma
+	
 	DMA1_Channel3->CNDTR = 200;
 	DMA1_Channel3->CCR |= 1; // enable dma
 

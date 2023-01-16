@@ -38,7 +38,9 @@ int main(void)
 	delay_ms(100);
 	MPU_Init(1);
 	// OLED_Init();
-	
+	controler_offline_cnt=51;
+	GPS_Data.offline_cnt=100;
+	MPU_Data.offline_cnt=100;
 	__set_PRIMASK(0); // Enable all interrupt
 
 	while (1)

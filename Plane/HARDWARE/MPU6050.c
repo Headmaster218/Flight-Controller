@@ -67,10 +67,13 @@ void MPU_My_Calculate(void)
 	MPU_Data.roll_raw -= (double)MPU_Data.gyro[0] * 0.03051851 * 0.01; // 100hz;
 
 	///////////down////////up
-	// pitch_raw 0  -180  180  +180
+	//pitch 0  -180  180  +180
 	////////L/////////R
 	// roll	0	-90	-180
-	MPU_Data.pitch=MPU_Data.pitch_raw-180;
+	if(MPU_Data.pitch_raw>0)
+		MPU_Data.pitch=180-MPU_Data.pitch_raw;
+	else
+		MPU_Data.pitch=-180-MPU_Data.pitch_raw;
 	MPU_Data.roll=-90-MPU_Data.roll_raw;
 }
 

@@ -45,10 +45,10 @@ void OLED_Receive_Refresh(void)
     }
     else
     {
-        OLED_ShowFloat(38, 0, (float)receive_Data.pitch / 100, 3, 3, 16);
-        OLED_ShowFloat(38, 2, (float)receive_Data.roll / 100, 3, 3, 16);
+        OLED_ShowFloat(38, 0, (float)receive_Data.pitch / 100, 3, 2, 16);
+        OLED_ShowFloat(38, 2, (float)receive_Data.roll / 100, 3, 2, 16);
         OLED_ShowString(83, 4, "T:", 16);
-        OLED_ShowFLoat(96, 4, ((float)receive_Data.temperature - 100) / 3, 2, 1, 16);
+        OLED_ShowFloat(96, 4, ((float)receive_Data.temperature - 100) / 3, 2, 1, 16);
     }
     OLED_ShowNum(0, 2, receive_Data.voltage * 10 / 7 + 950, 4, 16);
     OLED_ShowFloat(0, 0, (float)ADC_Value[6].ADC_raw_Value * 0.00459, 1, 2, 16);
@@ -76,13 +76,16 @@ void DMA1_Channel5_IRQHandler()
 {
     u8 temp = 0, i;
     DMA_ClearFlag(DMA1_IT_TC5);
-    PCout(13) = !PCin(13);
+	if(DMA_receive_Data.end_of_this==-1)
+	{
     for (i = 0; i < sizeof(DMA_receive_Data); i++)
         DMA_receive_Data.ECC_Code -= *((u8 *)&DMA_receive_Data + sizeof(DMA_receive_Data) - 1 - i);
     if (DMA_receive_Data.ECC_Code == 0)
     {
         receive_Data = DMA_receive_Data;
+		PCout(13) = !PCin(13);
     }
+}
 }
 
 u8 uart_time_cnt = 0;

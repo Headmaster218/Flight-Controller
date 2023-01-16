@@ -36,3 +36,5 @@
 ..\obj\gps.o: ..\SYSTEM\iic.h
 ..\obj\gps.o: ..\SYSTEM\usart.h
 ..\obj\gps.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\gps.o: ..\SYSTEM\my_math.h
+..\obj\gps.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

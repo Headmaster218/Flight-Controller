@@ -32,7 +32,7 @@ struct GPS_Data_
 	short speed;		// km/h
 	u16 distance2home; // 米
 	u8 home_point_flag; // 起点设定完成标志
-	u8 locate_state;	// 定位状态
+	u8 no_locate_flag;	// 定位状态
 	u8 offline_flag;	// 在线状态
 	u8 offline_cnt;		// 在线计数
 };

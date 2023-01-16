@@ -22,7 +22,7 @@ void Wireless_Send_Data()
     send_Data.ECC_Code = 0;
     send_Data.bits = 0;
     send_Data.bits |= GPS_Data.offline_flag << 0;
-    send_Data.bits |= GPS_Data.locate_state << 1;
+    send_Data.bits |= GPS_Data.no_locate_flag << 1;
     send_Data.bits |= MPU_Data.offline_flag << 2;
     send_Data.height = (u8)(GPS_Data.height / 10);
     send_Data.distance = GPS_Data.distance2home;
@@ -46,6 +46,8 @@ void DMA1_Channel5_IRQHandler()
     u8 temp = 0, i;
     DMA_ClearFlag(DMA1_IT_TC5);
     controler_offline_cnt = 0;
+	if(DMA_receive_Data.end_of_this==-1)
+	{
     for (i = 0; i < sizeof(DMA_receive_Data); i++)
         DMA_receive_Data.ECC_Code -= *((u8 *)&DMA_receive_Data + sizeof(DMA_receive_Data) - 1 - i);
     if (DMA_receive_Data.ECC_Code == 0)
@@ -53,6 +55,7 @@ void DMA1_Channel5_IRQHandler()
         receive_Data = DMA_receive_Data;
         PCout(14) = receive_Data.bits & 1;
     }
+}
 }
 
 u8 uart_time_cnt = 0;
