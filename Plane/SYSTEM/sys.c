@@ -1,36 +1,24 @@
 #include "sys.h"
 
-//////////////////////////////////////////////////////////////////////////////////	 
-//±¾³ÌÐòÖ»¹©Ñ§Ï°Ê¹ÓÃ£¬Î´¾­×÷ÕßÐí¿É£¬²»µÃÓÃÓÚÆäËüÈÎºÎÓÃÍ¾
-//ALIENTEK Mini STM32¿ª·¢°å
-//ÏµÍ³ÖÐ¶Ï·Ö×éÉèÖÃ»¯		   
-//ÕýµãÔ­×Ó@ALIENTEK
-//¼¼ÊõÂÛÌ³:www.openedv.com
-//ÐÞ¸ÄÈÕÆÚ:2012/9/10
-//°æ±¾£ºV1.4
-//°æÈ¨ËùÓÐ£¬µÁ°æ±Ø¾¿¡£
-//Copyright(C) ÕýµãÔ­×Ó 2009-2019
-//All rights reserved
-//********************************************************************************  
-//THUMBÖ¸Áî²»Ö§³Ö»ã±àÄÚÁª
-//²ÉÓÃÈçÏÂ·½·¨ÊµÏÖÖ´ÐÐ»ã±àÖ¸ÁîWFI  
+//THUMBæŒ‡ä»¤ä¸æ”¯æŒæ±‡ç¼–å†…è”
+//é‡‡ç”¨å¦‚ä¸‹æ–¹æ³•å®žçŽ°æ‰§è¡Œæ±‡ç¼–æŒ‡ä»¤WFI  
 void WFI_SET(void)
 {
 	__ASM volatile("wfi");		  
 }
-//¹Ø±ÕËùÓÐÖÐ¶Ï
+//å…³é—­æ‰€æœ‰ä¸­æ–­
 void INTX_DISABLE(void)
 {		  
 	__ASM volatile("cpsid i");
 }
-//¿ªÆôËùÓÐÖÐ¶Ï
+//å¼€å¯æ‰€æœ‰ä¸­æ–­
 void INTX_ENABLE(void)
 {
 	__ASM volatile("cpsie i");		  
 }
-//ÉèÖÃÕ»¶¥µØÖ·
-//addr:Õ»¶¥µØÖ·
-__asm void MSR_MSP(u32 addr) 
+//è®¾ç½®æ ˆé¡¶åœ°å€
+//addr:æ ˆé¡¶åœ°å€
+__ASM void MSR_MSP(u32 addr) 
 {
     MSR MSP, r0 			//set Main Stack value
     BX r14

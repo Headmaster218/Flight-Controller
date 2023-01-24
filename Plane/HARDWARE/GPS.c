@@ -5,16 +5,17 @@
 #include "my_math.h"
 
 struct GPS_Data_ GPS_Data;
-extern int CPU_frec_tick, CPU_freq;
 
 u8 USART_RX_BUF[256];
-u8 USART_RX_STA = 0, temppointer = 0, flag_OLED_refresh = 0;
-u8 home_pos_cnt=0;
+u8 home_pos_cnt = 0;
+
 // IN 30 US
 void USART3_IRQHandler(void) // 空闲中断
 {
+	u8 temppointer = 0;
+
 	DMA1_Channel3->CCR &= 0xFE; // disable dma
-	GPS_Data.offline_cnt=0;
+	GPS_Data.offline_cnt = 0;
 	if (DMA1_Channel3->CNDTR < 25)
 	{
 		USART3->SR;
@@ -30,75 +31,71 @@ void USART3_IRQHandler(void) // 空闲中断
 	//$GPGGA,060826.00,2236.91284,N,11403.24705,E,2,08,1.03,107.8,M,-2.4,M,,0000*4A
 	// 01234567890123456789012345678901234567890123456789012345678901234567890123456
 	// GPS数据处理
-	temppointer = 0;
-	if(USART_RX_BUF[15]!='N')
+	
+	if (USART_RX_BUF[15] != 'N'||USART_RX_BUF[14] != 'N')
 	{
 		while (USART_RX_BUF[temppointer++] != 'N')
 			;
 		GPS_Data.speed = atof(USART_RX_BUF + temppointer + 1);
 		GPS_Data.no_locate_flag = 0;
 		home_pos_cnt++;
-		if(!GPS_Data.home_point_flag&&home_pos_cnt>15)
+		if (!GPS_Data.home_point_flag && home_pos_cnt > 12)
 		{
-			GPS_Data.home_point_flag=1;
-			GPS_Data.home_lat=GPS_Data.lat_real;
-			GPS_Data.home_lon=GPS_Data.lon_real;
-			GPS_Data.home_height=GPS_Data.height;
+			GPS_Data.home_point_flag = 1;
+			GPS_Data.home_lat = GPS_Data.lat_real;
+			GPS_Data.home_lon = GPS_Data.lon_real;
+			GPS_Data.home_height = GPS_Data.height;
 		}
 	}
 	else
 	{
-		home_pos_cnt=0;
+		home_pos_cnt = 0;
 		GPS_Data.no_locate_flag = 1;
 	}
+	temppointer=5;
 	while (USART_RX_BUF[temppointer++] != '$' && temppointer < 199)
 		;
 	if (temppointer == 199)
 		return;
 
 	GPS_Data.time[0] = (8 + (USART_RX_BUF[temppointer + 6] - 0x30) * 10 + (USART_RX_BUF[temppointer + 7] - 0x30));
-	if (GPS_Data.time[0] < 60)
-	{
-		GPS_Data.time[0] -= GPS_Data.time[0] >= 24 ? 24 : 0;
-		GPS_Data.time[1] = (USART_RX_BUF[temppointer + 8] - 0x30) * 10 + (USART_RX_BUF[temppointer + 9] - 0x30);
-		GPS_Data.time[2] = (USART_RX_BUF[temppointer + 10] - 0x30) * 10 + (USART_RX_BUF[temppointer + 11] - 0x30);
+	GPS_Data.time[0] -= GPS_Data.time[0] >= 24 ? 24 : 0;
+	GPS_Data.time[1] = (USART_RX_BUF[temppointer + 8] - 0x30) * 10 + (USART_RX_BUF[temppointer + 9] - 0x30);
+	GPS_Data.time[2] = (USART_RX_BUF[temppointer + 10] - 0x30) * 10 + (USART_RX_BUF[temppointer + 11] - 0x30);
 
-		temppointer += 16;
-		GPS_Data.lon_f = atof(USART_RX_BUF + temppointer);
-		while (USART_RX_BUF[temppointer++] != ',')
-			;
-		while (USART_RX_BUF[temppointer++] != ',')
-			;
-		GPS_Data.lat_f = atof(USART_RX_BUF + temppointer);
-		while (USART_RX_BUF[temppointer++] != ',')
-			;
-		while (USART_RX_BUF[temppointer++] != ',')
-			;
-		while (USART_RX_BUF[temppointer++] != ',')
-			;
-		GPS_Data.num = atoi(USART_RX_BUF + temppointer);
+	temppointer += 16;
+	GPS_Data.lon_f = atof(USART_RX_BUF + temppointer);
+	while (USART_RX_BUF[temppointer++] != ',')
+		;
+	while (USART_RX_BUF[temppointer++] != ',')
+		;
+	GPS_Data.lat_f = atof(USART_RX_BUF + temppointer);
+	while (USART_RX_BUF[temppointer++] != ',')
+		;
+	while (USART_RX_BUF[temppointer++] != ',')
+		;
+	while (USART_RX_BUF[temppointer++] != ',')
+		;
+	GPS_Data.num = atoi(USART_RX_BUF + temppointer);
 
-		while (USART_RX_BUF[temppointer++] != ',')
-			;
-		while (USART_RX_BUF[temppointer++] != ',')
-			;
-		GPS_Data.height = atof(USART_RX_BUF + temppointer);
+	while (USART_RX_BUF[temppointer++] != ',')
+		;
+	while (USART_RX_BUF[temppointer++] != ',')
+		;
+	GPS_Data.height = atof(USART_RX_BUF + temppointer);
 
-		GPS_Data.lon_real = (int)(GPS_Data.lon_f / 100) + (GPS_Data.lon_f - ((int)GPS_Data.lon_f / 100) * 100) / 60 + (GPS_Data.lon_f - (int)GPS_Data.lon_f) / 600000;
-		GPS_Data.lat_real = (int)(GPS_Data.lat_f / 100) + (GPS_Data.lat_f - ((int)GPS_Data.lat_f / 100) * 100) / 60 + (GPS_Data.lat_f - (int)GPS_Data.lat_f) / 600000;
-	}
-	else
-		GPS_Data.speed = 0;
+	GPS_Data.lon_real = (int)(GPS_Data.lon_f / 100) + (GPS_Data.lon_f - ((int)GPS_Data.lon_f / 100) * 100) / 60 + (GPS_Data.lon_f - (int)GPS_Data.lon_f) / 600000;
+	GPS_Data.lat_real = (int)(GPS_Data.lat_f / 100) + (GPS_Data.lat_f - ((int)GPS_Data.lat_f / 100) * 100) / 60 + (GPS_Data.lat_f - (int)GPS_Data.lat_f) / 600000;
 
-	if(GPS_Data.home_point_flag&&!GPS_Data.no_locate_flag)
+	if (GPS_Data.home_point_flag && !GPS_Data.no_locate_flag)
 	{
 		float dist_temp;
-		//R*arcos[cos(Y1)*cos(Y2)*cos(X1-X2)+sin(Y1)*sin(Y2)]。
-		dist_temp=6371000*acos(cos(GPS_Data.home_lat*DEG2RAD)*cos(GPS_Data.lat_real*DEG2RAD)*cos(GPS_Data.home_lon*DEG2RAD-GPS_Data.lon_real*DEG2RAD)+sin(GPS_Data.home_lat*DEG2RAD)*sin(GPS_Data.lat_real*DEG2RAD));
-		GPS_Data.distance2home=sqrt((GPS_Data.height-GPS_Data.home_height)*(GPS_Data.height-GPS_Data.home_height)+ dist_temp*dist_temp);
+		// R*arcos[cos(Y1)*cos(Y2)*cos(X1-X2)+sin(Y1)*sin(Y2)]。
+		dist_temp = 6371000 * acos(cos(GPS_Data.home_lat * DEG2RAD) * cos(GPS_Data.lat_real * DEG2RAD) * cos(GPS_Data.home_lon * DEG2RAD - GPS_Data.lon_real * DEG2RAD) + sin(GPS_Data.home_lat * DEG2RAD) * sin(GPS_Data.lat_real * DEG2RAD));
+		GPS_Data.distance2home = sqrt((GPS_Data.height - GPS_Data.home_height) * (GPS_Data.height - GPS_Data.home_height) + dist_temp * dist_temp);
 	}
 	// restart DMA
-	
+
 	DMA1_Channel3->CNDTR = 200;
 	DMA1_Channel3->CCR |= 1; // enable dma
 
@@ -106,13 +103,11 @@ void USART3_IRQHandler(void) // 空闲中断
 	USART3->DR;
 }
 
-
 void GPS_Init(void)
 {
 	UART_GPS_Init(9600); // GPS
 	GPS_DMA_Init();
 }
-
 
 void GPS_DMA_Init(void)
 {

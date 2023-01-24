@@ -256,6 +256,7 @@ float my_cos(double rad)
 	return my_sin(rad) * flag;
 }
 
+
 float my_deathzoom(float xx, float zoom)
 {
 	if (xx > 0)
