@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-25 14:52:32
  * @LastEditors: Headmaster1615(Mac)  e-mail:hm-218@qq.com
- * @LastEditTime: 2023-01-24 20:57:25
+ * @LastEditTime: 2023-01-25 13:54:07
  * @FilePath: \USER\main.c
  * @Description:
  *
@@ -38,18 +38,14 @@ int main(void)
 	delay_ms(100);
 	MPU_Init(1);
 	// OLED_Init();
-	controler_offline_cnt=51;
-	GPS_Data.offline_cnt=100;
-	MPU_Data.offline_cnt=100;
+	
 	__set_PRIMASK(0); // Enable all interrupt
-
 	while (1)
 	{
 		delay_ms(10);
 	}
 }
 u8 cnt = 0;
-u16 tmppp;
 // 100Hz
 void TIM1_UP_IRQHandler(void) // TIM3中断
 {
@@ -120,7 +116,6 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 	}
 	if (cnt % 25 == 0) // 4Hz
 	{
-		tmppp++;
 		Wireless_Send_Data();
 	}
 

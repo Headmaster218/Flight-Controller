@@ -107,6 +107,7 @@ void GPS_Init(void)
 {
 	UART_GPS_Init(9600); // GPS
 	GPS_DMA_Init();
+	GPS_Data.offline_cnt=100;
 }
 
 void GPS_DMA_Init(void)

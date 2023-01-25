@@ -72,6 +72,7 @@ void Wireless_Init()
     Wireless_UART_Init(19200);
     Wireless_DMA_Init();
     send_Data.end_of_this = 0xffff;
+    controler_offline_cnt=51;
 }
 
 void Wireless_UART_Init(u32 bound)
