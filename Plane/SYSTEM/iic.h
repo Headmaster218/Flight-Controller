@@ -23,19 +23,19 @@
 
 void IIC2_DMA_Init(void);
 void Hard_IIC_Init(void);
-void I2C1_Soft_Delay(void);
-int I2C1_Soft_Start(void);
-void I2C1_Soft_Stop(void);
-void I2C1_Soft_Ack(void);
-void I2C1_Soft_NoAck(void);
-int I2C1_Soft_WaitAck(void); // 返回:=1有ACK,=0无ACK
-void I2C1_Soft_SendByte(u8 SendByte);
-u8 I2C1_Soft_ReadByte(void);
+void I2C1_Hard_Delay(void);
+int I2C1_Hard_Start(void);
+void I2C1_Hard_Stop(void);
+void I2C1_Hard_Ack(void);
+void I2C1_Hard_NoAck(void);
+int I2C1_Hard_WaitAck(void); // 返回:=1有ACK,=0无ACK
+void I2C1_Hard_SendByte(u8 SendByte);
+u8 I2C1_Hard_ReadByte(void);
 
-int I2C1_Soft_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data);
-int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size);
-int I2C1_Soft_Single_Read(u8 SlaveAddress, u8 REG_Address);
-int I2C1_Soft_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size);
+int I2C1_Hard_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data);
+int I2C1_Hard_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size);
+int I2C1_Hard_Single_Read(u8 SlaveAddress, u8 REG_Address);
+int I2C1_Hard_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size);
 
 void IIC2_Init(void);
 

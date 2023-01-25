@@ -32,7 +32,7 @@ void USART3_IRQHandler(void) // 空闲中断
 	// 01234567890123456789012345678901234567890123456789012345678901234567890123456
 	// GPS数据处理
 	
-	if (USART_RX_BUF[15] != 'N'||USART_RX_BUF[14] != 'N')
+	if (USART_RX_BUF[15] != 'N')
 	{
 		while (USART_RX_BUF[temppointer++] != 'N')
 			;

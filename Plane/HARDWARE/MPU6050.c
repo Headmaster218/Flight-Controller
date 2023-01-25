@@ -10,7 +10,7 @@ u8 MPU_Init(u8 state)
 {
 	if (state)
 	{
-		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X80); // 复位MPU6050
+		I2C1_Hard_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X80); // 复位MPU6050
 		delay_ms(200);
 		MPU_Data.offline_cnt=100;
 	}
@@ -19,19 +19,19 @@ u8 MPU_Init(u8 state)
 		I2C_GenerateSTOP(I2C1, ENABLE);
 		I2C_GenerateSTART(I2C1, ENABLE);
 	}
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X00); // 唤醒MPU6050
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_GYRO_CFG_REG, 2 << 3);// gyro传感器,±1000dps *0.03051851 ->d/s
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_ACCEL_CFG_REG, 1 << 3);// acce传感器,±4g      *0.001196326 ->m/s2  //float have 7 useful number
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_CFG_REG, 0x05); // fliter 10hz
-	// lpf = I2C1_Soft_Single_Write(MPU_ADDR, MPU_SAMPLE_RATE_REG, 9);//采样频率=1000 /（1+SMPLRT_DIV)
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_INT_EN_REG, 0X00);				// 关闭所有中断
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_USER_CTRL_REG, 0X00);			// I2C主模式关闭
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_FIFO_EN_REG, 0X00);			// 关闭FIFO
-	I2C1_Soft_Single_Write(MPU_ADDR, MPU_INTBP_CFG_REG, 0X80);			// INT引脚低电平有效
-	if (I2C1_Soft_Single_Read(MPU_ADDR, MPU_DEVICE_ID_REG) == MPU_ADDR) // 器件ID正确
+	I2C1_Hard_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X00); // 唤醒MPU6050
+	I2C1_Hard_Single_Write(MPU_ADDR, MPU_GYRO_CFG_REG, 2 << 3);// gyro传感器,±1000dps *0.03051851 ->d/s
+	I2C1_Hard_Single_Write(MPU_ADDR, MPU_ACCEL_CFG_REG, 1 << 3);// acce传感器,±4g      *0.001196326 ->m/s2  //float have 7 useful number
+	I2C1_Hard_Single_Write(MPU_ADDR, MPU_CFG_REG, 0x05); // fliter 10hz
+	// lpf = I2C1_Hard_Single_Write(MPU_ADDR, MPU_SAMPLE_RATE_REG, 9);//采样频率=1000 /（1+SMPLRT_DIV)
+	I2C1_Hard_Single_Write(MPU_ADDR, MPU_INT_EN_REG, 0X00);				// 关闭所有中断
+	I2C1_Hard_Single_Write(MPU_ADDR, MPU_USER_CTRL_REG, 0X00);			// I2C主模式关闭
+	I2C1_Hard_Single_Write(MPU_ADDR, MPU_FIFO_EN_REG, 0X00);			// 关闭FIFO
+	I2C1_Hard_Single_Write(MPU_ADDR, MPU_INTBP_CFG_REG, 0X80);			// INT引脚低电平有效
+	if (I2C1_Hard_Single_Read(MPU_ADDR, MPU_DEVICE_ID_REG) == MPU_ADDR) // 器件ID正确
 	{
-		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X01); // 设置CLKSEL,PLL X轴为参考
-		I2C1_Soft_Single_Write(MPU_ADDR, MPU_PWR_MGMT2_REG, 0X00); // 加速度与陀螺仪都工作
+		I2C1_Hard_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X01); // 设置CLKSEL,PLL X轴为参考
+		I2C1_Hard_Single_Write(MPU_ADDR, MPU_PWR_MGMT2_REG, 0X00); // 加速度与陀螺仪都工作
 	}
 	MPU_Data.offset.gyro[0] = 38;
 	MPU_Data.offset.gyro[1] = -9;
@@ -85,7 +85,7 @@ u8 MPU_Get_Raw_Data(void)
 {
 	u8 MPU_reg_buf[14], i = 0;
 	short *MPU_data = (void *)MPU_Data.acce;
-	if (ERROR == I2C1_Soft_Mult_Read(MPU_ADDR, MPU_ACCEL_XOUTH_REG, MPU_reg_buf, 14))
+	if (ERROR == I2C1_Hard_Mult_Read(MPU_ADDR, MPU_ACCEL_XOUTH_REG, MPU_reg_buf, 14))
 		return ERROR;
 	for (; i < 7; i++)
 		MPU_data[i] = ((u16)MPU_reg_buf[i * 2] << 8) | MPU_reg_buf[i * 2 + 1];
