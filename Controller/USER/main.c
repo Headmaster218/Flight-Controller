@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-25 14:52:32
  * @LastEditors: Headmaster1615(Mac)  e-mail:hm-218@qq.com
- * @LastEditTime: 2023-01-15 19:37:49
+ * @LastEditTime: 2023-01-25 17:19:53
  * @FilePath: \USER\main.c
  * @Description:
  *
@@ -37,7 +37,7 @@ int main(void)
 	OLED_Init();
 	__set_PRIMASK(0); // Enable all interrupt
 
-	while (1) // 没有中断时3,000,000/s  2,800,000
+	while (1) // 没有中断�?3,000,000/s  2,800,000
 	{
 		CPU_Free_Time++;
 	}
@@ -46,7 +46,7 @@ int main(void)
 
 u8 cnt = 0;
 // 100Hz
-void TIM1_UP_IRQHandler(void) // TIM3中断
+void TIM1_UP_IRQHandler(void) // TIM3
 {
 	if (uart_time_cnt++ > 2)
 	{
@@ -74,11 +74,20 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 		Wireless_Send_Data();
 	}
 
+	wireless_offline_cnt++;
+	if(wireless_offline_cnt>100)
+	{
+		wireless_offline_cnt=101;
+		wireless_offline_flag=1;
+	}
+	else
+		wireless_offline_flag=0;
+	
 	if (cnt % 25 == 0) // 4Hz
 	{
 		OLED_Receive_Refresh();
 	}
 
-	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET) // 检查指定的TIM中断发生与否:TIM 中断�?
-		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);	   // 清除TIMx的中断待处理�?:TIM 中断�?
+	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET) // 检查指定的TIM中断发生与否:TIM 中断�??
+		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);	   // 清除TIMx的中断待处理�??:TIM 中断�??
 }
