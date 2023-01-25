@@ -33,3 +33,7 @@
 ..\obj\serio.o: ..\HARDWARE\24G.h
 ..\obj\serio.o: ..\SYSTEM\delay.h
 ..\obj\serio.o: ..\HARDWARE\GPS.h
+..\obj\serio.o: ..\HARDWARE\MPU6050.h
+..\obj\serio.o: ..\SYSTEM\iic.h
+..\obj\serio.o: ..\SYSTEM\my_math.h
+..\obj\serio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

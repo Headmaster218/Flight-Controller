@@ -11,13 +11,8 @@ u8 MPU_Init(u8 state)
 	if (state)
 	{
 		I2C1_Hard_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X80); // 复位MPU6050
-		delay_ms(200);
+		delay_ms(3);
 		MPU_Data.offline_cnt=100;
-	}
-	else
-	{
-		I2C_GenerateSTOP(I2C1, ENABLE);
-		I2C_GenerateSTART(I2C1, ENABLE);
 	}
 	I2C1_Hard_Single_Write(MPU_ADDR, MPU_PWR_MGMT1_REG, 0X00); // 唤醒MPU6050
 	I2C1_Hard_Single_Write(MPU_ADDR, MPU_GYRO_CFG_REG, 2 << 3);// gyro传感器,±1000dps *0.03051851 ->d/s
