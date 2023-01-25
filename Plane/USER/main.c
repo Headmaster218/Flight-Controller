@@ -2,7 +2,7 @@
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2022-05-25 14:52:32
  * @LastEditors: Headmaster1615(Mac)  e-mail:hm-218@qq.com
- * @LastEditTime: 2023-01-25 13:54:07
+ * @LastEditTime: 2023-01-25 14:00:46
  * @FilePath: \USER\main.c
  * @Description:
  *
@@ -25,20 +25,19 @@ int main(void)
 {
 	__set_PRIMASK(1); // Close all interrupt
 
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	LED_Init();
-	delay_init();
-	Soft_IIC1_Init();
-	PWM_Init(10000, 144); // 50hz
-	Adc_Init();
-	ADC_DMA_Init();
-	Wireless_Init();
-	GPS_Init();
-	TIM1_Int_Init(720, 1000);
-	delay_ms(100);
-	MPU_Init(1);
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
+	LED_Init();				  // LED和灯带初始化
+	delay_init();			  // 延时初始化
+	Hard_IIC_Init();		  // IIC初始化
+	PWM_Init(10000, 144);	  // 50hz
+	Adc_Init();				  // ADC初始化
+	ADC_DMA_Init();			  // ADC DMA初始化
+	Wireless_Init();		  // 无线传输初始化
+	GPS_Init();				  // GPS初始化
+	TIM1_Int_Init(720, 1000); // 定时器1初始化, 100Hz
+	MPU_Init(1); 			  // MPU6050初始化
 	// OLED_Init();
-	
+
 	__set_PRIMASK(0); // Enable all interrupt
 	while (1)
 	{
@@ -58,6 +57,7 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 	}
 
 	////////////////////////掉线检测//////////////////////////////////////
+	//遥控器掉线检测
 	controler_offline_cnt++;
 	if (controler_offline_cnt > 50)
 	{
@@ -70,6 +70,7 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 		controler_offline_flag = 0;
 	}
 
+	//GPS掉线检测
 	GPS_Data.offline_cnt++;
 	if (GPS_Data.offline_cnt > 70)
 	{
@@ -81,6 +82,7 @@ void TIM1_UP_IRQHandler(void) // TIM3中断
 		GPS_Data.offline_flag = 0;
 	}
 
+	//MPU掉线检测
 	MPU_Data.offline_cnt++;
 	if (MPU_Data.offline_cnt > 70)
 	{

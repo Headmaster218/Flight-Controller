@@ -24,9 +24,9 @@
 void OLED_WR_Byte(unsigned dat, unsigned cmd)
 {
 	if (cmd)
-		I2C1_Soft_Single_Write(0x3c, 0x40, dat);
+		I2C1_Hard_Single_Write(0x3c, 0x40, dat);
 	else
-		I2C1_Soft_Single_Write(0x3c, 0x00, dat);
+		I2C1_Hard_Single_Write(0x3c, 0x00, dat);
 }
 
 /**
@@ -38,9 +38,9 @@ void OLED_WR_Byte(unsigned dat, unsigned cmd)
 void OLED_Multi_WR_Byte(u8 *dat, unsigned cmd, u8 len)
 {
 	if (cmd)
-		I2C1_Soft_Mult_Write(0x3c, 0x40, dat, len);
+		I2C1_Hard_Mult_Write(0x3c, 0x40, dat, len);
 	else
-		I2C1_Soft_Mult_Write(0x3c, 0x00, dat, len);
+		I2C1_Hard_Mult_Write(0x3c, 0x00, dat, len);
 }
 
 /**

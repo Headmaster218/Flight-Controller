@@ -6,7 +6,7 @@
 
 u8 I2C_RX_BUF[20], I2C_TX_BUF[20];
 
-void Soft_IIC1_Init(void)
+void Hard_IIC_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	I2C_InitTypeDef I2C_InitStructure;
@@ -84,13 +84,13 @@ void IIC2_DMA_Init(void)
 
 // 0 send, 1 receive
 // 单字节写入
-int I2C1_Soft_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data)
+int I2C1_Hard_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data)
 {
 
-	return I2C1_Soft_Mult_Write(SlaveAddress, REG_Address, &REG_data, 1);
+	return I2C1_Hard_Mult_Write(SlaveAddress, REG_Address, &REG_data, 1);
 }
 
-int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
+int I2C1_Hard_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
 {
 	u32 delay = 0;
 	u8 i = 0;
@@ -135,15 +135,15 @@ int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
 }
 
 // 单字节读取
-int I2C1_Soft_Single_Read(u8 SlaveAddress, u8 REG_Address)
+int I2C1_Hard_Single_Read(u8 SlaveAddress, u8 REG_Address)
 {
 	u8 back;
-	I2C1_Soft_Mult_Read(SlaveAddress, REG_Address, &back, 1);
+	I2C1_Hard_Mult_Read(SlaveAddress, REG_Address, &back, 1);
 	return back;
 }
 
 // 多字节读取
-int I2C1_Soft_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
+int I2C1_Hard_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
 {
 	uint32_t delay = 0;
 	u8 i = 0;

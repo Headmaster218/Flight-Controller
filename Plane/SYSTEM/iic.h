@@ -1,8 +1,8 @@
 /*
  * @Author: Headmaster1615  e-mail:hm-218@qq.com
  * @Date: 2023-01-05 12:54:14
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2023-01-14 19:18:14
+ * @LastEditors: Headmaster1615(Mac)  e-mail:hm-218@qq.com
+ * @LastEditTime: 2023-01-25 13:57:49
  * @FilePath: \USERd:\Program_Data\STM32\Flight-Controler\Plane\SYSTEM\iic.h
  * @Description:
  *
@@ -22,7 +22,7 @@
 #define TIME_OUT 0x100
 
 void IIC2_DMA_Init(void);
-void Soft_IIC1_Init(void);
+void Hard_IIC_Init(void);
 void I2C1_Soft_Delay(void);
 int I2C1_Soft_Start(void);
 void I2C1_Soft_Stop(void);

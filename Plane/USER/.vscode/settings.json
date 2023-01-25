@@ -7,6 +7,7 @@
         "sys.h": "c",
         "091oled.h": "c",
         "24g.h": "c",
-        "my_math.h": "c"
+        "my_math.h": "c",
+        "iic.h": "c"
     }
 }
