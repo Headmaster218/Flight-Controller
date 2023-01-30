@@ -30,7 +30,7 @@ void OLED_WR_Byte(u8 dat, u8 cmd)
  * @param {unsigned} cmd OLED_CMD/OLED_DATA
  * @return {*}
  */
-void OLED_Multi_WR_Byte(u8 *dat, u8 cmd, u8 len)
+void OLED_Multi_WR_Byte(u8 *dat, u8 cmd, u16 len)
 {
 	if (cmd)
 		I2C1_Soft_Mult_Write(0x3c, 0x40, dat, len);
@@ -241,15 +241,12 @@ void OLED_DrawBMP(u8 pos_x, u8 pos_y, u8 pic_x, u8 pic_y, u8 BMP[])
  * @param {u8} BMP	缓冲区
  * @return {*}
  */
-void OLED_Refresh(u8 BMP[]) // 35fps
+void OLED_Refresh(u8 BMP[]) // 38fps
 {
-	u16 i = 0;
-	for (; i < 8; i++)
-	{
-		OLED_Set_Pos(0, i);
-		OLED_Multi_WR_Byte(BMP + 128 * i, OLED_DATA, 128);
-		delay_us(1);
-	}
+	u8 dat[3]={0xb0,0,0x10};
+	
+	OLED_Multi_WR_Byte(dat, OLED_CMD, 3);
+	OLED_Multi_WR_Byte(BMP, OLED_DATA, 1024);
 }
 
 /**
@@ -304,7 +301,10 @@ void OLED_Init(void)
 	OLED_WR_Byte(0xa6 | 0, OLED_CMD); // Set Normal/Inverse Display
 
 	OLED_WR_Byte(0xB0, OLED_CMD);	  // Set Page Start Address for Page Addressing Mode
-	OLED_WR_Byte(0x40, OLED_CMD);	  // Set Display Start Line
+	OLED_WR_Byte(0x00, OLED_CMD);
+	OLED_WR_Byte(0x10, OLED_CMD);
+	
+	//OLED_WR_Byte(0x40, OLED_CMD);	  // Set Display Start Line
 	OLED_WR_Byte(0xa0 | 1, OLED_CMD); // 屏幕反向
 
 	OLED_WR_Byte(0xC8, OLED_CMD); // C0/C8Set COM Output Scan Direction

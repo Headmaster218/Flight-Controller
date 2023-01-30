@@ -33,9 +33,9 @@ void I2C1_Soft_SendByte(u8 SendByte);
 u8 I2C1_Soft_ReadByte(void);
 
 int I2C1_Soft_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data);
-int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size);
+int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u16 size);
 int I2C1_Soft_Single_Read(u8 SlaveAddress, u8 REG_Address);
-int I2C1_Soft_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size);
+int I2C1_Soft_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u16 size);
 
 void IIC2_Init(void);
 

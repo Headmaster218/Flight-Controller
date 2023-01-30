@@ -90,10 +90,10 @@ int I2C1_Soft_Single_Write(u8 SlaveAddress, u8 REG_Address, u8 REG_data)
 	return I2C1_Soft_Mult_Write(SlaveAddress, REG_Address, &REG_data, 1);
 }
 
-int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
+int I2C1_Soft_Mult_Write(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u16 size)
 {
 	u32 delay = 0;
-	u8 i = 0;
+	u16 i = 0;
 	I2C_GenerateSTART(I2C1, ENABLE);
 	while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))
 	{
@@ -143,10 +143,10 @@ int I2C1_Soft_Single_Read(u8 SlaveAddress, u8 REG_Address)
 }
 
 // 多字节读取
-int I2C1_Soft_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u8 size)
+int I2C1_Soft_Mult_Read(u8 SlaveAddress, u8 REG_Address, u8 *ptChar, u16 size)
 {
 	uint32_t delay = 0;
-	u8 i = 0;
+	u16 i = 0;
 	I2C_GenerateSTART(I2C1, ENABLE); // 起始信号
 	while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))
 	{
